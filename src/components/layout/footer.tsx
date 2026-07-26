@@ -17,7 +17,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-zinc-500 max-w-xs leading-relaxed">
-              A premium, secure academic document sharing hub. Created for students to collaborate and succeed together.
+              Browse college notes, upload PDFs, and use Study Copilot to generate AI-powered study material for faster exam preparation.
             </p>
             {/* Systems widget */}
             <div className="inline-flex items-center gap-2 mt-2 w-fit px-3 py-1 rounded-full border border-emerald-500/10 bg-emerald-500/5 text-xs text-emerald-400 font-medium">
@@ -50,12 +50,22 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 2: Resources */}
+          {/* Column 2: Study Copilot */}
           <div className="flex flex-col gap-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-              Resources
+              Study Copilot
             </h4>
             <ul className="flex flex-col gap-2.5 text-sm font-medium">
+              <li>
+                <Link href="/dashboard/study-copilot" className="hover:text-zinc-50 transition-colors">
+                  AI Study Tools
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="hover:text-zinc-50 transition-colors">
+                  Pricing
+                </Link>
+              </li>
               <li>
                 <Link href="/dashboard/faq" className="hover:text-zinc-50 transition-colors">
                   FAQ
@@ -64,11 +74,6 @@ export function Footer() {
               <li>
                 <Link href="/dashboard/how-it-works" className="hover:text-zinc-50 transition-colors">
                   How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard/guidelines" className="hover:text-zinc-50 transition-colors">
-                  Community Guidelines
                 </Link>
               </li>
             </ul>
@@ -93,6 +98,11 @@ export function Footer() {
               <li>
                 <Link href="/dashboard/dmca" className="hover:text-zinc-50 transition-colors">
                   DMCA Take-down
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard/guidelines" className="hover:text-zinc-50 transition-colors">
+                  Community Guidelines
                 </Link>
               </li>
             </ul>

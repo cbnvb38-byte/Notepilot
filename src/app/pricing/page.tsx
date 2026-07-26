@@ -38,14 +38,12 @@ const FREE_FEATURES = [
 
 const PREMIUM_FEATURES = [
   "100 AI generations / month",
+  "Exam Sprint Mode",
+  "Multi-PDF Study Pack",
   "Extended scanned / handwritten PDF usage",
   "Premium Member badge",
   "Premium Study Copilot workspace",
   "Saved Study Library",
-  "Upcoming: Exam Sprint Mode",
-  "Upcoming: Multi-PDF Study Pack",
-  "Upcoming: Memory Booster",
-  "Upcoming: Final Revision Sheet",
 ];
 
 const COMPARISON_ROWS: { feature: string; free: boolean | string; premium: boolean | string }[] = [
@@ -57,10 +55,9 @@ const COMPARISON_ROWS: { feature: string; free: boolean | string; premium: boole
   { feature: "Ask Doubt", free: true, premium: true },
   { feature: "Saved Study Library", free: true, premium: true },
   { feature: "Scanned PDF support", free: "Basic", premium: "Extended" },
+  { feature: "Exam Sprint Mode", free: false, premium: true },
+  { feature: "Multi-PDF Study Pack", free: false, premium: true },
   { feature: "Premium badge", free: false, premium: true },
-  { feature: "Exam Sprint Mode", free: false, premium: "Coming Soon" },
-  { feature: "Multi-PDF Study Pack", free: false, premium: "Coming Soon" },
-  { feature: "Memory Booster", free: false, premium: "Coming Soon" },
 ];
 
 const WHY_UPGRADE = [
@@ -77,7 +74,7 @@ const WHY_UPGRADE = [
   {
     icon: "timer",
     title: "Exam-focused workflows",
-    desc: "Upcoming premium workflows will help you revise faster and smarter before exams.",
+    desc: "Exam Sprint Mode and Multi-PDF Study Pack help you revise faster and smarter before exams.",
   },
   {
     icon: "crown",

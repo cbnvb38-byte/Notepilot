@@ -2,23 +2,17 @@ import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Sparkles,
-  Activity,
   FileText,
   Library,
-  CheckCircle2,
   Zap,
   Clock,
-  Search,
   BookOpen,
   ArrowRight,
   Crown,
   Eye,
-  Timer,
-  Brain,
   FileWarning,
   Rocket,
   Lock
@@ -510,7 +504,7 @@ export default async function StudyCopilotPage() {
               </Link>
             )}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
             <div className="bg-zinc-950/40 border border-zinc-800/60 p-4 rounded-xl hover:border-amber-500/20 transition-all flex flex-col gap-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2 text-sm font-bold text-zinc-200">
@@ -530,7 +524,7 @@ export default async function StudyCopilotPage() {
             <div className="bg-zinc-950/40 border border-zinc-800/60 p-4 rounded-xl hover:border-amber-500/20 transition-all flex flex-col gap-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2 text-sm font-bold text-zinc-200">
-                  <Eye className="h-4 w-4 text-amber-400" /> Extended Scanned PDF Reading
+                  <Eye className="h-4 w-4 text-amber-400" /> Extended Scanned PDF
                 </div>
               </div>
               <p className="text-xs text-zinc-400 leading-snug">Better support for scanned and handwritten notes.</p>
@@ -543,51 +537,35 @@ export default async function StudyCopilotPage() {
               </div>
             </div>
 
-            <div className="bg-zinc-950/20 border border-zinc-800/40 opacity-70 p-4 rounded-xl flex flex-col gap-3">
+            <div className="bg-zinc-950/40 border border-zinc-800/60 p-4 rounded-xl hover:border-amber-500/20 transition-all flex flex-col gap-3">
               <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2 text-sm font-bold text-zinc-300">
-                  <Timer className="h-4 w-4 text-zinc-500" /> Exam Sprint Mode
+                <div className="flex items-center gap-2 text-sm font-bold text-zinc-200">
+                  <Rocket className="h-4 w-4 text-amber-400" /> Exam Sprint Mode
                 </div>
               </div>
-              <p className="text-xs text-zinc-500 leading-snug">Guided exam revision from summary to quiz to weak areas.</p>
+              <p className="text-xs text-zinc-400 leading-snug">Guided exam revision from summary to quiz.</p>
               <div className="mt-auto pt-2">
-                <span className="text-[10px] bg-zinc-800 text-zinc-400 border border-zinc-700 px-2 py-1 rounded font-bold uppercase tracking-wider">Coming Soon</span>
+                {usageState?.plan === "premium" ? (
+                  <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-1 rounded font-bold uppercase tracking-wider">Active</span>
+                ) : (
+                  <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-1 rounded font-bold uppercase tracking-wider">Unlock with Premium</span>
+                )}
               </div>
             </div>
 
-            <div className="bg-zinc-950/20 border border-zinc-800/40 opacity-70 p-4 rounded-xl flex flex-col gap-3">
+            <div className="bg-zinc-950/40 border border-zinc-800/60 p-4 rounded-xl hover:border-amber-500/20 transition-all flex flex-col gap-3">
               <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2 text-sm font-bold text-zinc-300">
-                  <Library className="h-4 w-4 text-zinc-500" /> Multi-PDF Study Pack
+                <div className="flex items-center gap-2 text-sm font-bold text-zinc-200">
+                  <Library className="h-4 w-4 text-amber-400" /> Multi-PDF Study Pack
                 </div>
               </div>
-              <p className="text-xs text-zinc-500 leading-snug">Combine multiple notes into one complete study pack.</p>
+              <p className="text-xs text-zinc-400 leading-snug">Combine multiple notes into one study pack.</p>
               <div className="mt-auto pt-2">
-                <span className="text-[10px] bg-zinc-800 text-zinc-400 border border-zinc-700 px-2 py-1 rounded font-bold uppercase tracking-wider">Coming Soon</span>
-              </div>
-            </div>
-
-            <div className="bg-zinc-950/20 border border-zinc-800/40 opacity-70 p-4 rounded-xl flex flex-col gap-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2 text-sm font-bold text-zinc-300">
-                  <Brain className="h-4 w-4 text-zinc-500" /> Memory Booster
-                </div>
-              </div>
-              <p className="text-xs text-zinc-500 leading-snug">Smarter flashcard review and revision reminders.</p>
-              <div className="mt-auto pt-2">
-                <span className="text-[10px] bg-zinc-800 text-zinc-400 border border-zinc-700 px-2 py-1 rounded font-bold uppercase tracking-wider">Coming Soon</span>
-              </div>
-            </div>
-
-            <div className="bg-zinc-950/20 border border-zinc-800/40 opacity-70 p-4 rounded-xl flex flex-col gap-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2 text-sm font-bold text-zinc-300">
-                  <CheckCircle2 className="h-4 w-4 text-zinc-500" /> Final Revision Sheet
-                </div>
-              </div>
-              <p className="text-xs text-zinc-500 leading-snug">One clean last-minute sheet with formulas, definitions, and important questions.</p>
-              <div className="mt-auto pt-2">
-                <span className="text-[10px] bg-zinc-800 text-zinc-400 border border-zinc-700 px-2 py-1 rounded font-bold uppercase tracking-wider">Coming Soon</span>
+                {usageState?.plan === "premium" ? (
+                  <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-1 rounded font-bold uppercase tracking-wider">Active</span>
+                ) : (
+                  <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-1 rounded font-bold uppercase tracking-wider">Unlock with Premium</span>
+                )}
               </div>
             </div>
           </div>
