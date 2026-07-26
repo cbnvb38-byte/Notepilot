@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 
 import { auth } from "@clerk/nextjs/server";
 import { GenerationType } from "@/lib/ai/types";
@@ -78,7 +78,7 @@ export async function generateStudyMaterialAction(
     }
 
     if (!note.file_path) {
-      devLog("file_path is missing → aborting");
+      devLog("file_path is missing â†’ aborting");
       return { success: false, error: { message: "PDF file path is missing for this note." } };
     }
 
@@ -698,7 +698,7 @@ User's Doubt: "${question}"`;
   }
 }
 
-async function saveAIGenerationResult({
+export async function saveAIGenerationResult({
   userId,
   noteId,
   generationType,
@@ -724,7 +724,7 @@ async function saveAIGenerationResult({
       finalResultText = null; // result_json is the source of truth; no need to duplicate
       devLog("[MCQ Save] parse succeeded, questions:", parsed.length);
     } else {
-      // Parse failed — keep raw text so client-side tolerant parser can try
+      // Parse failed â€” keep raw text so client-side tolerant parser can try
       devLog("[MCQ Save] MCQ JSON parse completely failed, storing raw fallback in result_text");
       resultJson = null;
     }

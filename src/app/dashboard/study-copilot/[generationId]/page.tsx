@@ -63,6 +63,18 @@ export default async function GenerationReaderPage({ params }: PageProps) {
 
   const typeLabel = getGenerationTypeLabel(gen.generation_type);
 
+  const isMultiPdf = typeof gen.result_json === 'object' && gen.result_json !== null && 'is_multi_pdf' in gen.result_json;
+  let titleStr = gen.note_title || "Untitled Note";
+  
+  if (isMultiPdf) {
+    const json = gen.result_json as any;
+    const selectedNotes = json.selected_notes || [];
+    if (selectedNotes.length > 0) {
+      titleStr = selectedNotes.map((n: any) => n.title).join(", ");
+    } else {
+      titleStr = "Multi-PDF Study Pack";
+    }
+  }
   return (
     <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden flex flex-col font-sans">
       {/* Background glow */}
@@ -86,15 +98,17 @@ export default async function GenerationReaderPage({ params }: PageProps) {
           </Link>
 
           <div className="flex items-center gap-2">
-            <Link href={`/notes/${gen.note_id}`}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-zinc-700/60 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 text-xs h-8 gap-1.5"
-              >
-                <ExternalLink className="h-3.5 w-3.5" /> View Note
-              </Button>
-            </Link>
+            {!isMultiPdf && gen.note_id && (
+              <Link href={`/notes/${gen.note_id}`}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-zinc-700/60 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 text-xs h-8 gap-1.5"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" /> View Note
+                </Button>
+              </Link>
+            )}
             <CopyResultButton text={getCopyableResultText(gen)} />
           </div>
         </div>
@@ -110,11 +124,11 @@ export default async function GenerationReaderPage({ params }: PageProps) {
             </span>
           </div>
           <h1 className="text-xl font-black text-zinc-100 tracking-tight leading-tight">
-            {gen.generation_type === "mcq" ? "Generated Practice Quiz" : gen.generation_type === "flashcards" ? "Generated Flashcards" : gen.generation_type === "important_questions" ? "Generated Important Questions" : gen.generation_type === "doubt_answer" ? "Answered Doubt" : "Generated Study Summary"}
+            {gen.generation_type === "mcq" ? "Generated Practice Quiz" : gen.generation_type === "flashcards" ? "Generated Flashcards" : (gen.generation_type === "important_questions" || gen.generation_type === "multi_pdf_important_questions") ? "Generated Important Questions" : gen.generation_type === "doubt_answer" ? "Answered Doubt" : "Generated Study Summary"}
           </h1>
           <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500">
             <span>
-              From: <span className="text-zinc-300 font-semibold">{gen.note_title}</span>
+              From: <span className="text-zinc-300 font-semibold">{titleStr}</span>
             </span>
             <span>•</span>
             <span>Generated: {formattedDate}</span>

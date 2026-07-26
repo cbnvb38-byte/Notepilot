@@ -55,6 +55,12 @@ function safelyExtractText(resultText: string | null, resultJson: Record<string,
 }
 
 export function parseSummarySections(resultText: string | null, resultJson: Record<string, unknown> | null): ParsedSection[] {
+  if (resultJson && Array.isArray(resultJson.sections)) {
+    return resultJson.sections.map((s: any) => ({
+      heading: s.title || s.heading || "Section",
+      content: s.content || "",
+    }));
+  }
   let text = safelyExtractText(resultText, resultJson);
 
   if (!text) {
@@ -99,7 +105,7 @@ export function getResultPreview(generation: SavedGeneration): string {
       const topics = Array.from(new Set(questions.map((q: any) => q.topic).filter(Boolean)));
       let topicStr = "";
       if (topics.length > 0) {
-        topicStr = ` • ${topics.slice(0, 3).join(", ")}`;
+        topicStr = ` â€¢ ${topics.slice(0, 3).join(", ")}`;
       }
       return `${questions.length} questions generated${topicStr}`;
     }
@@ -112,14 +118,14 @@ export function getResultPreview(generation: SavedGeneration): string {
       const topics = Array.from(new Set(cards.map((c: any) => c.topic).filter(Boolean)));
       let topicStr = "";
       if (topics.length > 0) {
-        topicStr = ` • ${topics.slice(0, 3).join(", ")}`;
+        topicStr = ` â€¢ ${topics.slice(0, 3).join(", ")}`;
       }
       return `${cards.length} flashcards generated${topicStr}`;
     }
     return "Flashcards generated";
   }
 
-  if (generation.generation_type === "important_questions") {
+  if (generation.generation_type === "important_questions" || generation.generation_type === "multi_pdf_important_questions") {
     const data = parseImportantQuestionsResult(generation.result_text, generation.result_json as Record<string, unknown> | null);
     if (data && data.sections) {
       const qCount = data.sections.reduce((acc: number, sec: any) => acc + (sec.questions?.length || 0), 0);
@@ -128,11 +134,11 @@ export function getResultPreview(generation: SavedGeneration): string {
         const sectionTitles = Array.from(new Set(data.sections.map((s: any) => s.title).filter(Boolean)));
         let sectionStr = "";
         if (sectionTitles.length > 0) {
-          sectionStr = ` • ${sectionTitles.slice(0, 3).join(", ")} sections`;
+          sectionStr = ` â€¢ ${sectionTitles.slice(0, 3).join(", ")} sections`;
         } else {
           const topics = Array.from(new Set(data.sections.flatMap((s: any) => s.questions?.map((q: any) => q.topic) || []).filter(Boolean)));
           if (topics.length > 0) {
-            sectionStr = ` • ${topics.slice(0, 3).join(", ")}`;
+            sectionStr = ` â€¢ ${topics.slice(0, 3).join(", ")}`;
           }
         }
         return `${qCount} exam questions generated${sectionStr}`;
@@ -450,6 +456,25 @@ export function getCopyableResultText(generation: SavedGeneration): string {
   const lines: string[] = [];
   const typeLabel = getGenerationTypeLabel(generation.generation_type);
   
+  const isMultiPdf = typeof generation.result_json === 'object' && generation.result_json !== null && 'is_multi_pdf' in (generation.result_json as object);
+  
+  if (isMultiPdf) {
+    lines.push(`Study Pack: ${typeLabel}`);
+    lines.push("");
+    lines.push("Sources:");
+    const json = generation.result_json as any;
+    const selectedNotes = json.selected_notes || [];
+    selectedNotes.forEach((note: any, index: number) => {
+      lines.push(`${index + 1}. ${note.title}`);
+    });
+    lines.push("");
+    lines.push("Content:");
+    if (generation.result_text) {
+      lines.push(generation.result_text);
+    }
+    return lines.join("\n").trim();
+  }
+  
   if (generation.note_title) {
     lines.push(`${typeLabel} — ${generation.note_title}`);
     lines.push("=".repeat(60));
@@ -485,7 +510,7 @@ export function getCopyableResultText(generation: SavedGeneration): string {
     }
   }
 
-  if (generation.generation_type === "important_questions") {
+  if (generation.generation_type === "important_questions" || generation.generation_type === "multi_pdf_important_questions") {
     const data = parseImportantQuestionsResult(generation.result_text, generation.result_json as Record<string, unknown> | null);
     if (data && data.sections) {
       data.sections.forEach((s: any) => {
@@ -593,5 +618,12 @@ export function getGenerationTypeLabel(type: string): string {
   if (type === "flashcards") return "Flashcards";
   if (type === "important_questions") return "Important Questions";
   if (type === "doubt_answer") return "Doubt Answer";
+  if (type === "multi_pdf_summary") return "Combined Summary";
+  if (type === "multi_pdf_important_questions") return "Combined Important Questions";
+  if (type === "multi_pdf_revision_sheet") return "Final Revision Sheet";
   return type.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+export function normalizeMultiPdfOutputToMarkdown(packType: string, text: string): string {
+  return normalizeAITextForMarkdown(text);
 }

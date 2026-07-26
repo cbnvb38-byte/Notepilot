@@ -12,7 +12,7 @@ interface SavedResultsLibraryProps {
   savedData: SavedGeneration[];
 }
 
-type TabType = "all" | "summary" | "mcq" | "flashcards" | "doubt_answer" | "important_questions";
+type TabType = "all" | "summary" | "mcq" | "flashcards" | "doubt_answer" | "important_questions" | "study_packs";
 type SortOption = "newest" | "oldest" | "type";
 
 export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
@@ -42,7 +42,8 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
       mcq: savedData.filter((g) => g.generation_type === "mcq").length,
       flashcards: savedData.filter((g) => g.generation_type === "flashcards").length,
       doubt_answer: savedData.filter((g) => g.generation_type === "doubt_answer").length,
-      important_questions: savedData.filter((g) => g.generation_type === "important_questions").length,
+            important_questions: savedData.filter((g) => g.generation_type === "important_questions").length,
+      study_packs: savedData.filter((g) => g.generation_type.startsWith("multi_pdf_")).length,
     };
   }, [savedData]);
 
@@ -51,7 +52,8 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
     { id: "summary", label: "Summaries", count: counts.summary },
     { id: "mcq", label: "Quizzes", count: counts.mcq },
     { id: "flashcards", label: "Flashcards", count: counts.flashcards },
-    { id: "important_questions", label: "Important Questions", count: counts.important_questions },
+        { id: "important_questions", label: "Important Questions", count: counts.important_questions },
+    { id: "study_packs", label: "Study Packs", count: counts.study_packs },
     { id: "doubt_answer", label: "Doubts", count: counts.doubt_answer },
   ];
 
@@ -59,7 +61,10 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
     let result = [...savedData];
 
     // Filter by Tab
-    if (activeTab !== "all") {
+        // Filter by Tab
+    if (activeTab === "study_packs") {
+      result = result.filter((g) => g.generation_type.startsWith("multi_pdf_"));
+    } else if (activeTab !== "all") {
       result = result.filter((g) => g.generation_type === activeTab);
     }
 
@@ -141,6 +146,9 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
     } else if (activeTab === "important_questions") {
       message = "No important questions saved yet.";
       subMessage = "Generate exam-style questions to prepare for finals.";
+    } else if (activeTab === "study_packs") {
+      message = "No study packs saved yet.";
+      subMessage = "Combine multiple notes into one cohesive study pack.";
     }
 
     return (
@@ -289,3 +297,5 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
     </div>
   );
 }
+
+

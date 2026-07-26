@@ -41,7 +41,7 @@ export async function getMyAIGenerations(): Promise<
       .from("ai_generations")
       .select("id, note_id, generation_type, status, result_text, result_json, created_at")
       .eq("user_id", userId)
-      .in("generation_type", ["summary", "mcq", "flashcards", "doubt_answer", "important_questions"])
+      .in("generation_type", ["summary", "mcq", "flashcards", "doubt_answer", "important_questions", "multi_pdf_summary", "multi_pdf_important_questions", "multi_pdf_revision_sheet"])
       .eq("status", "completed")
       .order("created_at", { ascending: false })
       .limit(50);
@@ -69,16 +69,29 @@ export async function getMyAIGenerations(): Promise<
       }
     }
 
-    const data: SavedGeneration[] = generations.map((g) => ({
-      id: g.id,
-      note_id: g.note_id,
-      note_title: titleMap[g.note_id] ?? "Untitled Note",
+    const data: SavedGeneration[] = generations.map((g) => {
+      let noteTitle = titleMap[g.note_id] ?? "Untitled Note";
+      const isMultiPdf = typeof g.result_json === 'object' && g.result_json !== null && 'is_multi_pdf' in g.result_json;
+      if (isMultiPdf) {
+        const json = g.result_json as any;
+        const selectedNotes = json.selected_notes || [];
+        if (selectedNotes.length > 0) {
+          noteTitle = selectedNotes.map((n: any) => n.title).join(", ");
+        } else {
+          noteTitle = "Multi-PDF Study Pack";
+        }
+      }
+      return {
+        id: g.id,
+        note_id: g.note_id,
+        note_title: noteTitle,
       generation_type: g.generation_type,
       status: g.status,
       result_text: g.result_text ?? null,
       result_json: g.result_json ?? null,
       created_at: g.created_at,
-    }));
+      };
+    });
 
     return { success: true, data };
   } catch (err: any) {
@@ -117,13 +130,24 @@ export async function getAIGenerationById(generationId: string): Promise<
 
     // Fetch note title
     let noteTitle = "Untitled Note";
-    const { data: noteData } = await supabase
-      .from("notes")
-      .select("title")
-      .eq("id", gen.note_id)
-      .single();
-    if (noteData?.title) {
-      noteTitle = noteData.title;
+    const isMultiPdf = typeof gen.result_json === 'object' && gen.result_json !== null && 'is_multi_pdf' in gen.result_json;
+    if (isMultiPdf) {
+      const json = gen.result_json as any;
+      const selectedNotes = json.selected_notes || [];
+      if (selectedNotes.length > 0) {
+        noteTitle = selectedNotes.map((n: any) => n.title).join(", ");
+      } else {
+        noteTitle = "Multi-PDF Study Pack";
+      }
+    } else if (gen.note_id) {
+      const { data: noteData } = await supabase
+        .from("notes")
+        .select("title")
+        .eq("id", gen.note_id)
+        .single();
+      if (noteData?.title) {
+        noteTitle = noteData.title;
+      }
     }
 
     return {

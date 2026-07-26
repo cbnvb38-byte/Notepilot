@@ -21,7 +21,7 @@ import { parseSummarySections, getGenerationTypeLabel, getCopyableResultText, pa
 
 import { StudyMarkdownRenderer } from "./study-markdown-renderer";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface GeneratedResultCardProps {
   resultText: string;
@@ -35,7 +35,7 @@ interface GeneratedResultCardProps {
   compact?: boolean;
 }
 
-// ─── Section Icon Map ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Section Icon Map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const SECTION_ICONS: Record<string, typeof Sparkles> = {
   "Quick Summary": Sparkles,
@@ -64,7 +64,7 @@ const SECTION_HEADING_COLOR: Record<string, string> = {
   "Summary": "text-zinc-200",
 };
 
-// ─── MCQ Component ────────────────────────────────────────────────────────────
+// â”€â”€â”€ MCQ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function McqCard({ question, index }: { question: any, index: number }) {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -130,7 +130,7 @@ function McqCard({ question, index }: { question: any, index: number }) {
   );
 }
 
-// ─── Flashcard Component ───────────────────────────────────────────────────────
+// â”€â”€â”€ Flashcard Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function Flashcard({ card, index }: { card: any, index: number }) {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -180,7 +180,7 @@ function Flashcard({ card, index }: { card: any, index: number }) {
   );
 }
 
-// ─── Important Questions Component ──────────────────────────────────────────────
+// â”€â”€â”€ Important Questions Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function ImportantQuestionCard({ question, index }: { question: any, index: number }) {
   let difficultyColor = "bg-zinc-800 text-zinc-300 border-zinc-700";
@@ -237,7 +237,7 @@ function ImportantQuestionCard({ question, index }: { question: any, index: numb
 }
 
 
-// ─── Doubt Answer Component ─────────────────────────────────────────────────────
+// â”€â”€â”€ Doubt Answer Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function DoubtAnswerCard({ data }: { data: any }) {
   let confidenceColor = "bg-zinc-800 text-zinc-300 border-zinc-700";
@@ -363,7 +363,7 @@ function DoubtAnswerCard({ data }: { data: any }) {
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Main Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function GeneratedResultCard({
   resultText,
@@ -379,8 +379,9 @@ export function GeneratedResultCard({
 
   const isMcq = generationType === "mcq";
   const isFlashcards = generationType === "flashcards";
-  const isImportantQuestions = generationType === "important_questions";
+  const isImportantQuestions = generationType === "important_questions" || generationType === "multi_pdf_important_questions";
   const isDoubtAnswer = generationType === "doubt_answer";
+  const isMultiPdf = typeof resultJson === 'object' && resultJson !== null && 'is_multi_pdf' in (resultJson as object);
 
   const parsedQuestions = isMcq ? parseMCQResult(resultText, resultJson || null) : null;
   const parsedCards = isFlashcards ? parseFlashcardsResult(resultText, resultJson || null) : null;
@@ -397,7 +398,7 @@ export function GeneratedResultCard({
   const validImportant = isImportantQuestions && importantSections.length > 0;
   const validDoubtAnswer = isDoubtAnswer && doubtAnswerData !== null;
   
-  const sections = !isMcq && !isFlashcards && !isImportantQuestions && !isDoubtAnswer ? parseSummarySections(resultText, resultJson || null) : [];
+  const sections = !isMcq && !isFlashcards && !isImportantQuestions && !isDoubtAnswer && !isMultiPdf ? parseSummarySections(resultText, resultJson || null) : [];
 
   const handleCopy = async () => {
     try {
@@ -430,7 +431,7 @@ export function GeneratedResultCard({
 
   return (
     <div className="w-full flex flex-col gap-0 rounded-2xl border border-zinc-800/60 bg-zinc-900/50 backdrop-blur-md overflow-hidden shadow-2xl">
-      {/* ── Header ── */}
+      {/* â”€â”€ Header â”€â”€ */}
       <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-zinc-800/60 bg-zinc-950/40">
         <div className="flex flex-col gap-1.5 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
@@ -445,7 +446,7 @@ export function GeneratedResultCard({
           </div>
           {noteTitle && (
             <p className="text-sm font-semibold text-zinc-100 truncate">
-              {generationType === "mcq" ? "Generated Practice Quiz" : generationType === "flashcards" ? "Generated Flashcards" : generationType === "important_questions" ? "Generated Important Questions" : generationType === "doubt_answer" ? "Answered Doubt" : "Generated Study Summary"}
+                            {generationType === "mcq" ? "Generated Practice Quiz" : generationType === "flashcards" ? "Generated Flashcards" : isImportantQuestions ? "Generated Important Questions" : generationType === "doubt_answer" ? "Answered Doubt" : "Generated Study Summary"}
             </p>
           )}
           <div className="flex items-center gap-3 flex-wrap">
@@ -501,8 +502,32 @@ export function GeneratedResultCard({
         </div>
       </div>
 
+      {/* ── Body: Multi-PDF ── */}
+      {expanded && isMultiPdf && (
+        <div className="flex flex-col p-6 text-zinc-300">
+          {(resultJson as any)?.selected_notes && (
+             <div className="mb-6 p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
+               <h3 className="font-bold text-zinc-100 mb-3 text-sm">Study Pack Sources:</h3>
+               <div className="space-y-4">
+                 {(resultJson as any).selected_notes.map((note: any, idx: number) => (
+                   <div key={note.id || idx}>
+                     <p className="font-semibold text-zinc-200 text-sm">{note.source_index || idx + 1}. {note.title}</p>
+                     <ul className="text-xs text-zinc-400 pl-4 list-disc space-y-0.5 mt-1.5">
+                       {note.subject && <li>Subject: {note.subject}</li>}
+                       {note.semester && <li>Semester: {note.semester}</li>}
+                       <li>Source type: {note.source_type === 'saved_result' ? 'Saved AI content' : 'Extracted PDF text'}</li>
+                     </ul>
+                   </div>
+                 ))}
+               </div>
+             </div>
+          )}
+          <StudyMarkdownRenderer content={resultText || ""} />
+        </div>
+      )}
+
       {/* ── Body: sections ── */}
-      {expanded && (!isMcq && !isFlashcards && !isImportantQuestions && !isDoubtAnswer) && (
+      {expanded && (!isMcq && !isFlashcards && !isImportantQuestions && !isDoubtAnswer && !isMultiPdf) && (
         <div className="flex flex-col gap-0 divide-y divide-zinc-800/40">
           {sections.map((section, i) => {
             const Icon = SECTION_ICONS[section.heading] ?? BookOpen;
@@ -539,7 +564,7 @@ export function GeneratedResultCard({
         </div>
       )}
 
-      {/* ── Body: MCQ ── */}
+      {/* â”€â”€ Body: MCQ â”€â”€ */}
       {expanded && validMcq && (
         <div className="flex flex-col gap-0 divide-y divide-zinc-800/40">
           {questions.map((q: any, i: number) => (
@@ -548,7 +573,7 @@ export function GeneratedResultCard({
         </div>
       )}
 
-      {/* ── Body: Flashcards ── */}
+      {/* â”€â”€ Body: Flashcards â”€â”€ */}
       {expanded && validFlashcards && (
         <div className="flex flex-col gap-0 divide-y divide-zinc-800/40">
           {cards.map((c: any, i: number) => (
@@ -557,7 +582,7 @@ export function GeneratedResultCard({
         </div>
       )}
 
-      {/* ── Body: Important Questions ── */}
+      {/* â”€â”€ Body: Important Questions â”€â”€ */}
       {expanded && validImportant && (
         <div className="flex flex-col gap-6 p-5">
           {importantSections.map((sec: any, secIdx: number) => (
@@ -574,6 +599,13 @@ export function GeneratedResultCard({
             </div>
           ))}
         </div>
+      )}
+
+      {/* ── Body: Important Questions Text-Only Fallback (Normal IQ) ── */}
+      {expanded && isImportantQuestions && !validImportant && !isMultiPdf && resultText && resultText.length >= 100 && (
+         <div className="flex flex-col p-6 text-zinc-300">
+           <StudyMarkdownRenderer content={resultText} />
+         </div>
       )}
 
       {/* ── Body: Doubt Answer ── */}
@@ -597,7 +629,7 @@ export function GeneratedResultCard({
         </div>
       )}
 
-      {/* ── Body: Flashcards Fallback ── */}
+      {/* â”€â”€ Body: Flashcards Fallback â”€â”€ */}
       {expanded && isFlashcards && !validFlashcards && (
         <div className="p-5 flex flex-col gap-4 text-sm text-zinc-300">
           <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 p-4 rounded-xl flex items-start gap-3">
@@ -614,7 +646,7 @@ export function GeneratedResultCard({
       )}
 
       {/* ── Body: Important Questions Fallback ── */}
-      {expanded && isImportantQuestions && !validImportant && (
+      {expanded && isImportantQuestions && !validImportant && (!isMultiPdf && (!resultText || resultText.length < 100)) && (
         <div className="p-5 flex flex-col gap-4 text-sm text-zinc-300">
           <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 p-4 rounded-xl flex items-start gap-3">
             <HelpCircle className="h-5 w-5 mt-0.5 shrink-0" />
@@ -629,7 +661,7 @@ export function GeneratedResultCard({
         </div>
       )}
 
-      {/* ── Body: Doubt Answer Fallback ── */}
+      {/* â”€â”€ Body: Doubt Answer Fallback â”€â”€ */}
       {expanded && isDoubtAnswer && !validDoubtAnswer && (
         <div className="p-5 flex flex-col gap-4 text-sm text-zinc-300">
           <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 p-4 rounded-xl flex items-start gap-3">
@@ -645,7 +677,7 @@ export function GeneratedResultCard({
         </div>
       )}
 
-      {/* ── Compact preview (when collapsed) ── */}
+      {/* â”€â”€ Compact preview (when collapsed) â”€â”€ */}
       {!expanded && (
         <div className="px-5 py-4">
           <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">
@@ -665,3 +697,4 @@ export function GeneratedResultCard({
     </div>
   );
 }
+

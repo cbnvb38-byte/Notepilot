@@ -27,6 +27,9 @@ import { STUDY_TOOLS, StudyToolGroup } from "@/lib/ai/study-tools";
 import { getMyAIGenerations } from "@/app/actions/copilot-history";
 import { getUserAIUsage } from "@/app/actions/ai-usage";
 import { SavedResultsLibrary } from "@/components/study-copilot/saved-results-library";
+import { createClient } from "@supabase/supabase-js";
+import { MultiPdfStudyPackClient } from "@/components/study-copilot/multi-pdf-client";
+import { getAccessibleNotesForSelectorAction } from "@/app/actions/multi-pdf";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +43,20 @@ export default async function StudyCopilotPage() {
   const { userId } = await auth();
   const usageResult = await getUserAIUsage();
   const usageState = usageResult.success ? usageResult.data : null;
+
+    // Fetch accessible notes for Multi-PDF if premium is active
+  let accessibleNotes: {id: string, title: string, subject: string, semester: string}[] = [];
+  if (usageState?.isPremiumActive && userId) {
+    const res = await getAccessibleNotesForSelectorAction();
+    if (res.success && res.data) {
+      accessibleNotes = res.data.map((n: any) => ({
+        id: n.id,
+        title: n.title,
+        subject: n.subjects?.name ?? "",
+        semester: String(n.semester ?? ""),
+      }));
+    }
+  }
 
   const activeTools = STUDY_TOOLS.filter((t) => t.enabled);
 
@@ -72,7 +89,7 @@ export default async function StudyCopilotPage() {
       <Header />
       <main className="flex-grow z-10 pt-24 pb-16 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
 
-        {/* ── A. Hero Section ── */}
+        {/* â”€â”€ A. Hero Section â”€â”€ */}
         <div className="flex flex-col lg:flex-row gap-12 items-center justify-between relative mb-8">
           <div className="flex flex-col gap-6 w-full lg:w-[55%] relative z-10">
             {usageState?.plan === "premium" && (
@@ -168,7 +185,7 @@ export default async function StudyCopilotPage() {
           </div>
         </div>
 
-        {/* ── B. Plan Status Area ── */}
+        {/* â”€â”€ B. Plan Status Area â”€â”€ */}
         <div className="mb-4">
           {usageState && usageState.isPremiumActive && (
             <div className="bg-gradient-to-r from-zinc-950 to-zinc-900/80 border border-amber-500/20 p-5 sm:p-6 rounded-2xl shadow-[0_8px_30px_rgba(245,158,11,0.06)] relative overflow-hidden flex flex-col md:flex-row gap-6 items-center justify-between group">
@@ -313,7 +330,7 @@ export default async function StudyCopilotPage() {
           )}
         </div>
 
-        {/* ── B.5 Exam Sprint Mode (Premium Workflow) ── */}
+        {/* â”€â”€ B.5 Exam Sprint Mode (Premium Workflow) â”€â”€ */}
         <div className="mb-10">
           <div className="flex items-center gap-2 px-1 mb-4">
             <Rocket className="h-5 w-5 text-amber-500" />
@@ -382,7 +399,7 @@ export default async function StudyCopilotPage() {
           )}
         </div>
 
-        {/* ── C. AI Tool Dock ── */}
+        {/* â”€â”€ C. AI Tool Dock â”€â”€ */}
         <div className="flex flex-col gap-4 mt-2 mb-12">
           <div className="flex items-center gap-2 px-1">
             <Zap className="h-5 w-5 text-indigo-400" />
@@ -422,7 +439,7 @@ export default async function StudyCopilotPage() {
           </div>
         </div>
 
-        {/* ── C. Saved Study Library ── */}
+        {/* â”€â”€ C. Saved Study Library â”€â”€ */}
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-between px-1">
             <div className="flex flex-col gap-1">
@@ -464,6 +481,14 @@ export default async function StudyCopilotPage() {
           ) : (
             <SavedResultsLibrary savedData={savedData} />
           )}
+        </div>
+
+        {/* ── C.5 Multi-PDF Study Pack ── */}
+        <div className="flex flex-col gap-5 mt-4">
+          <MultiPdfStudyPackClient 
+            isPremiumActive={usageState?.isPremiumActive || false} 
+            accessibleNotes={accessibleNotes} 
+          />
         </div>
 
         {/* ── D. Premium Study Boosters ── */}
@@ -573,3 +598,4 @@ export default async function StudyCopilotPage() {
     </div>
   );
 }
+

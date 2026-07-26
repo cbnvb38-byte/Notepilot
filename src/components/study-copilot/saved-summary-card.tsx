@@ -12,6 +12,8 @@ interface SavedSummaryCardProps {
   generation: SavedGeneration;
 }
 
+import { Layers } from "lucide-react";
+
 export function SavedSummaryCard({ generation }: SavedSummaryCardProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
@@ -23,7 +25,24 @@ export function SavedSummaryCard({ generation }: SavedSummaryCardProps) {
     year: "numeric",
   });
 
-  const preview = getResultPreview(generation);
+    const preview = getResultPreview(generation);
+  
+  const isMultiPdf = typeof generation.result_json === 'object' && generation.result_json !== null && 'is_multi_pdf' in generation.result_json;
+  let titleStr = generation.note_title;
+  
+  let subtitleStr = "";
+  if (isMultiPdf) {
+    const json = generation.result_json as any;
+    const selectedNotes = json.selected_notes || [];
+    if (selectedNotes.length > 0) {
+      titleStr = `Sources: ${selectedNotes.length} note${selectedNotes.length > 1 ? 's' : ''}`;
+      const firstTwo = selectedNotes.slice(0, 2).map((n: any) => n.title).join(" • ");
+      const moreCount = selectedNotes.length - 2;
+      subtitleStr = moreCount > 0 ? `${firstTwo} + ${moreCount} more` : firstTwo;
+    } else {
+      titleStr = "Multi-PDF Study Pack";
+    }
+  }
 
   const handleCopy = async () => {
     try {
@@ -61,14 +80,16 @@ export function SavedSummaryCard({ generation }: SavedSummaryCardProps) {
     <div className="flex items-start gap-4 px-5 py-4 rounded-2xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm hover:bg-zinc-900/80 hover:border-indigo-500/30 hover:shadow-[0_4px_20px_rgba(99,102,241,0.05)] transition-all group">
       {/* Icon */}
       <div className="bg-indigo-500/10 p-2.5 rounded-xl border border-indigo-500/20 shrink-0 mt-0.5">
-        {generation.generation_type === "mcq" ? (
+                {isMultiPdf ? (
+          <Layers className="h-4 w-4 text-amber-400" />
+        ) : generation.generation_type === "mcq" ? (
           <BookOpen className="h-4 w-4 text-indigo-400" />
         ) : generation.generation_type === "flashcards" ? (
           <GraduationCap className="h-4 w-4 text-indigo-400" />
         ) : generation.generation_type === "doubt_answer" ? (
           <HelpCircle className="h-4 w-4 text-indigo-400" />
         ) : (
-          <FileText className="h-4 w-4 text-indigo-400" />
+                    <FileText className="h-4 w-4 text-indigo-400" />
         )}
       </div>
 
@@ -83,8 +104,8 @@ export function SavedSummaryCard({ generation }: SavedSummaryCardProps) {
             <Clock className="h-3 w-3" /> {formattedDate}
           </span>
         </div>
-        <p className="text-sm font-bold text-zinc-100 truncate">{generation.note_title}</p>
-        <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">{preview}</p>
+                <p className="text-sm font-bold text-zinc-100 truncate">{titleStr}</p>
+        <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">{subtitleStr || preview}</p>
       </div>
 
       {/* Actions */}
@@ -114,15 +135,9 @@ export function SavedSummaryCard({ generation }: SavedSummaryCardProps) {
           )}
         </button>
 
-        <Link
-          href={`/notes/${generation.note_id}`}
-          title="View source note"
-          className="flex items-center gap-1 text-[11px] font-semibold text-zinc-500 hover:text-zinc-200 border border-zinc-700/50 hover:border-zinc-600 bg-zinc-800/40 hover:bg-zinc-800 px-2.5 py-1.5 rounded-lg transition-all"
-        >
-          <ExternalLink className="h-3.5 w-3.5" />
-        </Link>
+        
 
-        {/* Open navigates to the dedicated result reader — no Gemini, no usage */}
+        {/* Open navigates to the dedicated result reader â€” no Gemini, no usage */}
         <Link
           href={`/dashboard/study-copilot/${generation.id}`}
           className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-300 hover:text-indigo-200 border border-indigo-500/30 hover:border-indigo-400/40 bg-indigo-500/10 hover:bg-indigo-500/15 px-3 py-1.5 rounded-lg transition-all"
@@ -133,3 +148,4 @@ export function SavedSummaryCard({ generation }: SavedSummaryCardProps) {
     </div>
   );
 }
+
