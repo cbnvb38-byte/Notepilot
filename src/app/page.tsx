@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Search,
@@ -50,18 +51,23 @@ export default function Home() {
             {/* Banner Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/25 bg-indigo-500/10 text-indigo-300 text-xs font-semibold shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:border-indigo-500/40 hover:bg-indigo-500/15 transition-all duration-300 mx-auto lg:mx-0 w-fit">
               <Sparkles className="h-4 w-4 text-indigo-400 animate-pulse" />
-              <span className="uppercase tracking-widest text-[10px]">AI-Powered Study Platform</span>
+              <span className="uppercase tracking-widest text-[10px]">NotePilot · AI Study Copilot</span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[1.05] select-none text-zinc-100">
-              Study smarter from{" "}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight select-none text-zinc-100">
+              Turn college notes into{" "}
+              <br className="hidden sm:block" />
               <span className="bg-gradient-to-br from-indigo-400 via-violet-400 to-amber-400 bg-clip-text text-transparent animate-godmode-shimmer bg-[length:200%_auto]">
-                every college note.
+                exam-ready study packs.
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl text-zinc-400 max-w-2xl leading-relaxed mx-auto lg:mx-0">
-              Browse notes, upload PDFs, and use Study Copilot to generate summaries, quizzes, flashcards, and multi-note study packs in seconds.
+            <p className="text-base sm:text-lg lg:text-xl text-zinc-400 max-w-xl leading-relaxed mx-auto lg:mx-0">
+              Browse notes, upload PDFs, and use Study Copilot to generate summaries, quizzes, flashcards, doubts, exam sprints, and multi-note study packs.
+            </p>
+
+            <p className="text-xs font-medium uppercase tracking-widest text-zinc-600 mx-auto lg:mx-0 mt-2">
+              Created and designed by Raj Dwivedi
             </p>
 
             {/* CTAs — Auth-aware */}
@@ -92,77 +98,47 @@ export default function Home() {
               </Show>
               <Link href="/dashboard/browse" className="w-full sm:w-auto">
                 <Button size="lg" variant="ghost" className="text-zinc-400 hover:text-zinc-200 px-8 py-6 h-auto rounded-2xl font-semibold transition-all duration-300 text-base w-full sm:w-auto">
-                  Browse Notes
+                  Explore Notes
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Right — Floating Visual */}
-          <div className="w-full lg:w-[45%] relative h-[400px] sm:h-[500px] flex items-center justify-center pointer-events-none">
-            {/* Central orb glow */}
-            <div className="hero-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gradient-to-tr from-indigo-600/30 via-violet-600/30 to-amber-500/20" />
+          {/* Right — Floating Visual: AI Study Pilot */}
+          <div className="w-full lg:w-[45%] relative h-[350px] sm:h-[450px] lg:h-[500px] flex flex-col items-center justify-center pointer-events-none group mt-10 lg:mt-0">
+            {/* Soft Glow Behind Image */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-gradient-to-tr from-indigo-500/20 via-violet-500/20 to-transparent rounded-full blur-[90px] animate-pulse duration-[6000ms]" />
 
-            {/* Central Study Copilot card */}
-            <div className="absolute w-64 h-72 godmode-card rounded-3xl flex flex-col p-6 animate-float" style={{ perspective: "1000px" }}>
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent rounded-3xl" />
-              <div className="flex items-center justify-between mb-6 relative z-10">
-                <div className="p-3 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
-                  <Sparkles className="h-6 w-6" />
+            {/* Hero Image Container */}
+            <div className="relative z-10 w-full max-w-[300px] sm:max-w-sm aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 animate-hero-float motion-reduce:animate-none shadow-[0_0_50px_rgba(99,102,241,0.15)] bg-zinc-900/30">
+              
+              {/* Fallback Visual (behind image) */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-0 p-6 text-center">
+                <div className="h-10 w-10 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-1">
+                  <Sparkles className="h-5 w-5 text-indigo-400" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">Study Engine</span>
+                <span className="font-bold text-zinc-300 text-sm">NotePilot</span>
               </div>
-              <div className="flex-1 flex flex-col gap-3.5 relative z-10">
-                <div className="h-3 w-3/4 bg-zinc-700/80 rounded-full" />
-                <div className="h-2 w-full bg-zinc-800/80 rounded-full" />
-                <div className="h-2 w-11/12 bg-zinc-800/80 rounded-full" />
-                <div className="h-2 w-full bg-zinc-800/80 rounded-full" />
-                <div className="h-2 w-4/5 bg-zinc-800/80 rounded-full" />
-              </div>
-              <div className="mt-4 flex gap-3 relative z-10">
-                <div className="flex-1 h-8 bg-indigo-500/20 border border-indigo-500/20 rounded-lg" />
-                <div className="flex-1 h-8 bg-violet-500/20 border border-violet-500/20 rounded-lg" />
-              </div>
+
+              <Image 
+                src="/assets/notepilot-hero.png" 
+                alt="NotePilot AI study workspace preview" 
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 z-10 text-transparent"
+              />
             </div>
 
-            {/* Floating chip: PDF Notes */}
-            <div className="absolute premium-glass rounded-2xl p-3.5 flex items-center gap-3 animate-float-delayed" style={{ top: "10%", right: "0%" }}>
-              <div className="bg-amber-500/10 p-2 rounded-lg">
-                <FileText className="h-5 w-5 text-amber-400" />
-              </div>
-              <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-wide">PDF Notes</span>
-            </div>
-
-            {/* Floating chip: Smart Summary */}
-            <div className="absolute premium-glass rounded-2xl p-3.5 flex items-center gap-3 animate-float-slow" style={{ top: "20%", left: "-5%" }}>
-              <div className="bg-emerald-500/10 p-2 rounded-lg">
-                <FileText className="h-5 w-5 text-emerald-400" />
-              </div>
-              <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-wide">Summary</span>
-            </div>
-
-            {/* Floating chip: Practice Quiz */}
-            <div className="absolute premium-glass rounded-2xl p-3.5 flex items-center gap-3 animate-float-delayed" style={{ bottom: "25%", right: "-5%" }}>
-              <div className="bg-violet-500/10 p-2 rounded-lg">
-                <BookOpen className="h-5 w-5 text-violet-400" />
-              </div>
-              <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-wide">Quizzes</span>
-            </div>
-
-            {/* Floating chip: Flashcards */}
-            <div className="absolute premium-glass rounded-2xl p-3.5 flex items-center gap-3 animate-float" style={{ bottom: "10%", left: "5%" }}>
-              <div className="bg-indigo-500/10 p-2 rounded-lg">
-                <GraduationCap className="h-5 w-5 text-indigo-400" />
-              </div>
-              <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-wide">Flashcards</span>
-            </div>
-
-            {/* Floating chip: Study Pack */}
-            <div className="absolute premium-glass rounded-2xl p-3.5 flex items-center gap-3 animate-float-slow" style={{ bottom: "40%", left: "-10%" }}>
-              <div className="bg-pink-500/10 p-2 rounded-lg">
-                <Library className="h-5 w-5 text-pink-400" />
-              </div>
-              <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-wide">Study Pack</span>
+            {/* Signature Integration */}
+            <div className="absolute -bottom-6 right-4 sm:right-10 lg:-bottom-10 lg:right-0 w-32 sm:w-40 z-20 opacity-80" style={{ mixBlendMode: 'screen', filter: 'invert(1) brightness(1.2)' }}>
+              <Image 
+                src="/assets/signature.png" 
+                alt="Creator Signature" 
+                width={160}
+                height={80}
+                className="w-full h-auto object-contain"
+              />
             </div>
           </div>
         </div>
@@ -185,7 +161,7 @@ export default function Home() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {[
-            { icon: Search, title: "Browse College Notes", desc: "Find approved notes by branch, semester, and subject.", color: "indigo" },
+            { icon: Search, title: "Explore Notes", desc: "Find approved notes by branch, semester, and subject.", color: "indigo" },
             { icon: UploadCloud, title: "Upload & Share", desc: "Contribute useful notes and build the study library.", color: "violet" },
             { icon: FileText, title: "Smart Summary", desc: "Turn long PDFs into clean, organized revision summaries.", color: "emerald" },
             { icon: BookOpen, title: "Practice Quiz", desc: "Generate MCQs with detailed explanations to test understanding.", color: "blue" },
@@ -210,6 +186,15 @@ export default function Home() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ═══════════════════ FOUNDER SECTION ═══════════════════ */}
+      <section className="relative z-10 max-w-4xl mx-auto px-6 w-full mb-32">
+        <div className="flex items-center justify-center">
+          <p className="text-sm font-medium text-zinc-600">
+            Created and designed by Raj Dwivedi (RD)
+          </p>
         </div>
       </section>
 
@@ -283,7 +268,7 @@ export default function Home() {
               <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 p-3 rounded-xl w-fit">
                 <Eye className="h-5 w-5" />
               </div>
-              <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full font-black uppercase tracking-widest flex items-center gap-1"><Crown className="h-3 w-3" /> Premium</span>
+              <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full font-black uppercase tracking-widest flex items-center gap-1"><Crown className="h-3 w-3" /> NotePilot Pro</span>
             </div>
             <div>
               <h3 className="text-base font-bold text-zinc-200 mb-2">Extended Scanned PDF Support</h3>
@@ -297,7 +282,7 @@ export default function Home() {
               <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 p-3 rounded-xl w-fit">
                 <Zap className="h-5 w-5" />
               </div>
-              <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full font-black uppercase tracking-widest flex items-center gap-1"><Crown className="h-3 w-3" /> Premium</span>
+              <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full font-black uppercase tracking-widest flex items-center gap-1"><Crown className="h-3 w-3" /> NotePilot Pro</span>
             </div>
             <div>
               <h3 className="text-base font-bold text-zinc-200 mb-2">100 AI Generations / Month</h3>
@@ -459,7 +444,7 @@ export default function Home() {
               </SignInButton>
               <Link href="/dashboard/browse">
                 <Button size="lg" variant="outline" className="glass-panel text-zinc-300 hover:text-zinc-50 hover:bg-zinc-800/40 px-10 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-lg border-zinc-700/50">
-                  Browse Library
+                  Explore Notes
                 </Button>
               </Link>
             </Show>

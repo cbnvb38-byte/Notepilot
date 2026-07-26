@@ -187,6 +187,21 @@
   animation: godmode-shimmer 3s infinite linear;
 }
 
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
+  }
+  50% {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 0 60px rgba(99, 102, 241, 0.35);
+  }
+}
+
+.animate-hero-float {
+  animation: hero-float 5s ease-in-out infinite;
+}
+
 /* ─── Glassmorphism & Godmode Utilities ─── */
 
 .glass-card {

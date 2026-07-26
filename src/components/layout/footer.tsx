@@ -13,11 +13,14 @@ export function Footer() {
                 <GraduationCap className="h-5 w-5" />
               </div>
               <span className="font-bold text-lg tracking-tight text-zinc-50">
-                College Notes
+                NotePilot
               </span>
             </Link>
             <p className="text-sm text-zinc-500 max-w-xs leading-relaxed">
               Browse college notes, upload PDFs, and use Study Copilot to generate AI-powered study material for faster exam preparation.
+            </p>
+            <p className="text-xs text-zinc-400 font-medium">
+              Created and designed by Raj Dwivedi
             </p>
             {/* Systems widget */}
             <div className="inline-flex items-center gap-2 mt-2 w-fit px-3 py-1 rounded-full border border-emerald-500/10 bg-emerald-500/5 text-xs text-emerald-400 font-medium">
@@ -111,7 +114,7 @@ export function Footer() {
 
         {/* Bottom Banner */}
         <div className="border-t border-zinc-900 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-600 font-medium">
-          <p>&copy; {new Date().getFullYear()} College Notes. Made for students worldwide.</p>
+          <p>&copy; {new Date().getFullYear()} NotePilot. Created and designed by Raj Dwivedi.</p>
           <div className="flex gap-6">
             <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-zinc-400 transition-colors">
               GitHub

@@ -18,7 +18,7 @@ export function Header() {
             <GraduationCap className="h-5 w-5" />
           </div>
           <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-300 bg-clip-text text-transparent">
-            College Notes
+            NotePilot
           </span>
         </Link>
 

@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "College Notes — AI Study Copilot for College PDFs",
+  title: "NotePilot — AI Study Copilot for College PDFs",
   description: "Browse college notes, upload PDFs, and use Study Copilot to generate summaries, quizzes, flashcards, important questions, exam sprints, and multi-note study packs.",
 };
 
