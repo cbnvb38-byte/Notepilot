@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Bell } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { getUnreadNotificationCount } from "@/app/actions/notifications";
 
@@ -28,19 +29,27 @@ export function NotificationBell() {
   }, []);
 
   return (
-    <Link href="/dashboard/notifications" className="relative flex items-center justify-center">
+    <Link href="/dashboard/notifications" className="relative flex items-center justify-center group">
       <Button 
         variant="ghost" 
         size="icon" 
-        className="text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 rounded-full"
+        className="text-zinc-400 group-hover:text-zinc-100 group-hover:bg-zinc-800/60 rounded-full transition-all duration-300"
       >
-        <Bell className="h-4.5 w-4.5" />
+        <Bell className="h-[18px] w-[18px]" />
       </Button>
-      {unreadCount > 0 && (
-        <span className="absolute top-1 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white border border-zinc-900 leading-none">
-          {unreadCount > 9 ? '9+' : unreadCount}
-        </span>
-      )}
+      <AnimatePresence>
+        {unreadCount > 0 && (
+          <motion.span 
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="absolute top-1 right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-indigo-500 text-[9px] font-black text-white border-2 border-zinc-950 leading-none shadow-[0_0_10px_rgba(99,102,241,0.5)]"
+          >
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </motion.span>
+        )}
+      </AnimatePresence>
     </Link>
   );
 }

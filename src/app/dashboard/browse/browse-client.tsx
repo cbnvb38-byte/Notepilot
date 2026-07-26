@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Loader2,
   FileWarning,
+  Bot,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -675,17 +676,38 @@ function BrowseNotesContent({
                       <span>{note.bookmarks_count} bookmarks</span>
                     </div>
 
-                     <div className="grid grid-cols-3 gap-2 mt-1">
+                     <div className="grid grid-cols-2 gap-2 mt-2">
+                      <Link
+                        href={`/notes/${note.id}`}
+                        className={cn(
+                          buttonVariants({ variant: "default", size: "sm" }),
+                          "bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-3 rounded-xl gap-2 font-bold h-10 shadow-[0_0_15px_rgba(99,102,241,0.2)] inline-flex items-center justify-center transition-all w-full"
+                        )}
+                      >
+                        <Eye className="h-4 w-4" /> View Note
+                      </Link>
+                      <Link
+                        href={`/dashboard/study-copilot/sprint/${note.id}`}
+                        className={cn(
+                          buttonVariants({ variant: "outline", size: "sm" }),
+                          "border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 text-xs py-3 rounded-xl gap-2 font-bold h-10 inline-flex items-center justify-center transition-all w-full"
+                        )}
+                      >
+                        <Bot className="h-4 w-4" /> Study
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 mt-1">
                       <Button
                         variant="outline"
                         onClick={() => handleDownload(note.id, note.title)}
                         disabled={!!downloadingNotes[note.id]}
-                        className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/30 text-[10px] py-3 rounded-xl gap-1.5 font-bold h-9 px-1"
+                        className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/50 hover:text-white text-xs py-3 rounded-xl gap-2 font-bold h-10 transition-colors"
                       >
                         {downloadingNotes[note.id] ? (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                          <Download className="h-3.5 w-3.5" />
+                          <Download className="h-4 w-4" />
                         )}
                         Download
                       </Button>
@@ -697,28 +719,19 @@ function BrowseNotesContent({
                           handleToggleBookmark(note.id);
                         }}
                         disabled={!!bookmarkingIds[note.id]}
-                        className={`border-zinc-800 text-[10px] py-3 rounded-xl gap-1.5 font-bold h-9 px-1 transition-colors ${
+                        className={`border-zinc-800 text-xs py-3 rounded-xl gap-2 font-bold h-10 transition-colors ${
                           bookmarkedIds.has(note.id) 
-                            ? "bg-pink-500/10 text-pink-500 border-pink-500/20 hover:bg-pink-500/20" 
-                            : "text-zinc-300 hover:bg-zinc-800/30"
+                            ? "bg-pink-500/10 text-pink-500 border-pink-500/20 hover:bg-pink-500/20 shadow-inner" 
+                            : "text-zinc-300 hover:bg-zinc-800/50 hover:text-white"
                         }`}
                       >
                         {bookmarkingIds[note.id] ? (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                          <Bookmark className={`h-3.5 w-3.5 ${bookmarkedIds.has(note.id) ? "fill-pink-500" : ""}`} />
+                          <Bookmark className={`h-4 w-4 ${bookmarkedIds.has(note.id) ? "fill-pink-500" : ""}`} />
                         )}
                         {bookmarkedIds.has(note.id) ? "Saved" : "Save"}
                       </Button>
-                      <Link
-                        href={`/notes/${note.id}`}
-                        className={cn(
-                          buttonVariants({ variant: "default", size: "sm" }),
-                          "bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] py-3 rounded-xl gap-1.5 font-bold h-9 shadow-lg shadow-indigo-500/10 inline-flex items-center justify-center border border-transparent px-1"
-                        )}
-                      >
-                        Open View <Eye className="h-3.5 w-3.5" />
-                      </Link>
                     </div>
                   </div>
                 </Card>

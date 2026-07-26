@@ -293,17 +293,18 @@ export default function AdminDashboardClient({
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto pb-12">
       {/* Header */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-3">
-          <div className="bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
-            <ShieldAlert className="h-6 w-6 text-amber-400" />
+      <div className="flex flex-col gap-2 relative overflow-hidden rounded-3xl bg-zinc-950/60 border border-zinc-800/80 p-8 shadow-2xl backdrop-blur-xl mb-2">
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-500/10 rounded-full blur-[80px] pointer-events-none transform translate-x-1/2 -translate-y-1/2" />
+        <div className="flex items-center gap-4 relative z-10">
+          <div className="bg-gradient-to-br from-amber-500/20 to-orange-500/10 p-3 rounded-2xl border border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.15)]">
+            <ShieldAlert className="h-8 w-8 text-amber-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-black tracking-tight text-white flex items-center gap-2">
               Admin Moderation
             </h1>
-            <p className="text-zinc-400 text-xs mt-0.5">
-              Review and manage uploaded study materials. Role: <span className="font-bold text-amber-400 uppercase">{userRole}</span>
+            <p className="text-zinc-400 text-sm mt-1 font-medium">
+              Review and manage uploaded study materials. Role: <span className="font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20 uppercase tracking-widest text-[10px] ml-1">{userRole}</span>
             </p>
           </div>
         </div>
@@ -366,14 +367,14 @@ export default function AdminDashboardClient({
               </CardContent>
             </Card>
           ) : (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
               {notesData.notes.map((note) => (
                 <Card
                   key={note.id}
-                  className="bg-zinc-900/30 border-zinc-800/60 hover:border-zinc-700/60 transition-all duration-200"
+                  className="godmode-card bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700/80 rounded-2xl transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.4)] group relative overflow-hidden"
                 >
-                  <CardContent className="p-4">
-                    <div className="flex flex-col gap-3">
+                  <CardContent className="p-5 md:p-6 relative z-10">
+                    <div className="flex flex-col gap-4">
                       {/* Top Row: Title + Status */}
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex flex-col gap-1 min-w-0 flex-1">
@@ -427,18 +428,18 @@ export default function AdminDashboardClient({
                       )}
 
                       {/* Action Buttons */}
-                      <div className="flex flex-wrap gap-2 pt-1">
+                      <div className="flex flex-wrap gap-2 pt-3 mt-2 border-t border-zinc-800/50">
                         {/* Preview PDF */}
                         <a href={note.file_url} target="_blank" rel="noopener noreferrer">
-                          <Button variant="outline" size="sm" className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/30 text-[10px] h-7 gap-1 font-bold px-2.5">
-                            <Eye className="h-3 w-3" /> Preview
+                          <Button variant="outline" size="sm" className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/50 hover:text-white text-xs h-9 gap-2 font-bold px-4 rounded-xl transition-all">
+                            <Eye className="h-3.5 w-3.5" /> Preview
                           </Button>
                         </a>
 
                         {/* View Details */}
                         <Link href={`/notes/${note.id}`}>
-                          <Button variant="outline" size="sm" className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/30 text-[10px] h-7 gap-1 font-bold px-2.5">
-                            <ExternalLink className="h-3 w-3" /> Details
+                          <Button variant="outline" size="sm" className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/50 hover:text-white text-xs h-9 gap-2 font-bold px-4 rounded-xl transition-all">
+                            <ExternalLink className="h-3.5 w-3.5" /> Details
                           </Button>
                         </Link>
 
@@ -448,9 +449,9 @@ export default function AdminDashboardClient({
                             size="sm"
                             onClick={() => handleApprove(note.id)}
                             disabled={actionLoadingId === note.id}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] h-7 gap-1 font-bold px-2.5"
+                            className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs h-9 gap-2 font-bold px-4 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all"
                           >
-                            {actionLoadingId === note.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
+                            {actionLoadingId === note.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
                             Approve
                           </Button>
                         )}
@@ -462,9 +463,9 @@ export default function AdminDashboardClient({
                             variant="outline"
                             onClick={() => { setRejectDialogNoteId(note.id); setRejectReason(""); }}
                             disabled={actionLoadingId === note.id}
-                            className="border-red-500/20 text-red-400 hover:bg-red-500/10 text-[10px] h-7 gap-1 font-bold px-2.5"
+                            className="border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 text-xs h-9 gap-2 font-bold px-4 rounded-xl transition-all"
                           >
-                            <XCircle className="h-3 w-3" /> Reject
+                            <XCircle className="h-4 w-4" /> Reject
                           </Button>
                         )}
 
@@ -475,9 +476,9 @@ export default function AdminDashboardClient({
                             variant="outline"
                             onClick={() => handleRemove(note.id)}
                             disabled={actionLoadingId === note.id}
-                            className="border-zinc-700 text-zinc-400 hover:bg-zinc-800/50 text-[10px] h-7 gap-1 font-bold px-2.5"
+                            className="border-zinc-700 text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200 text-xs h-9 gap-2 font-bold px-4 rounded-xl transition-all"
                           >
-                            {actionLoadingId === note.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trash2 className="h-3 w-3" />}
+                            {actionLoadingId === note.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                             Remove
                           </Button>
                         )}
@@ -489,9 +490,9 @@ export default function AdminDashboardClient({
                             variant="outline"
                             onClick={() => setDeleteDialogNoteId(note.id)}
                             disabled={actionLoadingId === note.id}
-                            className="border-red-800/30 text-red-500 hover:bg-red-500/10 text-[10px] h-7 gap-1 font-bold px-2.5"
+                            className="border-red-800/40 text-red-500 hover:bg-red-500/10 hover:text-red-400 text-xs h-9 gap-2 font-bold px-4 rounded-xl transition-all"
                           >
-                            <AlertTriangle className="h-3 w-3" /> Delete Forever
+                            <AlertTriangle className="h-4 w-4" /> Delete Forever
                           </Button>
                         )}
                       </div>
