@@ -394,22 +394,22 @@ function BrowseNotesContent({
       <div className="flex flex-col gap-4 bg-zinc-900/15 border border-zinc-800/40 p-5 rounded-2xl backdrop-blur-md">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search Box */}
-          <div className="relative md:col-span-2">
-            <Search className="absolute left-3.5 top-3 h-4 w-4 text-zinc-500" />
+          <div className="relative md:col-span-2 group">
+            <Search className="absolute left-4 top-3.5 h-4 w-4 text-zinc-500 group-focus-within:text-indigo-400 transition-colors" />
             <Input
               placeholder="Search by title, topic, professor, or college..."
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 bg-zinc-900/60 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-200 rounded-xl h-11"
+              className="pl-11 bg-zinc-950/60 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-100 rounded-xl h-12 shadow-inner"
             />
           </div>
 
           {/* Sort By Dropdown */}
-          <div>
+          <div className="relative">
             <select
               value={sortBy}
               onChange={handleSortChange}
-              className="w-full bg-zinc-900/60 border border-zinc-800 text-xs rounded-xl h-11 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer"
+              className="w-full bg-zinc-950/60 border border-zinc-800 text-xs rounded-xl h-12 px-4 text-zinc-300 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 outline-none cursor-pointer appearance-none shadow-inner"
             >
               <option value="relevance">Sort by: Relevance</option>
               <option value="newest">Sort by: Newest Uploads</option>
@@ -418,16 +418,19 @@ function BrowseNotesContent({
               <option value="highest_rated">Sort by: Highest Rated</option>
               <option value="most_reviewed">Sort by: Most Reviewed</option>
             </select>
+            <div className="absolute right-4 top-4 pointer-events-none text-zinc-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Branch Dropdown */}
-          <div>
+          <div className="relative">
             <select
               value={selectedBranch}
               onChange={handleBranchChange}
-              className="w-full bg-zinc-900/60 border border-zinc-800 text-xs rounded-xl h-11 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer"
+              className="w-full bg-zinc-950/60 border border-zinc-800 text-xs rounded-xl h-12 px-4 text-zinc-300 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 outline-none cursor-pointer appearance-none shadow-inner"
             >
               <option value="all">All Engineering Branches</option>
               {initialBranches.map((branch) => (
@@ -436,14 +439,17 @@ function BrowseNotesContent({
                 </option>
               ))}
             </select>
+            <div className="absolute right-4 top-4 pointer-events-none text-zinc-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
 
           {/* Semester Dropdown */}
-          <div>
+          <div className="relative">
             <select
               value={selectedSemester}
               onChange={handleSemesterChange}
-              className="w-full bg-zinc-900/60 border border-zinc-800 text-xs rounded-xl h-11 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer"
+              className="w-full bg-zinc-950/60 border border-zinc-800 text-xs rounded-xl h-12 px-4 text-zinc-300 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 outline-none cursor-pointer appearance-none shadow-inner"
             >
               <option value="0">All Semesters</option>
               {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
@@ -452,15 +458,18 @@ function BrowseNotesContent({
                 </option>
               ))}
             </select>
+            <div className="absolute right-4 top-4 pointer-events-none text-zinc-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
 
           {/* Subject Dropdown (Dynamic based on selected branch) */}
-          <div>
+          <div className="relative">
             <select
               value={selectedSubject}
               onChange={handleSubjectChange}
               disabled={selectedBranch === "all" || isLoadingSubjects}
-              className="w-full bg-zinc-900/60 border border-zinc-800 text-xs rounded-xl h-11 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-zinc-950/60 border border-zinc-800 text-xs rounded-xl h-12 px-4 text-zinc-300 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 outline-none cursor-pointer appearance-none shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {selectedBranch === "all" ? (
                 <option value="all">Select a branch first to filter subjects</option>
@@ -479,6 +488,9 @@ function BrowseNotesContent({
                 </>
               )}
             </select>
+            <div className="absolute right-4 top-4 pointer-events-none text-zinc-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -530,28 +542,32 @@ function BrowseNotesContent({
           </CardContent>
         </Card>
       ) : notes.length === 0 ? (
-        <Card className="bg-zinc-900/20 border-zinc-800/50 backdrop-blur-md">
-          <CardContent className="flex flex-col items-center justify-center py-20 text-center gap-5">
-            <div className="bg-zinc-900/60 p-4 rounded-full border border-zinc-800/50 shadow-md">
-              <Search className="h-8 w-8 text-zinc-500" />
+        <Card className="godmode-card bg-zinc-950/40 border-zinc-800/50 shadow-2xl overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
+          <CardContent className="flex flex-col items-center justify-center py-24 text-center gap-6 relative z-10">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-indigo-500/20 blur-xl rounded-full group-hover:bg-indigo-500/30 transition-colors" />
+              <div className="bg-zinc-950/80 p-5 rounded-full border border-indigo-500/30 shadow-[0_0_30px_rgba(99,102,241,0.2)] relative z-10">
+                <Search className="h-10 w-10 text-indigo-400" />
+              </div>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <h3 className="font-bold text-xl text-zinc-200">Not in our library... yet.</h3>
-              <p className="text-sm text-zinc-500 max-w-sm mx-auto">
-                We couldn’t find any notes matching your search or selected filters.
+            <div className="flex flex-col gap-2">
+              <h3 className="font-black text-2xl text-white">No notes match your filters</h3>
+              <p className="text-zinc-400 max-w-sm mx-auto font-medium">
+                Try clearing your filters or upload a useful PDF for your classmates.
               </p>
             </div>
-            <div className="flex items-center gap-3 mt-2">
+            <div className="flex items-center gap-4 mt-4">
               <Button 
                 variant="outline" 
                 onClick={handleClearSearch}
-                className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100 rounded-xl px-5"
+                className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white rounded-xl px-6 h-12 font-bold transition-colors"
               >
                 Clear Search
               </Button>
               <Button 
                 onClick={handleResetFilters}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg shadow-indigo-500/10 px-5"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-[0_0_20px_rgba(99,102,241,0.3)] px-6 h-12 font-bold transition-all"
               >
                 Reset Filters
               </Button>
@@ -570,19 +586,22 @@ function BrowseNotesContent({
                 transition={{ duration: 0.2 }}
                 layout
               >
-                <Card className="border border-zinc-800/60 bg-zinc-900/35 hover:bg-zinc-900/50 hover:border-indigo-500/25 p-5 rounded-2xl flex flex-col justify-between h-full transition-all duration-200 shadow-xl group">
-                  <div className="flex flex-col gap-3">
+                <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 hover:border-indigo-500/40 p-6 rounded-2xl flex flex-col justify-between h-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_rgba(99,102,241,0.15)] group relative overflow-hidden hover-lift">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
+                    <FileText className="h-32 w-32" />
+                  </div>
+                  <div className="flex flex-col gap-3 relative z-10">
                     <div className="flex justify-between items-start">
-                      <span className="text-[9px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/25 px-2.5 py-0.5 rounded-lg font-bold uppercase tracking-wider">
+                      <span className="text-[10px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded-md font-black uppercase tracking-widest shadow-inner">
                         {note.subjects?.branches?.code || "Branch"} &bull; Sem {note.semester}
                       </span>
-                      <span className="text-[10px] text-zinc-500 font-semibold flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
+                      <span className="text-[11px] text-zinc-500 font-bold flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5" />
                         {new Date(note.created_at).toLocaleDateString()}
                       </span>
                     </div>
 
-                    <h4 className="font-bold text-zinc-100 text-base leading-snug line-clamp-1 group-hover:text-indigo-400 transition-colors duration-200">
+                    <h4 className="font-black text-white text-lg leading-snug line-clamp-1 group-hover:text-indigo-400 transition-colors duration-300 mt-2">
                       {note.title}
                     </h4>
 

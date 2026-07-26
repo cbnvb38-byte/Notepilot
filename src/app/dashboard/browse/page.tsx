@@ -56,13 +56,13 @@ export default async function BrowseNotesPage() {
   const recentlyViewedNotes = recentRes.success && "data" in recentRes ? recentRes.data : undefined;
 
   return (
-    <div className="flex flex-col gap-6 max-w-5xl mx-auto pb-12">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent flex items-center gap-2">
-          Notes Library <Sparkles className="h-5 w-5 text-indigo-400" />
+    <div className="flex flex-col gap-8 max-w-6xl mx-auto pb-12">
+      <div className="flex flex-col gap-2 relative z-10">
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white flex items-center gap-3">
+          Explore College Notes <Sparkles className="h-6 w-6 text-indigo-400" />
         </h1>
-        <p className="text-zinc-400 text-sm">
-          Browse verified academic guides, study handouts, and lecture notes.
+        <p className="text-zinc-400 text-sm md:text-base font-medium max-w-2xl">
+          Discover verified academic guides, study handouts, and lecture notes curated for your branch and semester.
         </p>
       </div>
 

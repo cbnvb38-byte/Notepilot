@@ -240,20 +240,20 @@ export function ReviewsSection({
 
   return (
     <div className="w-full mt-12 flex flex-col gap-10">
-      <div className="border-t border-zinc-800 pt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="border-t border-zinc-800/60 pt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         
         {/* Rating Summary (Left Column) */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-2">Customer Reviews</h2>
-            <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-black text-white tracking-tight mb-3">Customer Reviews</h2>
+            <div className="flex items-center gap-4">
               {renderStars(Math.round(averageRating))}
-              <span className="text-lg font-bold text-white">{averageRating.toFixed(1)} out of 5</span>
+              <span className="text-xl font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-zinc-100 to-zinc-400">{averageRating.toFixed(1)} out of 5</span>
             </div>
-            <p className="text-zinc-400 text-sm mt-1">{ratingCount} global ratings</p>
+            <p className="text-zinc-500 text-sm font-bold uppercase tracking-widest mt-2">{ratingCount} global ratings</p>
           </div>
           
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {[5, 4, 3, 2, 1].map(star => {
               const count = distribution[star] || 0;
               const pct = ratingCount > 0 ? Math.round((count / ratingCount) * 100) : 0;
@@ -263,33 +263,33 @@ export function ReviewsSection({
                   onClick={() => setFilters(f => ({ ...f, star: f.star === star ? undefined : star, page: 1 }))}
                   className="flex items-center gap-3 text-sm group"
                 >
-                  <span className="w-12 text-zinc-400 group-hover:text-yellow-500 transition-colors">{star} star</span>
-                  <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-yellow-500 rounded-full" style={{ width: `${pct}%` }} />
+                  <span className="w-14 text-zinc-500 font-bold group-hover:text-yellow-400 transition-colors uppercase tracking-widest text-[10px]">{star} star</span>
+                  <div className="flex-1 h-2.5 bg-zinc-900 border border-zinc-800/80 rounded-full overflow-hidden shadow-inner">
+                    <div className="h-full bg-gradient-to-r from-yellow-600 to-yellow-400 rounded-full shadow-[0_0_10px_rgba(250,204,21,0.5)] transition-all duration-500" style={{ width: `${pct}%` }} />
                   </div>
-                  <span className="w-10 text-right text-zinc-400">{pct}%</span>
+                  <span className="w-10 text-right text-zinc-400 font-black text-xs">{pct}%</span>
                 </button>
               );
             })}
           </div>
           
-          <div className="mt-4 pt-6 border-t border-zinc-800">
-            <h3 className="font-semibold text-white mb-2">Review this note</h3>
-            <p className="text-sm text-zinc-400 mb-4">Share your thoughts with other students</p>
+          <div className="mt-2 pt-8 border-t border-zinc-800/60">
+            <h3 className="font-black text-lg text-white mb-2 tracking-tight">Review this note</h3>
+            <p className="text-sm text-zinc-400 mb-6 font-medium">Share your thoughts with other students.</p>
             {isAuthor ? (
-               <p className="text-sm text-red-400 flex items-center gap-2"><AlertCircle className="w-4 h-4" /> You cannot rate your own note.</p>
+               <p className="text-sm text-red-400 flex items-center gap-2 font-bold"><AlertCircle className="w-4 h-4" /> You cannot rate your own note.</p>
             ) : (
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center justify-between bg-zinc-950 border border-zinc-800/80 p-4 rounded-2xl shadow-inner">
                   {renderStars(userRating, true)}
                   {userRating > 0 && (
-                    <Button variant="ghost" size="sm" onClick={handleRemoveRating} className="text-red-400 hover:text-red-300 hover:bg-red-500/10 h-8">
+                    <Button variant="ghost" size="sm" onClick={handleRemoveRating} className="text-red-400 font-bold hover:text-red-300 hover:bg-red-500/10 h-8 rounded-xl px-4 uppercase tracking-widest text-[10px]">
                       Clear
                     </Button>
                   )}
                 </div>
                 {userRating > 0 && !showReviewForm && (
-                  <Button variant="outline" className="w-full bg-zinc-900 border-zinc-800 hover:bg-zinc-800 text-white" onClick={() => setShowReviewForm(true)}>
+                  <Button variant="outline" className="w-full bg-zinc-950 border border-zinc-800/80 hover:bg-zinc-900 text-white font-black h-12 rounded-xl shadow-xl transition-all" onClick={() => setShowReviewForm(true)}>
                     Write a review
                   </Button>
                 )}
@@ -299,35 +299,37 @@ export function ReviewsSection({
         </div>
 
         {/* Review Form & List (Right Column) */}
-        <div className="md:col-span-2 flex flex-col gap-6">
+        <div className="md:col-span-2 flex flex-col gap-8">
           
           {/* Write Review Form */}
           {showReviewForm && !isAuthor && (
-            <div className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-xl flex flex-col gap-4 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1 h-full bg-yellow-500" />
-              <h3 className="font-semibold text-white">Write a Review</h3>
+            <div className="godmode-card bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 p-6 rounded-2xl flex flex-col gap-5 relative overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.4)]">
+              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-600 shadow-[0_0_20px_rgba(250,204,21,0.5)]" />
+              <h3 className="font-black text-lg text-white tracking-tight ml-2">Write a Review</h3>
               
-              <Input 
-                placeholder="Review Title (e.g., Extremely helpful for midterms!)" 
-                value={userReviewTitle ?? ""}
-                onChange={e => setUserReviewTitle(e.target.value.substring(0, 100))}
-                className="bg-zinc-950 border-zinc-800 text-white focus-visible:ring-yellow-500/50"
-              />
-              <Textarea 
-                placeholder="What did you like or dislike? What should other students know before downloading?"
-                value={userReviewText ?? ""}
-                onChange={e => setUserReviewText(e.target.value.substring(0, 1000))}
-                className="bg-zinc-950 border-zinc-800 text-white min-h-[120px] resize-none focus-visible:ring-yellow-500/50"
-              />
+              <div className="flex flex-col gap-3 ml-2">
+                <Input 
+                  placeholder="Review Title (e.g., Extremely helpful for midterms!)" 
+                  value={userReviewTitle ?? ""}
+                  onChange={e => setUserReviewTitle(e.target.value.substring(0, 100))}
+                  className="bg-zinc-900 border-zinc-800 text-white focus-visible:ring-2 focus-visible:ring-yellow-500/20 focus-visible:border-yellow-500/50 rounded-xl h-12 px-4 shadow-inner font-medium"
+                />
+                <Textarea 
+                  placeholder="What did you like or dislike? What should other students know before downloading?"
+                  value={userReviewText ?? ""}
+                  onChange={e => setUserReviewText(e.target.value.substring(0, 1000))}
+                  className="bg-zinc-900 border-zinc-800 text-white min-h-[140px] resize-none focus-visible:ring-2 focus-visible:ring-yellow-500/20 focus-visible:border-yellow-500/50 rounded-xl p-4 shadow-inner font-medium"
+                />
+              </div>
               
-              <div className="flex justify-end gap-3 mt-2">
-                <Button variant="ghost" onClick={() => setShowReviewForm(false)} className="text-zinc-400 hover:text-white">
+              <div className="flex justify-end gap-3 mt-2 ml-2">
+                <Button variant="ghost" onClick={() => setShowReviewForm(false)} className="text-zinc-400 hover:text-white font-bold h-10 px-6 rounded-xl hover:bg-zinc-900">
                   Cancel
                 </Button>
                 <Button 
                   onClick={handleReviewSubmit}
                   disabled={isSubmitting || userRating === 0}
-                  className="bg-yellow-600 hover:bg-yellow-500 text-white font-semibold"
+                  className="glow-border bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-yellow-950 font-black h-10 px-8 rounded-xl shadow-xl shadow-yellow-500/20 transition-all"
                 >
                   {initialUserReviewText ? "Update Review" : "Submit Review"}
                 </Button>
@@ -336,19 +338,19 @@ export function ReviewsSection({
           )}
 
           {/* Filters */}
-          <div className="flex flex-wrap items-center gap-3 pb-4 border-b border-zinc-800">
-            <span className="text-sm font-medium text-zinc-400 flex items-center gap-2"><Filter className="w-4 h-4" /> Filter by:</span>
+          <div className="flex flex-wrap items-center gap-4 pb-4 border-b border-zinc-800/60">
+            <span className="text-xs font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2"><Filter className="w-4 h-4" /> Filter by:</span>
             {filters.star && (
-              <span className="bg-yellow-500/20 text-yellow-500 text-xs px-3 py-1 rounded-full flex items-center gap-1 font-medium border border-yellow-500/20">
+              <span className="bg-yellow-500/10 text-yellow-400 text-xs px-3 py-1 rounded-md flex items-center gap-1.5 font-black uppercase tracking-widest border border-yellow-500/20 shadow-inner">
                 {filters.star} Stars
-                <button onClick={() => setFilters(f => ({ ...f, star: undefined, page: 1 }))}><X className="w-3 h-3 hover:text-yellow-300" /></button>
+                <button onClick={() => setFilters(f => ({ ...f, star: undefined, page: 1 }))}><X className="w-3.5 h-3.5 hover:text-yellow-300 transition-colors" /></button>
               </span>
             )}
             
             <select 
               value={filters.sortBy}
               onChange={e => setFilters(f => ({ ...f, sortBy: e.target.value as any, page: 1 }))}
-              className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm rounded-lg px-3 py-1.5 outline-none focus:border-zinc-600"
+              className="bg-zinc-950 border border-zinc-800/80 text-zinc-300 text-sm font-semibold rounded-xl px-4 py-2 outline-none focus:border-zinc-600 shadow-inner"
             >
               <option value="helpful">Top Reviews</option>
               <option value="recent">Most Recent</option>
@@ -360,22 +362,22 @@ export function ReviewsSection({
           {/* Reviews List */}
           <div className="flex flex-col gap-6">
             {isLoadingReviews && reviews.length === 0 ? (
-              <div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div></div>
+              <div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div></div>
             ) : reviews.length > 0 ? (
               reviews.filter(r => r.review_text || r.review_title).map(review => (
-                <div key={review.id} className="flex flex-col gap-2 pb-6 border-b border-zinc-800/50 last:border-0">
+                <div key={review.id} className="flex flex-col gap-3 pb-8 border-b border-zinc-800/60 last:border-0">
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8 border border-zinc-800">
+                    <Avatar className="h-10 w-10 border-2 border-zinc-800 shadow-md">
                       <AvatarImage src={review.profiles?.avatar_url || ""} />
-                      <AvatarFallback className="bg-zinc-800 text-xs text-zinc-400">
+                      <AvatarFallback className="bg-zinc-900 text-xs text-zinc-400 font-bold">
                         {review.profiles?.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-sm font-medium text-zinc-300">
+                    <span className="text-sm font-black text-zinc-200">
                       {review.user_id ? (
                         <Link 
                           href={`/contributors/${review.user_id}`}
-                          className="text-indigo-400 hover:text-indigo-300 hover:underline"
+                          className="text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"
                         >
                           {review.profiles?.name || "Anonymous Student"}
                         </Link>
@@ -387,51 +389,51 @@ export function ReviewsSection({
                   
                   <div className="flex items-center gap-3 mt-1">
                     {renderStars(review.rating)}
-                    {review.review_title && <span className="font-bold text-white text-sm">{review.review_title}</span>}
+                    {review.review_title && <span className="font-black text-white text-base tracking-tight">{review.review_title}</span>}
                   </div>
                   
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-zinc-500">Reviewed on {new Date(review.created_at).toLocaleDateString()}</span>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Reviewed on {new Date(review.created_at).toLocaleDateString()}</span>
                     {review.is_verified_downloader && (
-                      <span className="text-xs text-orange-400 font-medium flex items-center gap-1 bg-orange-500/10 px-2 py-0.5 rounded-full">
-                        <CheckCircle2 className="w-3 h-3" /> Verified Downloader
+                      <span className="text-[10px] text-emerald-400 font-black uppercase tracking-widest flex items-center gap-1.5 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 shadow-inner">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Verified Downloader
                       </span>
                     )}
-                    {review.created_at !== review.updated_at && <span className="text-xs text-zinc-600">(Edited)</span>}
+                    {review.created_at !== review.updated_at && <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">(Edited)</span>}
                   </div>
                   
                   {review.review_text && (
-                    <p className="text-sm text-zinc-300 mt-2 whitespace-pre-wrap leading-relaxed">{review.review_text}</p>
+                    <p className="text-sm text-zinc-300 mt-2 whitespace-pre-wrap leading-relaxed font-medium">{review.review_text}</p>
                   )}
                   
-                  <div className="flex items-center gap-4 mt-3">
+                  <div className="flex items-center gap-4 mt-4">
                     <button 
                       onClick={() => handleHelpful(review.id)}
                       disabled={!userId || review.user_id === userId}
-                      className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full transition-colors border ${
+                      className={`flex items-center gap-2 text-xs font-black uppercase tracking-widest px-4 py-2 rounded-xl transition-all border ${
                         review.isHelpfulByMe 
-                          ? "bg-zinc-800 text-white border-zinc-700" 
-                          : "bg-transparent text-zinc-400 border-zinc-800 hover:border-zinc-600 hover:text-zinc-200"
+                          ? "bg-zinc-800 text-white border-zinc-700 shadow-md" 
+                          : "bg-zinc-950 text-zinc-400 border-zinc-800/80 hover:border-zinc-600 hover:text-zinc-200 shadow-inner"
                       }`}
                     >
-                      <ThumbsUp className={`w-3.5 h-3.5 ${review.isHelpfulByMe ? "fill-white text-white" : ""}`} />
+                      <ThumbsUp className={`w-4 h-4 ${review.isHelpfulByMe ? "fill-white text-white" : ""}`} />
                       Helpful {review.helpful_count > 0 && `(${review.helpful_count})`}
                     </button>
                     
                     <button 
                       onClick={() => setReportingReviewId(review.id)}
                       disabled={!userId || review.user_id === userId}
-                      className="text-xs text-zinc-500 hover:text-zinc-300 px-2 disabled:opacity-50"
+                      className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-300 px-3 py-2 disabled:opacity-50 transition-colors"
                     >
-                      Report Review
+                      Report
                     </button>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-center py-12 flex flex-col items-center gap-3">
+              <div className="text-center py-16 flex flex-col items-center gap-4 border border-dashed border-zinc-800/60 rounded-2xl bg-zinc-950/50">
                 <MessageSquare className="w-12 h-12 text-zinc-800" />
-                <p className="text-zinc-500 text-sm">No written reviews yet.</p>
+                <p className="text-zinc-500 text-sm font-bold">No written reviews yet.</p>
               </div>
             )}
           </div>
@@ -439,19 +441,19 @@ export function ReviewsSection({
       </div>
 
       <Dialog open={!!reportingReviewId} onOpenChange={(open) => !open && setReportingReviewId(null)}>
-        <DialogContent className="bg-zinc-950 border-zinc-800 text-zinc-50 sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Report Review</DialogTitle>
-            <DialogDescription className="text-zinc-400">
+        <DialogContent className="godmode-card bg-zinc-950 border-zinc-800/80 text-zinc-50 sm:max-w-md shadow-[0_15px_50px_rgba(0,0,0,0.8)] overflow-hidden">
+          <DialogHeader className="border-b border-zinc-800/60 pb-4">
+            <DialogTitle className="text-lg font-black text-red-400">Report Review</DialogTitle>
+            <DialogDescription className="text-xs text-zinc-400 font-medium mt-1">
               Please select a reason for reporting this review.
             </DialogDescription>
           </DialogHeader>
           
-          <div className="flex flex-col gap-4 py-4">
+          <div className="flex flex-col gap-4 py-5">
             <select
               value={reportReason}
               onChange={(e) => setReportReason(e.target.value)}
-              className="bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm rounded-lg px-3 py-2 outline-none focus:border-zinc-600"
+              className="bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-medium rounded-xl px-4 py-3 outline-none focus:border-zinc-600 shadow-inner"
             >
               <option value="Spam">Spam</option>
               <option value="Abuse">Abuse</option>
@@ -466,19 +468,19 @@ export function ReviewsSection({
                 placeholder="Please provide details..."
                 value={reportDetails}
                 onChange={e => setReportDetails(e.target.value.substring(0, 500))}
-                className="bg-zinc-900 border-zinc-800 text-white min-h-[100px] resize-none focus-visible:ring-yellow-500/50"
+                className="bg-zinc-900 border-zinc-800 text-white min-h-[120px] resize-none focus-visible:ring-2 focus-visible:ring-red-500/20 focus-visible:border-red-500/50 rounded-xl p-4 shadow-inner"
               />
             )}
           </div>
           
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setReportingReviewId(null)} className="text-zinc-400 hover:text-white">
+          <DialogFooter className="border-t border-zinc-800/60 pt-4">
+            <Button variant="ghost" onClick={() => setReportingReviewId(null)} className="text-zinc-400 hover:text-white font-bold h-10 px-6 rounded-xl hover:bg-zinc-900">
               Cancel
             </Button>
             <Button 
               onClick={handleReportSubmit}
               disabled={isReporting || (reportReason === "Other" && !reportDetails.trim())}
-              className="bg-red-600 hover:bg-red-500 text-white"
+              className="bg-red-600 hover:bg-red-500 text-white font-black h-10 px-6 rounded-xl shadow-xl shadow-red-500/20 disabled:opacity-50 transition-all"
             >
               Submit Report
             </Button>

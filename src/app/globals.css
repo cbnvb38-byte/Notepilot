@@ -156,6 +156,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes godmode-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -178,7 +183,11 @@
   animation: fade-in-up 0.6s ease-out both;
 }
 
-/* ─── Glassmorphism Utility ─── */
+.animate-godmode-shimmer {
+  animation: godmode-shimmer 3s infinite linear;
+}
+
+/* ─── Glassmorphism & Godmode Utilities ─── */
 
 .glass-card {
   background: rgba(24, 24, 27, 0.45);
@@ -192,6 +201,38 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(63, 63, 70, 0.25);
+}
+
+.premium-glass {
+  background: linear-gradient(135deg, rgba(24, 24, 27, 0.7) 0%, rgba(9, 9, 11, 0.8) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(245, 158, 11, 0.15); /* amber subtle */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.godmode-card {
+  background: linear-gradient(145deg, rgba(30, 30, 36, 0.6) 0%, rgba(15, 15, 20, 0.8) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(99, 102, 241, 0.2); /* indigo subtle */
+  box-shadow: 0 10px 40px -10px rgba(99, 102, 241, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel {
+  background: rgba(9, 9, 11, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(63, 63, 70, 0.3);
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ─── Glow Border for Primary CTAs ─── */
@@ -219,12 +260,17 @@
 /* ─── Hover Lift for Feature Cards ─── */
 
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
 }
 
 /* ─── Reduced Motion ─── */
@@ -235,6 +281,7 @@
   .animate-float-slow,
   .animate-glow-pulse,
   .animate-fade-in-up,
+  .animate-godmode-shimmer,
   .animate-pulse {
     animation: none !important;
   }

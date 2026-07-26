@@ -222,18 +222,30 @@ export default function UploadNotePage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-3xl mx-auto pb-12">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent flex items-center gap-2">
-          Upload Study Material
-          <Sparkles className="h-5 w-5 text-indigo-400" />
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex flex-col gap-8 max-w-3xl mx-auto pb-12"
+    >
+      <div className="flex flex-col gap-2 relative z-10">
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white flex items-center gap-3">
+          Upload a Note <Sparkles className="h-6 w-6 text-indigo-400" />
         </h1>
-        <p className="text-zinc-400 text-sm">
+        <p className="text-zinc-400 text-sm md:text-base font-medium max-w-2xl">
           Share your knowledge with the community. Please ensure your PDF is high quality and readable. Max size: 20MB.
         </p>
+        <div className="flex flex-wrap gap-2 mt-2">
+          <span className="text-[10px] uppercase font-black tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+            <CheckCircle2 className="h-3.5 w-3.5" /> PDF Supported
+          </span>
+          <span className="text-[10px] uppercase font-black tracking-widest text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5" /> AI-Ready
+          </span>
+        </div>
       </div>
 
-      <Card className="bg-zinc-900/30 border-zinc-800/60 backdrop-blur-md shadow-2xl overflow-hidden relative">
+      <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 shadow-2xl overflow-hidden relative">
         {/* Animated Progress Bar */}
         <AnimatePresence>
           {isUploading && (
@@ -241,10 +253,10 @@ export default function UploadNotePage() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 4 }}
               exit={{ opacity: 0, height: 0 }}
-              className="absolute top-0 left-0 right-0 bg-zinc-800"
+              className="absolute top-0 left-0 right-0 bg-zinc-900 z-50"
             >
               <motion.div 
-                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]"
                 initial={{ width: "0%" }}
                 animate={{ width: `${uploadProgress}%` }}
                 transition={{ duration: 0.3 }}
@@ -253,30 +265,30 @@ export default function UploadNotePage() {
           )}
         </AnimatePresence>
 
-        <CardHeader className="pb-4 border-b border-zinc-800/40 flex-row items-center gap-3">
-          <div className="bg-indigo-500/10 text-indigo-400 p-2.5 rounded-xl border border-indigo-500/20">
-            <UploadCloud className="h-5 w-5" />
+        <CardHeader className="pb-4 border-b border-zinc-800/50 flex-row items-center gap-4 bg-zinc-900/30">
+          <div className="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl border border-indigo-500/30 shadow-inner">
+            <UploadCloud className="h-6 w-6" />
           </div>
           <div>
-            <CardTitle className="text-sm font-bold text-zinc-100 font-sans">Submit Document</CardTitle>
-            <CardDescription className="text-xs text-zinc-500">Provide accurate metadata to help others find your notes.</CardDescription>
+            <CardTitle className="text-base font-black text-white">Submit Document</CardTitle>
+            <CardDescription className="text-xs text-zinc-400 font-medium mt-1">Provide accurate metadata to help others find your notes.</CardDescription>
           </div>
         </CardHeader>
 
-        <CardContent className="pt-6">
-          <form onSubmit={handleUploadSubmit} className="flex flex-col gap-6">
+        <CardContent className="pt-6 pb-8">
+          <form onSubmit={handleUploadSubmit} className="flex flex-col gap-8">
             
             {/* Title & Description */}
-            <div className="flex flex-col gap-4 bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/50">
+            <div className="flex flex-col gap-5 bg-zinc-950/40 p-6 rounded-2xl border border-zinc-800/50 shadow-inner">
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Note Title *</label>
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Note Title *</label>
                 <Input
                   required
                   placeholder="e.g. Linear Algebra Unit 1 Summary"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   disabled={isUploading}
-                  className="bg-zinc-900/80 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-200 rounded-xl"
+                  className="bg-zinc-900/60 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-100 rounded-xl h-12 shadow-inner"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -480,6 +492,6 @@ export default function UploadNotePage() {
           </form>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 }

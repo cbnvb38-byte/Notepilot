@@ -43,6 +43,8 @@ import { getUserAIUsage, UserAIUsage } from "@/app/actions/ai-usage";
 import { Check } from "lucide-react";
 import { CopyResultButton } from "@/components/study-copilot/copy-result-button";
 import { getCopyableResultText, getGenerationTypeLabel } from "@/lib/ai/result-formatting";
+import { motion, AnimatePresence } from "framer-motion";
+
 interface RelatedNote {
   id: string;
   title: string;
@@ -451,56 +453,63 @@ export default function NoteDetailsClient({
       )}
 
       {/* Main Content Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+      >
         
         {/* Left Side: PDF Preview (2 Columns on large screens) */}
         <div className="lg:col-span-2 flex flex-col gap-4">
-          <Card className="bg-zinc-900/30 border-zinc-800/60 backdrop-blur-md overflow-hidden h-[600px] flex flex-col shadow-2xl relative">
-            <CardHeader className="pb-4 border-b border-zinc-800/40 flex-row items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-indigo-400" />
-                <CardTitle className="text-sm font-bold text-zinc-100 font-sans">Document Preview</CardTitle>
+          <Card className="godmode-card bg-zinc-950/60 backdrop-blur-xl border-zinc-800/80 overflow-hidden h-[700px] flex flex-col shadow-[0_15px_40px_rgba(0,0,0,0.5)] relative">
+            <CardHeader className="pb-4 border-b border-zinc-800/60 flex-row items-center justify-between gap-3 bg-zinc-950/50">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-indigo-500/10 rounded-xl border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+                  <FileText className="h-5 w-5 text-indigo-400" />
+                </div>
+                <CardTitle className="text-base font-black text-zinc-100 font-sans tracking-tight">Document Preview</CardTitle>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleDownload}
                 disabled={isDownloading}
-                className="border-zinc-800 text-zinc-300 hover:bg-zinc-850 h-8 gap-1 text-xs rounded-lg font-bold disabled:opacity-50"
+                className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 h-9 px-4 gap-2 text-xs rounded-xl font-bold disabled:opacity-50 transition-all hover:border-zinc-600"
               >
                 {isDownloading ? (
-                  <Loader2 className="h-3 w-3 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <>Open in New Tab <ExternalLink className="h-3.5 w-3.5" /></>
+                  <>Open in New Tab <ExternalLink className="h-4 w-4" /></>
                 )}
               </Button>
             </CardHeader>
-            <CardContent className="flex-1 p-0 relative">
+            <CardContent className="flex-1 p-0 relative bg-zinc-950">
               {!previewError ? (
                 <iframe
                   src={`${note.file_url}#toolbar=0`}
                   onError={() => setPreviewError(true)}
-                  className="w-full h-full border-none"
+                  className="w-full h-full border-none opacity-90 hover:opacity-100 transition-opacity"
                   title={note.title}
                 />
               ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4">
-                  <div className="bg-zinc-950/60 p-4 rounded-full border border-zinc-800/50">
-                    <FileText className="h-8 w-8 text-zinc-600" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-5">
+                  <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                    <FileText className="h-8 w-8 text-zinc-500" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-zinc-200">Unable to load preview</h3>
-                    <p className="text-xs text-zinc-500 max-w-xs mt-1">
+                    <h3 className="font-black text-lg text-zinc-300">Unable to load preview</h3>
+                    <p className="text-sm text-zinc-500 max-w-sm mt-2 leading-relaxed font-medium">
                       Your browser does not support inline PDF previews or blocks them. Click below to view the document.
                     </p>
                   </div>
                   <Button
                     onClick={handleDownload}
                     disabled={isDownloading}
-                    className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-2 rounded-xl font-bold h-9 disabled:opacity-50"
+                    className="glow-border bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm py-3 px-8 rounded-xl font-bold h-12 shadow-xl shadow-indigo-500/20 transition-all disabled:opacity-50 mt-2"
                   >
                     {isDownloading ? (
-                      <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                      <Loader2 className="h-5 w-5 animate-spin mr-2" />
                     ) : null}
                     Open PDF Document
                   </Button>
@@ -512,25 +521,25 @@ export default function NoteDetailsClient({
 
         {/* Right Side: Note Metadata & Info */}
         <div className="flex flex-col gap-6">
-          <Card className="bg-zinc-900/30 border-zinc-800/60 backdrop-blur-md shadow-2xl overflow-hidden flex flex-col justify-between">
-            <CardHeader className="pb-4 border-b border-zinc-800/40 flex flex-col gap-2">
-              <h1 className="text-xl font-extrabold text-zinc-100 leading-tight">
+          <Card className="godmode-card bg-zinc-950/60 backdrop-blur-xl border-zinc-800/80 shadow-[0_15px_40px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col justify-between">
+            <CardHeader className="pb-5 border-b border-zinc-800/60 flex flex-col gap-3 bg-zinc-950/50">
+              <h1 className="text-2xl font-black text-white leading-tight tracking-tight">
                 {note.title}
               </h1>
               {note.description && (
-                <p className="text-zinc-400 text-xs leading-relaxed mt-1">
+                <p className="text-zinc-400 text-sm leading-relaxed font-medium">
                   {note.description}
                 </p>
               )}
             </CardHeader>
 
-            <CardContent className="pt-6 flex flex-col gap-5">
+            <CardContent className="pt-6 flex flex-col gap-6">
               {/* Info Rows */}
-              <div className="flex flex-col gap-3.5 text-xs">
+              <div className="flex flex-col gap-4 text-sm font-medium">
                 {/* Subject Info */}
                 <div className="flex items-center justify-between py-2 border-b border-zinc-800/40">
-                  <span className="text-zinc-500 font-semibold flex items-center gap-1.5">
-                    <GraduationCap className="h-4 w-4 shrink-0 text-zinc-600" /> Subject
+                  <span className="text-zinc-500 flex items-center gap-2">
+                    <GraduationCap className="h-4.5 w-4.5 text-zinc-600" /> Subject
                   </span>
                   <span className="text-zinc-200 font-bold text-right truncate max-w-[180px]">
                     {note.subjects?.name || "N/A"}
@@ -539,8 +548,8 @@ export default function NoteDetailsClient({
 
                 {/* Branch Info */}
                 <div className="flex items-center justify-between py-2 border-b border-zinc-800/40">
-                  <span className="text-zinc-500 font-semibold flex items-center gap-1.5">
-                    <BookOpen className="h-4 w-4 shrink-0 text-zinc-600" /> Branch
+                  <span className="text-zinc-500 flex items-center gap-2">
+                    <BookOpen className="h-4.5 w-4.5 text-zinc-600" /> Branch
                   </span>
                   <span className="text-zinc-200 font-bold text-right truncate max-w-[180px]">
                     {note.subjects?.branches?.name || "N/A"}
@@ -550,8 +559,8 @@ export default function NoteDetailsClient({
                 {/* College Info */}
                 {note.college && (
                   <div className="flex items-center justify-between py-2 border-b border-zinc-800/40">
-                    <span className="text-zinc-500 font-semibold flex items-center gap-1.5">
-                      <GraduationCap className="h-4 w-4 shrink-0 text-zinc-600" /> College
+                    <span className="text-zinc-500 flex items-center gap-2">
+                      <GraduationCap className="h-4.5 w-4.5 text-zinc-600" /> College
                     </span>
                     <span className="text-zinc-200 font-bold text-right truncate max-w-[180px]">
                       {note.college}
@@ -562,8 +571,8 @@ export default function NoteDetailsClient({
                 {/* Professor Info */}
                 {note.professor && (
                   <div className="flex items-center justify-between py-2 border-b border-zinc-800/40">
-                    <span className="text-zinc-500 font-semibold flex items-center gap-1.5">
-                      <User className="h-4 w-4 shrink-0 text-zinc-600" /> Professor
+                    <span className="text-zinc-500 flex items-center gap-2">
+                      <User className="h-4.5 w-4.5 text-zinc-600" /> Professor
                     </span>
                     <span className="text-zinc-200 font-bold text-right truncate max-w-[180px]">
                       {note.professor}
@@ -573,14 +582,14 @@ export default function NoteDetailsClient({
 
                 {/* Uploader Info */}
                 <div className="flex items-center justify-between py-2 border-b border-zinc-800/40">
-                  <span className="text-zinc-500 font-semibold flex items-center gap-1.5">
-                    <User className="h-4 w-4 shrink-0 text-zinc-600" /> Contributor
+                  <span className="text-zinc-500 flex items-center gap-2">
+                    <User className="h-4.5 w-4.5 text-zinc-600" /> Contributor
                   </span>
                   <span className="text-zinc-200 font-bold text-right truncate max-w-[180px]">
                     {note.author_id ? (
                       <Link 
                         href={`/contributors/${note.author_id}`}
-                        className="text-indigo-400 hover:text-indigo-300 hover:underline font-semibold"
+                        className="text-indigo-400 hover:text-indigo-300 hover:underline font-bold"
                       >
                         {note.profiles?.name || "Anonymous"}
                       </Link>
@@ -592,8 +601,8 @@ export default function NoteDetailsClient({
 
                 {/* File Details */}
                 <div className="flex items-center justify-between py-2 border-b border-zinc-800/40">
-                  <span className="text-zinc-500 font-semibold flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4 shrink-0 text-zinc-600" /> Upload Date
+                  <span className="text-zinc-500 flex items-center gap-2">
+                    <Calendar className="h-4.5 w-4.5 text-zinc-600" /> Upload Date
                   </span>
                   <span className="text-zinc-200 font-bold" suppressHydrationWarning>
                     {new Date(note.created_at).toLocaleDateString()}
@@ -601,8 +610,8 @@ export default function NoteDetailsClient({
                 </div>
 
                 <div className="flex items-center justify-between py-2 border-b border-zinc-800/40">
-                  <span className="text-zinc-500 font-semibold flex items-center gap-1.5">
-                    <FileText className="h-4 w-4 shrink-0 text-zinc-600" /> File Size
+                  <span className="text-zinc-500 flex items-center gap-2">
+                    <FileText className="h-4.5 w-4.5 text-zinc-600" /> File Size
                   </span>
                   <span className="text-zinc-200 font-bold">
                     {formatFileSize(note.file_size)}
@@ -612,32 +621,32 @@ export default function NoteDetailsClient({
               </div>
 
               {/* Statistics Grid */}
-              <div className="bg-zinc-950/60 px-5 py-4 border border-zinc-800/50 rounded-xl grid grid-cols-2 gap-2 divide-x divide-zinc-800/50 text-center">
+              <div className="bg-zinc-950/80 p-5 border border-zinc-800/80 rounded-2xl grid grid-cols-2 gap-4 divide-x divide-zinc-800/50 text-center shadow-inner">
                 <div className="flex flex-col">
-                  <span className="text-sm font-bold text-zinc-200 flex items-center justify-center gap-1">
-                    <Eye className="h-4 w-4 text-zinc-500" /> {note.view_count}
+                  <span className="text-base font-black text-zinc-100 flex items-center justify-center gap-2">
+                    <Eye className="h-4.5 w-4.5 text-zinc-500" /> {note.view_count}
                   </span>
-                  <span className="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">Total Views</span>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-500 mt-1.5">Total Views</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm font-bold text-zinc-200 flex items-center justify-center gap-1">
-                    <Download className="h-4 w-4 text-zinc-500" /> {note.downloads_count}
+                  <span className="text-base font-black text-zinc-100 flex items-center justify-center gap-2">
+                    <Download className="h-4.5 w-4.5 text-zinc-500" /> {note.downloads_count}
                   </span>
-                  <span className="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">Downloads</span>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-500 mt-1.5">Downloads</span>
                 </div>
               </div>
 
               {/* Actions Grid */}
-              <div className="flex flex-col gap-3 mt-4">
+              <div className="flex flex-col gap-3 mt-2">
                 <div className="grid grid-cols-2 gap-3">
                   <Button
                     onClick={handleToggleBookmark}
                     disabled={isBookmarking}
                     variant="outline"
-                    className={`w-full font-bold flex items-center justify-center gap-2 rounded-xl text-sm py-6 shadow-xl transition-all active:scale-[0.98] ${
+                    className={`w-full font-black flex items-center justify-center gap-2 rounded-xl text-sm h-14 shadow-xl transition-all active:scale-[0.98] ${
                       isBookmarked 
                         ? "bg-pink-500/10 text-pink-500 border-pink-500/20 hover:bg-pink-500/20" 
-                        : "border-zinc-800 text-zinc-300 hover:bg-zinc-800/30"
+                        : "border-zinc-800/80 bg-zinc-950 text-zinc-300 hover:bg-zinc-900 hover:border-zinc-700"
                     }`}
                   >
                     {isBookmarking ? (
@@ -652,7 +661,7 @@ export default function NoteDetailsClient({
                   <Button
                     onClick={handleDownload}
                     disabled={isDownloading}
-                    className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center justify-center gap-2 rounded-xl text-sm py-6 shadow-xl shadow-indigo-500/10 disabled:opacity-50 transition-all active:scale-[0.98]"
+                    className="w-full glow-border bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black flex items-center justify-center gap-2 rounded-xl text-sm h-14 shadow-xl shadow-indigo-500/20 disabled:opacity-50 transition-all active:scale-[0.98]"
                   >
                     {isDownloading ? (
                       <>
@@ -670,10 +679,10 @@ export default function NoteDetailsClient({
                     onClick={() => setIsReportModalOpen(true)}
                     disabled={isAuthor}
                     variant="outline"
-                    className="w-full border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 font-bold flex items-center justify-center gap-2 rounded-xl text-sm py-6 shadow-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-zinc-950 border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 font-bold flex items-center justify-center gap-2 rounded-xl text-sm h-12 shadow-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                     title={isAuthor ? "You cannot report your own note." : undefined}
                   >
-                    <FileWarning className="h-5 w-5" /> Report Note
+                    <FileWarning className="h-4.5 w-4.5" /> Report Note
                   </Button>
                 )}
               </div>
@@ -681,49 +690,49 @@ export default function NoteDetailsClient({
           </Card>
 
           {/* Study Copilot Foundation Panel */}
-          <Card className="bg-zinc-900/40 border-zinc-800/60 backdrop-blur-xl shadow-2xl overflow-hidden flex flex-col mt-2">
+          <Card className="godmode-card bg-zinc-950/60 backdrop-blur-xl border-zinc-800/80 shadow-[0_15px_40px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col mt-2">
             {/* Decorative gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-violet-500/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-violet-500/5 pointer-events-none opacity-50" />
             
-            <CardHeader className="pb-4 border-b border-zinc-800/40 relative z-10 flex flex-row items-start gap-3">
-              <div className="bg-indigo-500/10 p-2.5 rounded-xl border border-indigo-500/20 shrink-0">
-                <Sparkles className="h-5 w-5 text-indigo-400" />
+            <CardHeader className="pb-5 border-b border-zinc-800/60 relative z-10 flex flex-row items-start gap-4 bg-zinc-950/50">
+              <div className="bg-indigo-500/10 p-3 rounded-xl border border-indigo-500/20 shrink-0 shadow-inner">
+                <Sparkles className="h-6 w-6 text-indigo-400" />
               </div>
               <div className="flex flex-col flex-1 min-w-0">
-                <CardTitle className="text-sm font-bold text-zinc-100 leading-tight">Study Copilot for this note</CardTitle>
-                <p className="text-[10px] text-zinc-400 mt-1">Generate study material from this uploaded PDF.</p>
+                <CardTitle className="text-base font-black text-white leading-tight tracking-tight">Study Copilot for this note</CardTitle>
+                <p className="text-xs text-zinc-400 mt-1 font-medium">Generate study material from this uploaded PDF.</p>
                 {/* AI Readiness Badge */}
-                <div className="mt-2 flex items-center gap-2 flex-wrap">
+                <div className="mt-3 flex items-center gap-2 flex-wrap">
                   {note.file_path ? (
-                    <span className="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                    <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-md font-black uppercase tracking-widest shadow-inner">
                       ✓ AI Ready
                     </span>
                   ) : (
-                    <span className="text-[9px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                    <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-md font-black uppercase tracking-widest shadow-inner">
                       ⚠ No PDF — AI not available
                     </span>
                   )}
                 </div>
 
                 {usageState && usageState.plan === "premium" && (
-                  <div className="mt-4 bg-gradient-to-br from-indigo-950/40 to-purple-950/20 border border-indigo-500/20 p-3.5 rounded-xl shadow-[0_0_15px_rgba(79,70,229,0.05)] relative overflow-hidden">
-                     <div className="absolute -top-2 -right-2 p-2 opacity-[0.03] pointer-events-none transform rotate-12"><Crown className="h-16 w-16 text-amber-400" /></div>
-                     <div className="flex items-center gap-2 mb-2 relative z-10">
-                       <span className="bg-gradient-to-r from-amber-400 to-amber-200 text-zinc-950 text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-widest shadow-sm flex items-center gap-1">
+                  <div className="mt-5 bg-gradient-to-br from-indigo-950/40 to-purple-950/20 border border-indigo-500/20 p-4 rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.05)] relative overflow-hidden">
+                     <div className="absolute -top-2 -right-2 p-2 opacity-[0.03] pointer-events-none transform rotate-12"><Crown className="h-20 w-20 text-amber-400" /></div>
+                     <div className="flex items-center gap-2 mb-3 relative z-10">
+                       <span className="bg-gradient-to-r from-amber-400 to-amber-200 text-zinc-950 text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-widest shadow-md flex items-center gap-1.5">
                          <Crown className="h-3 w-3" /> Premium Member
                        </span>
                      </div>
-                     <h4 className="text-xs font-bold text-indigo-100 mb-0.5 relative z-10">Your premium Study Copilot is active.</h4>
-                     <p className="text-[10px] text-indigo-300/70 mb-4 font-medium relative z-10">Higher monthly AI limit unlocked.</p>
+                     <h4 className="text-sm font-black text-indigo-100 mb-1 relative z-10">Your premium Study Copilot is active.</h4>
+                     <p className="text-[11px] text-indigo-300/70 mb-5 font-medium relative z-10">Higher monthly AI limit unlocked.</p>
                      
-                     <div className="flex flex-col gap-1.5 relative z-10">
-                       <div className="flex items-center justify-between text-[10px] font-bold">
-                         <span className="text-indigo-200/60 uppercase tracking-wider">Usage</span>
+                     <div className="flex flex-col gap-2 relative z-10">
+                       <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
+                         <span className="text-indigo-200/60">Usage</span>
                          <span className={usageState.usedThisMonth >= usageState.monthlyLimit ? "text-amber-400" : "text-amber-300"}>
-                           {usageState.usedThisMonth} / {usageState.monthlyLimit} <span className="text-indigo-300/50">generations</span>
+                           {usageState.usedThisMonth} <span className="text-indigo-300/50">/ {usageState.monthlyLimit}</span>
                          </span>
                        </div>
-                       <div className="h-1.5 w-full bg-zinc-950/50 rounded-full overflow-hidden border border-indigo-500/20">
+                       <div className="h-2 w-full bg-zinc-950/80 rounded-full overflow-hidden border border-indigo-500/20 shadow-inner">
                          <div 
                            className={`h-full transition-all duration-500 bg-gradient-to-r ${usageState.usedThisMonth >= usageState.monthlyLimit ? "from-red-500 to-amber-500" : "from-indigo-500 to-purple-400"} shadow-[0_0_10px_rgba(168,85,247,0.4)]`}
                            style={{ width: `${Math.min(100, (usageState.usedThisMonth / usageState.monthlyLimit) * 100)}%` }}
@@ -734,20 +743,20 @@ export default function NoteDetailsClient({
                 )}
 
                 {usageState && usageState.plan === "free" && (
-                  <div className="mt-4 bg-zinc-950/50 border border-zinc-800/60 p-3.5 rounded-xl">
-                    <div className="flex items-center justify-between mb-2">
-                       <span className="bg-zinc-800 text-zinc-300 border border-zinc-700 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  <div className="mt-5 bg-zinc-950/80 border border-zinc-800/80 p-4 rounded-2xl shadow-inner">
+                    <div className="flex items-center justify-between mb-3">
+                       <span className="bg-zinc-900 text-zinc-400 border border-zinc-700/80 text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-widest shadow-inner">
                          Free Plan
                        </span>
                     </div>
-                    <div className="flex flex-col gap-1.5 mt-2">
-                       <div className="flex items-center justify-between text-[10px] font-bold">
-                         <span className="text-zinc-400">AI Generations</span>
-                         <span className={usageState.usedThisMonth >= usageState.monthlyLimit ? "text-red-400" : "text-zinc-200"}>
-                           {usageState.usedThisMonth} / {usageState.monthlyLimit}
+                    <div className="flex flex-col gap-2 mt-3">
+                       <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
+                         <span className="text-zinc-500">AI Generations</span>
+                         <span className={usageState.usedThisMonth >= usageState.monthlyLimit ? "text-red-400" : "text-zinc-300"}>
+                           {usageState.usedThisMonth} <span className="text-zinc-600">/ {usageState.monthlyLimit}</span>
                          </span>
                        </div>
-                       <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden border border-zinc-800/50">
+                       <div className="h-2 w-full bg-zinc-950 rounded-full overflow-hidden border border-zinc-800/80 shadow-inner">
                          <div 
                            className={`h-full transition-all duration-500 ${
                              usageState.usedThisMonth >= usageState.monthlyLimit 
@@ -760,12 +769,12 @@ export default function NoteDetailsClient({
                          />
                        </div>
                     </div>
-                    <div className="mt-3 pt-3 border-t border-zinc-800/40">
-                      <p className="text-[10px] text-zinc-400 mb-2 leading-relaxed">
-                        Unlock <span className="font-bold text-zinc-300">100 monthly AI generations</span> and advanced study workflows.
+                    <div className="mt-4 pt-4 border-t border-zinc-800/60">
+                      <p className="text-[11px] text-zinc-400 mb-3 leading-relaxed font-medium">
+                        Unlock <span className="font-bold text-zinc-200">100 monthly AI generations</span> and advanced study workflows.
                       </p>
                       <Link href="/pricing" className="block">
-                        <Button className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-8 text-[11px] rounded-lg transition-all shadow-md shadow-indigo-500/10 active:scale-[0.98]">
+                        <Button className="w-full glow-border bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold h-10 text-[12px] rounded-xl transition-all shadow-xl shadow-indigo-500/20 active:scale-[0.98]">
                           Upgrade to Premium
                         </Button>
                       </Link>
@@ -775,35 +784,35 @@ export default function NoteDetailsClient({
               </div>
             </CardHeader>
 
-            <CardContent className="pt-4 pb-5 flex flex-col gap-4 relative z-10">
+            <CardContent className="pt-6 pb-6 flex flex-col gap-5 relative z-10">
               
               {/* Limit Reached / Near Limit Warning Card */}
               {usageState && usageState.usedThisMonth >= usageState.monthlyLimit * 0.8 && (
-                <div className={`bg-zinc-950/80 border p-4 rounded-xl flex flex-col items-start gap-3 shadow-lg animate-in fade-in slide-in-from-top-2 ${usageState.usedThisMonth >= usageState.monthlyLimit ? "border-red-500/30 shadow-red-500/5" : "border-amber-500/30 shadow-amber-500/5"}`}>
-                  <div className="flex items-center gap-2">
-                    <FileWarning className={`h-4 w-4 ${usageState.usedThisMonth >= usageState.monthlyLimit ? "text-red-400" : "text-amber-400"}`} />
-                    <p className={`text-xs font-bold ${usageState.usedThisMonth >= usageState.monthlyLimit ? "text-red-400" : "text-amber-400"}`}>
+                <div className={`bg-zinc-950/80 border p-5 rounded-2xl flex flex-col items-start gap-4 shadow-xl animate-in fade-in slide-in-from-top-2 ${usageState.usedThisMonth >= usageState.monthlyLimit ? "border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : "border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.1)]"}`}>
+                  <div className="flex items-center gap-3">
+                    <FileWarning className={`h-5 w-5 ${usageState.usedThisMonth >= usageState.monthlyLimit ? "text-red-400" : "text-amber-400"}`} />
+                    <p className={`text-sm font-black tracking-tight ${usageState.usedThisMonth >= usageState.monthlyLimit ? "text-red-400" : "text-amber-400"}`}>
                       {usageState.usedThisMonth >= usageState.monthlyLimit 
                         ? (usageState.plan === "premium" ? "You have reached your premium monthly AI limit." : "You have used all free AI generations this month.")
                         : `You are close to your ${usageState.plan === "premium" ? "premium" : "free"} monthly AI limit.`}
                     </p>
                   </div>
                   {usageState.plan === "free" && (
-                    <p className="text-[11px] text-zinc-400 leading-relaxed">
+                    <p className="text-xs text-zinc-400 leading-relaxed font-medium">
                       Upgrade to Premium for more monthly generations and advanced study workflows.
                     </p>
                   )}
-                  <div className="flex gap-2 w-full mt-1">
+                  <div className="flex gap-3 w-full mt-2">
                     {usageState.plan === "free" && (
                       <Link href="/pricing" className="flex-1">
-                        <Button className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-8 text-[11px] rounded-lg transition-all active:scale-[0.98]">
+                        <Button className="w-full glow-border bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold h-10 text-xs rounded-xl transition-all shadow-xl shadow-indigo-500/20 active:scale-[0.98]">
                           Upgrade to Premium
                         </Button>
                       </Link>
                     )}
                     <Button 
                       variant="outline" 
-                      className="flex-1 bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800 h-8 text-[11px] font-bold rounded-lg transition-all"
+                      className="flex-1 bg-zinc-950 border-zinc-700/80 text-zinc-300 hover:bg-zinc-900 hover:text-white h-10 text-xs font-bold rounded-xl transition-all shadow-inner"
                       onClick={() => {
                         document.getElementById('saved-results-section')?.scrollIntoView({ behavior: 'smooth' });
                       }}
@@ -815,7 +824,7 @@ export default function NoteDetailsClient({
               )}
 
               {/* Primary Tools */}
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-3">
                 {STUDY_TOOLS.filter(t => t.priority === "primary").map((tool) => {
                   const Icon = tool.icon;
                   return (
@@ -823,7 +832,7 @@ export default function NoteDetailsClient({
                       key={tool.id}
                       disabled={!tool.enabled || isGenerating !== null || (usageState !== null && usageState.usedThisMonth >= usageState.monthlyLimit)}
                       variant="outline"
-                      className="w-full justify-start border-zinc-800/60 text-zinc-300 h-auto py-3 px-3.5 relative overflow-hidden bg-zinc-950/50 flex flex-col items-start gap-1.5 hover:bg-zinc-900/80 hover:border-indigo-500/30 transition-all disabled:opacity-50"
+                      className="w-full justify-start border-zinc-800/80 text-zinc-200 h-auto py-4 px-5 relative overflow-hidden bg-zinc-950/80 flex flex-col items-start gap-2 hover:bg-zinc-900/90 hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all disabled:opacity-50 rounded-2xl group"
                       onClick={() => {
                         if (!tool.enabled) {
                           toast.info(`This tool will be enabled in a later Phase 8 step.`);
@@ -837,19 +846,19 @@ export default function NoteDetailsClient({
                       }}
                     >
                       <span className="flex items-center justify-between w-full">
-                        <span className="flex items-center gap-2 font-bold text-xs text-zinc-100">
-                          {isGenerating === tool.generationType ? <Loader2 className="h-4 w-4 text-indigo-400 animate-spin" /> : <Icon className="h-4 w-4 text-indigo-400" />} 
+                        <span className="flex items-center gap-3 font-black text-sm text-zinc-100 group-hover:text-white transition-colors">
+                          {isGenerating === tool.generationType ? <Loader2 className="h-5 w-5 text-indigo-400 animate-spin" /> : <Icon className="h-5 w-5 text-indigo-400 group-hover:text-indigo-300 transition-colors" />} 
                           {isGenerating === tool.generationType && showScannedConfirmation === false ? (
                             tool.generationType === "doubt_answer" ? "Answering Doubt..." : "Generating " + tool.title + "..."
                           ) : (
                             tool.title
                           )}
                         </span>
-                        <span className="text-[9px] bg-zinc-800/80 text-zinc-400 px-1.5 py-0.5 rounded border border-zinc-700 font-bold uppercase tracking-wider">
+                        <span className="text-[9px] bg-zinc-900 text-zinc-400 px-2.5 py-1 rounded-md border border-zinc-700/80 font-black uppercase tracking-widest shadow-inner">
                           {tool.status}
                         </span>
                       </span>
-                      <span className="text-[10px] text-zinc-500 text-left pl-6 w-full whitespace-normal">
+                      <span className="text-[11px] text-zinc-400 font-medium text-left pl-8 w-full whitespace-normal leading-relaxed group-hover:text-zinc-300 transition-colors">
                         {tool.description}
                       </span>
                     </Button>
@@ -858,17 +867,17 @@ export default function NoteDetailsClient({
               </div>
 
               {/* Secondary Tools Toggle */}
-              <div className="flex flex-col gap-2 pt-2 border-t border-zinc-800/40">
+              <div className="flex flex-col gap-3 pt-4 border-t border-zinc-800/60 mt-1">
                 <button 
                   onClick={() => setShowMoreTools(!showMoreTools)}
-                  className="flex items-center justify-between w-full py-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-colors"
+                  className="flex items-center justify-between w-full py-2 text-xs font-black uppercase tracking-widest text-zinc-500 hover:text-zinc-300 transition-colors"
                 >
                   <span>More study tools</span>
-                  {showMoreTools ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  {showMoreTools ? <ChevronUp className="h-4.5 w-4.5" /> : <ChevronDown className="h-4.5 w-4.5" />}
                 </button>
 
                 {showMoreTools && (
-                  <div className="grid grid-cols-2 gap-2 mt-1 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="grid grid-cols-2 gap-3 mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
                     {STUDY_TOOLS.filter(t => t.priority === "secondary").map((tool) => {
                       const Icon = tool.icon;
                       return (
@@ -876,7 +885,7 @@ export default function NoteDetailsClient({
                           key={tool.id}
                           disabled={!tool.enabled || isGenerating !== null || (usageState !== null && usageState.usedThisMonth >= usageState.monthlyLimit)}
                           variant="outline"
-                          className="w-full justify-start border-zinc-800/50 text-zinc-400 h-auto py-2.5 px-3 bg-zinc-950/30 flex flex-col items-start gap-1 hover:bg-zinc-900/60 disabled:opacity-50"
+                          className="w-full justify-start border-zinc-800/80 text-zinc-300 h-auto py-3 px-4 bg-zinc-950/60 flex flex-col items-start gap-1.5 hover:bg-zinc-900/90 hover:border-indigo-500/40 hover:text-white hover:shadow-[0_0_10px_rgba(99,102,241,0.05)] disabled:opacity-50 rounded-xl transition-all group"
                           onClick={() => {
                             if (!tool.enabled) {
                               toast.info("This tool will be enabled in a later Phase 8 step.");
@@ -889,8 +898,8 @@ export default function NoteDetailsClient({
                             handleGenerate(tool.generationType);
                           }}
                         >
-                          <span className="flex items-center gap-1.5 font-bold text-[11px] text-zinc-300">
-                            {isGenerating === tool.generationType ? <Loader2 className="h-3 w-3 animate-spin text-indigo-400" /> : <Icon className="h-3 w-3" />} 
+                          <span className="flex items-center gap-2 font-bold text-xs text-zinc-300 group-hover:text-white transition-colors">
+                            {isGenerating === tool.generationType ? <Loader2 className="h-4 w-4 animate-spin text-indigo-400" /> : <Icon className="h-4 w-4 text-zinc-400 group-hover:text-indigo-400 transition-colors" />} 
                             <span className="truncate">
                               {isGenerating === tool.generationType && showScannedConfirmation === false ? (tool.generationType === "doubt_answer" ? "Answering Doubt..." : "Generating " + tool.title + "...") : tool.title}
                             </span>
@@ -904,27 +913,27 @@ export default function NoteDetailsClient({
               
               {/* Scanned PDF Confirmation */}
               {showScannedConfirmation && !generatedResult && (
-                <div className="flex flex-col gap-3 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl mt-2 animate-in fade-in slide-in-from-top-2">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-indigo-500/20 p-2 rounded-lg shrink-0">
-                      <Sparkles className="h-5 w-5 text-indigo-400" />
+                <div className="flex flex-col gap-4 p-5 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl mt-4 animate-in fade-in slide-in-from-top-2 shadow-[0_0_20px_rgba(99,102,241,0.1)]">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-indigo-500/20 p-2.5 rounded-xl shrink-0 border border-indigo-500/30 shadow-inner">
+                      <Sparkles className="h-6 w-6 text-indigo-400" />
                     </div>
-                    <div className="flex flex-col">
-                      <h4 className="text-sm font-bold text-zinc-100">Scanned PDF detected</h4>
-                      <p className="text-xs text-zinc-300 leading-relaxed mt-1">
+                    <div className="flex flex-col gap-1">
+                      <h4 className="text-base font-black text-zinc-100 tracking-tight">Scanned PDF detected</h4>
+                      <p className="text-xs text-zinc-300 leading-relaxed font-medium">
                         This PDF does not contain enough selectable text. Gemini document reading can try to read the PDF and generate a Smart Summary. This may use extra API quota.
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 mt-2 ml-11">
+                  <div className="flex items-center gap-3 mt-2 ml-14">
                     <Button
                       onClick={handleDocumentFallback}
                       disabled={isGenerating !== null}
                       size="sm"
-                      className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold"
+                      className="glow-border bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold h-10 px-5 rounded-xl shadow-xl shadow-indigo-500/20 transition-all"
                     >
                       {isGenerating !== null ? (
-                        <><Loader2 className="h-3 w-3 animate-spin mr-1.5" /> Reading scanned PDF...</>
+                        <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Reading scanned PDF...</>
                       ) : (
                         "Use Gemini Document Reading"
                       )}
@@ -934,7 +943,7 @@ export default function NoteDetailsClient({
                       disabled={isGenerating !== null}
                       size="sm"
                       variant="ghost"
-                      className="text-zinc-400 hover:text-zinc-200"
+                      className="text-zinc-400 hover:text-white hover:bg-zinc-800/80 h-10 px-4 rounded-xl font-bold"
                     >
                       Cancel
                     </Button>
@@ -944,27 +953,29 @@ export default function NoteDetailsClient({
 
               {/* Inline Error Display */}
               {generateError && !generatedResult && (
-                <div className="flex flex-col gap-3 p-3 bg-red-500/8 border border-red-500/20 rounded-xl mt-2 animate-in fade-in">
-                  <div className="flex items-start gap-2">
-                    <FileWarning className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
-                    <p className="text-[11px] text-red-300 leading-relaxed">{generateError}</p>
+                <div className="flex flex-col gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl mt-4 animate-in fade-in">
+                  <div className="flex items-start gap-3">
+                    <FileWarning className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+                    <p className="text-xs text-red-300 leading-relaxed font-bold">{generateError}</p>
                   </div>
                 </div>
               )}
 
               {/* Compact success state — links to reader page, no inline expansion */}
               {generatedResult && (
-                <div className="flex flex-col gap-2 p-3 bg-emerald-500/8 border border-emerald-500/20 rounded-lg mt-1 animate-in fade-in">
-                  <div className="flex items-center gap-2">
-                    <Check className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                    <p className="text-[11px] text-emerald-300 font-semibold leading-snug">
+                <div className="flex flex-col gap-3 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl mt-3 animate-in fade-in shadow-[0_0_15px_rgba(16,185,129,0.05)]">
+                  <div className="flex items-center gap-3">
+                    <div className="p-1.5 bg-emerald-500/20 rounded-lg">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                    </div>
+                    <p className="text-xs text-emerald-300 font-bold leading-snug">
                       {getGenerationTypeLabel(generatedResult.type)} saved to Study Copilot history.
                     </p>
                   </div>
-                  <div className="flex gap-2 pl-5">
+                  <div className="flex gap-3 pl-11">
                     <Link
                       href={`/dashboard/study-copilot/${generatedResult.id}`}
-                      className="text-[11px] font-bold text-indigo-300 hover:text-indigo-200 border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/15 px-2.5 py-1 rounded-lg transition-all"
+                      className="text-xs font-black uppercase tracking-widest text-indigo-300 hover:text-white border border-indigo-500/40 bg-indigo-500/10 hover:bg-indigo-500/30 px-4 py-2 rounded-xl transition-all shadow-inner"
                     >
                       Open Reader →
                     </Link>
@@ -982,7 +993,7 @@ export default function NoteDetailsClient({
                     />
                     <Link
                       href="/dashboard/study-copilot"
-                      className="text-[11px] font-semibold text-zinc-500 hover:text-zinc-300 border border-zinc-700/50 bg-zinc-800/40 hover:bg-zinc-800 px-2.5 py-1 rounded-lg transition-all"
+                      className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 hover:text-white border border-zinc-700/80 bg-zinc-900/80 hover:bg-zinc-800 px-4 py-2 rounded-xl transition-all shadow-inner flex items-center justify-center"
                     >
                       View in Copilot
                     </Link>
@@ -990,12 +1001,10 @@ export default function NoteDetailsClient({
                 </div>
               )}
               
-
-
             </CardContent>
           </Card>
         </div>
-      </div>
+      </motion.div>
 
       {/* Reviews Section */}
       <ReviewsSection 
@@ -1012,39 +1021,40 @@ export default function NoteDetailsClient({
       />
 
       {/* Related Notes Section */}
-      <div className="flex flex-col gap-5 pt-8 border-t border-zinc-800/40">
-        <div className="flex items-center gap-2">
-          <div className="bg-indigo-500/10 text-indigo-400 p-2 rounded-xl border border-indigo-500/20">
-            <Sparkles className="h-4 w-4" />
+      <div className="flex flex-col gap-6 pt-10 border-t border-zinc-800/60 mt-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-indigo-500/10 text-indigo-400 p-2.5 rounded-xl border border-indigo-500/20 shadow-inner">
+            <Sparkles className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-bold text-base text-zinc-100 font-sans">Related Study Materials</h3>
-            <p className="text-xs text-zinc-500">Other approved notes matching this subject or semester.</p>
+            <h3 className="font-black text-lg text-zinc-100 font-sans tracking-tight">Related Study Materials</h3>
+            <p className="text-sm text-zinc-400 font-medium mt-1">Other approved notes matching this subject or semester.</p>
           </div>
         </div>
 
         {relatedNotes.length === 0 ? (
-          <div className="text-sm text-zinc-500 py-6 text-center border border-dashed border-zinc-800 rounded-2xl">
+          <div className="text-sm text-zinc-500 py-8 text-center border border-dashed border-zinc-800 rounded-2xl bg-zinc-950/50">
             No related notes available at this time.
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedNotes.map((relNote) => (
               <Link key={relNote.id} href={`/notes/${relNote.id}`}>
-                <Card className="border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/45 hover:border-indigo-500/25 p-4 rounded-xl flex flex-col justify-between h-full transition-all duration-200 group cursor-pointer shadow-md">
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[8px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider self-start">
+                <Card className="godmode-card bg-zinc-950/60 backdrop-blur-xl border-zinc-800/80 hover:bg-zinc-900/80 hover:border-indigo-500/40 p-5 rounded-2xl flex flex-col justify-between h-full transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-[0_10px_30px_rgba(99,102,241,0.15)] relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-violet-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  <div className="flex flex-col gap-3 relative z-10">
+                    <span className="text-[9px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-1 rounded-md font-black uppercase tracking-widest self-start shadow-inner">
                       {relNote.subjects?.branches?.code || "Branch"} &bull; Sem {relNote.semester}
                     </span>
-                    <h5 className="font-bold text-zinc-200 text-xs line-clamp-1 group-hover:text-indigo-400 transition-colors duration-200">
+                    <h5 className="font-black text-zinc-100 text-sm line-clamp-2 group-hover:text-indigo-300 transition-colors duration-200 mt-1 leading-tight tracking-tight">
                       {relNote.title}
                     </h5>
-                    <p className="text-[10px] text-zinc-500 truncate">
+                    <p className="text-[11px] text-zinc-500 font-medium truncate">
                       {relNote.subjects?.name}
                     </p>
                   </div>
-                  <div className="flex items-center justify-between text-[9px] text-zinc-500 pt-3 mt-3 border-t border-zinc-800/40">
-                    <span>{relNote.downloads_count} downloads</span>
+                  <div className="flex items-center justify-between text-[10px] font-bold text-zinc-500 pt-4 mt-4 border-t border-zinc-800/60 relative z-10 uppercase tracking-widest">
+                    <span>{relNote.downloads_count} dl</span>
                     <span suppressHydrationWarning>{new Date(relNote.created_at).toLocaleDateString()}</span>
                   </div>
                 </Card>
@@ -1055,22 +1065,22 @@ export default function NoteDetailsClient({
       </div>
 
       {isReportModalOpen && (
-        <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="bg-zinc-900 border-zinc-800 w-full max-w-md shadow-2xl overflow-hidden">
-            <CardHeader className="border-b border-zinc-800/40">
-              <CardTitle className="text-sm font-bold text-red-400 flex items-center gap-2">
-                <FileWarning className="h-4 w-4" /> Report Note
+        <div className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <Card className="godmode-card bg-zinc-950 border-zinc-800/80 w-full max-w-md shadow-[0_15px_50px_rgba(0,0,0,0.8)] overflow-hidden">
+            <CardHeader className="border-b border-zinc-800/60 bg-zinc-900/50">
+              <CardTitle className="text-base font-black text-red-400 flex items-center gap-2">
+                <FileWarning className="h-5 w-5" /> Report Note
               </CardTitle>
             </CardHeader>
             <form onSubmit={handleSubmitReport}>
-              <CardContent className="pt-4 flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-zinc-400">Reason</label>
+              <CardContent className="pt-6 flex flex-col gap-5">
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-zinc-400">Reason</label>
                   <select
                     value={reportReason}
                     onChange={(e) => setReportReason(e.target.value)}
                     required
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-sm text-zinc-200 focus:border-red-500/50 focus:outline-none"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm text-zinc-200 focus:border-red-500/50 focus:outline-none shadow-inner"
                   >
                     <option value="" disabled>Select a reason...</option>
                     <option value="Incorrect information">Incorrect information</option>
@@ -1082,9 +1092,9 @@ export default function NoteDetailsClient({
                     <option value="Other">Other</option>
                   </select>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-zinc-400">
-                    Details {reportReason !== "Other" && <span className="text-zinc-650 font-normal">(optional)</span>}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-zinc-400">
+                    Details {reportReason !== "Other" && <span className="text-zinc-600 font-medium normal-case tracking-normal">(optional)</span>}
                   </label>
                   <textarea
                     value={reportDetails}
@@ -1096,35 +1106,33 @@ export default function NoteDetailsClient({
                         ? "Please specify the details (required)..."
                         : "Provide additional details (optional)..."
                     }
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-red-500/50 focus:outline-none min-h-[120px] resize-none"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-red-500/50 focus:outline-none min-h-[120px] resize-none shadow-inner"
                   />
-                  <div className="text-[10px] text-zinc-600 text-right">
+                  <div className="text-[10px] text-zinc-500 font-bold text-right uppercase tracking-wider">
                     {reportDetails.length}/1000 characters
                   </div>
                 </div>
-                <div className="flex gap-2 justify-end pt-2 border-t border-zinc-800/40">
+                <div className="flex gap-3 justify-end pt-4 border-t border-zinc-800/60 mt-2">
                   <Button
                     type="button"
                     variant="outline"
-                    size="sm"
                     onClick={() => {
                       setIsReportModalOpen(false);
                       setReportReason("");
                       setReportDetails("");
                     }}
-                    className="border-zinc-800 text-zinc-400 text-xs h-8"
+                    className="border-zinc-800 bg-zinc-950 text-zinc-300 hover:bg-zinc-900 h-10 px-6 font-bold rounded-xl transition-all"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    size="sm"
                     disabled={isSubmittingReport || !reportReason || (reportReason === "Other" && !reportDetails.trim())}
-                    className="bg-red-600 hover:bg-red-500 text-white text-xs h-8 gap-1 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-red-600 hover:bg-red-500 text-white h-10 px-6 gap-2 font-black rounded-xl disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-red-500/20 transition-all"
                   >
                     {isSubmittingReport ? (
                       <>
-                        <Loader2 className="h-3 w-3 animate-spin" /> Submitting...
+                        <Loader2 className="h-4 w-4 animate-spin" /> Submitting...
                       </>
                     ) : (
                       "Submit Report"
@@ -1139,20 +1147,20 @@ export default function NoteDetailsClient({
 
       {/* Ask Doubt Modal */}
       {isDoubtModalOpen && (
-        <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="bg-zinc-900 border-zinc-800 w-full max-w-md shadow-2xl overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-violet-500/5 pointer-events-none" />
-            <CardHeader className="border-b border-zinc-800/40 relative z-10 flex flex-row items-center gap-3">
-              <div className="bg-indigo-500/10 p-2.5 rounded-xl border border-indigo-500/20 shrink-0">
-                <Sparkles className="h-5 w-5 text-indigo-400" />
+        <div className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <Card className="godmode-card bg-zinc-950 border-zinc-800/80 w-full max-w-md shadow-[0_15px_50px_rgba(0,0,0,0.8)] overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-violet-500/5 pointer-events-none opacity-50" />
+            <CardHeader className="border-b border-zinc-800/60 relative z-10 flex flex-row items-center gap-4 bg-zinc-900/50">
+              <div className="bg-indigo-500/10 p-3 rounded-xl border border-indigo-500/20 shrink-0 shadow-inner">
+                <Sparkles className="h-6 w-6 text-indigo-400" />
               </div>
               <div className="flex flex-col">
-                <CardTitle className="text-base font-bold text-zinc-100">Ask a Doubt</CardTitle>
-                <p className="text-xs text-zinc-400 mt-0.5">Study Copilot will answer from this note.</p>
+                <CardTitle className="text-lg font-black text-white tracking-tight">Ask a Doubt</CardTitle>
+                <p className="text-xs text-zinc-400 mt-1 font-medium">Study Copilot will answer from this note.</p>
               </div>
             </CardHeader>
             <form onSubmit={handleAskDoubtSubmit} className="relative z-10">
-              <CardContent className="pt-5 flex flex-col gap-4">
+              <CardContent className="pt-6 flex flex-col gap-5">
                 <div className="flex flex-col gap-2">
                   <textarea
                     value={doubtQuestion}
@@ -1160,15 +1168,15 @@ export default function NoteDetailsClient({
                     required
                     maxLength={300}
                     placeholder="e.g. What is the difference between compiler and interpreter?"
-                    className="w-full bg-zinc-950/80 border border-zinc-800/60 rounded-xl p-3 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 focus:outline-none min-h-[100px] resize-none"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none min-h-[120px] resize-none shadow-inner transition-all"
                     autoFocus
                   />
-                  <div className="text-[10px] text-zinc-500 text-right">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 text-right">
                     {doubtQuestion.length}/300
                   </div>
                 </div>
                 
-                <div className="flex gap-3 pt-2">
+                <div className="flex gap-3 pt-3">
                   <Button
                     type="button"
                     variant="outline"
@@ -1176,16 +1184,16 @@ export default function NoteDetailsClient({
                       setIsDoubtModalOpen(false);
                       setDoubtQuestion("");
                     }}
-                    className="flex-1 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 font-semibold"
+                    className="flex-1 border-zinc-800 bg-zinc-950 text-zinc-300 hover:text-white hover:bg-zinc-900 font-bold h-12 rounded-xl transition-all"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     disabled={!doubtQuestion.trim()}
-                    className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold gap-2 disabled:opacity-50"
+                    className="flex-1 glow-border bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black gap-2 disabled:opacity-50 h-12 rounded-xl shadow-xl shadow-indigo-500/20 transition-all"
                   >
-                    Ask Copilot <Sparkles className="h-4 w-4" />
+                    Ask Copilot <Sparkles className="h-4.5 w-4.5" />
                   </Button>
                 </div>
               </CardContent>
