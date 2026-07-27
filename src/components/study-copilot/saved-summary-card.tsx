@@ -77,70 +77,74 @@ export function SavedSummaryCard({ generation }: SavedSummaryCardProps) {
   };
 
   return (
-    <div className="flex items-start gap-4 px-5 py-4 rounded-2xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm hover:bg-zinc-900/80 hover:border-indigo-500/30 hover:shadow-[0_4px_20px_rgba(99,102,241,0.05)] transition-all group">
-      {/* Icon */}
-      <div className="bg-indigo-500/10 p-2.5 rounded-xl border border-indigo-500/20 shrink-0 mt-0.5">
-                {isMultiPdf ? (
-          <Layers className="h-4 w-4 text-amber-400" />
-        ) : generation.generation_type === "mcq" ? (
-          <BookOpen className="h-4 w-4 text-indigo-400" />
-        ) : generation.generation_type === "flashcards" ? (
-          <GraduationCap className="h-4 w-4 text-indigo-400" />
-        ) : generation.generation_type === "doubt_answer" ? (
-          <HelpCircle className="h-4 w-4 text-indigo-400" />
-        ) : (
-                    <FileText className="h-4 w-4 text-indigo-400" />
-        )}
-      </div>
-
-      {/* Meta */}
-      <div className="flex flex-col gap-1 min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 px-2 py-0.5 rounded-full">
-            <Sparkles className="h-2.5 w-2.5" />
-            {getGenerationTypeLabel(generation.generation_type)}
-          </span>
-          <span className="text-[10px] text-zinc-600 flex items-center gap-1">
-            <Clock className="h-3 w-3" /> {formattedDate}
-          </span>
+    <div className="flex flex-col items-start gap-4 px-5 py-5 rounded-2xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm hover:bg-zinc-900/80 hover:border-indigo-500/30 hover:shadow-[0_4px_20px_rgba(99,102,241,0.05)] transition-all group w-full min-w-0">
+      
+      {/* Top Row / Icon + Meta */}
+      <div className="flex items-start gap-4 w-full min-w-0">
+        {/* Icon */}
+        <div className="bg-indigo-500/10 p-2.5 rounded-xl border border-indigo-500/20 shrink-0 mt-0.5 shadow-inner">
+          {isMultiPdf ? (
+            <Layers className="h-5 w-5 text-amber-400" />
+          ) : generation.generation_type === "mcq" ? (
+            <BookOpen className="h-5 w-5 text-indigo-400" />
+          ) : generation.generation_type === "flashcards" ? (
+            <GraduationCap className="h-5 w-5 text-indigo-400" />
+          ) : generation.generation_type === "doubt_answer" ? (
+            <HelpCircle className="h-5 w-5 text-indigo-400" />
+          ) : (
+            <FileText className="h-5 w-5 text-indigo-400" />
+          )}
         </div>
-                <p className="text-sm font-bold text-zinc-100 truncate">{titleStr}</p>
-        <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">{subtitleStr || preview}</p>
+
+        {/* Content */}
+        <div className="flex flex-col gap-1.5 min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-widest bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 px-2 py-0.5 rounded-full shadow-sm truncate max-w-[120px] sm:max-w-none">
+              <Sparkles className="h-2.5 w-2.5 shrink-0" />
+              <span className="truncate">{getGenerationTypeLabel(generation.generation_type).replace('Combined Important Questions', 'Combined Qs').replace('Important Questions', 'Important Qs').replace('Smart Summary', 'Summary').replace('Practice Quiz', 'Quiz').replace('Flashcards', 'Cards')}</span>
+            </span>
+            <span className="text-[10px] font-bold text-zinc-500 flex items-center gap-1 uppercase tracking-wider">
+              <Clock className="h-3 w-3" /> {formattedDate}
+            </span>
+          </div>
+          <p className="text-sm font-black text-zinc-100 line-clamp-2 break-words leading-tight min-w-0 w-full overflow-hidden">{titleStr}</p>
+          <p className="text-xs font-medium text-zinc-400 line-clamp-2 leading-relaxed break-words min-w-0 w-full overflow-hidden">{subtitleStr || preview}</p>
+        </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-1.5 shrink-0 self-start pt-0.5">
-        <button
-          onClick={handleCopy}
-          title="Copy summary"
-          className="flex items-center gap-1 text-[11px] font-semibold text-zinc-500 hover:text-zinc-200 border border-zinc-700/50 hover:border-zinc-600 bg-zinc-800/40 hover:bg-zinc-800 px-2.5 py-1.5 rounded-lg transition-all"
-        >
-          {copied ? (
-            <Check className="h-3.5 w-3.5 text-emerald-400" />
-          ) : (
-            <Copy className="h-3.5 w-3.5" />
-          )}
-        </button>
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full pt-4 border-t border-zinc-800/50 justify-between">
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={handleCopy}
+            title="Copy summary"
+            className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-200 border border-zinc-700/50 hover:border-zinc-500 bg-zinc-800/40 hover:bg-zinc-700 px-3 py-2 rounded-xl transition-all shadow-sm"
+          >
+            {copied ? (
+              <Check className="h-3.5 w-3.5 text-emerald-400" />
+            ) : (
+              <Copy className="h-3.5 w-3.5" />
+            )}
+          </button>
 
-        <button
-          onClick={handleDelete}
-          disabled={isDeleting}
-          title="Delete saved result"
-          className="flex items-center gap-1 text-[11px] font-semibold text-zinc-500 hover:text-red-400 border border-zinc-700/50 hover:border-red-500/30 bg-zinc-800/40 hover:bg-red-500/10 px-2.5 py-1.5 rounded-lg transition-all disabled:opacity-50"
-        >
-          {isDeleting ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          ) : (
-            <Trash2 className="h-3.5 w-3.5" />
-          )}
-        </button>
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            title="Delete saved result"
+            className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-zinc-400 hover:text-red-400 border border-zinc-700/50 hover:border-red-500/30 bg-zinc-800/40 hover:bg-red-500/10 px-3 py-2 rounded-xl transition-all disabled:opacity-50 shadow-sm"
+          >
+            {isDeleting ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="h-3.5 w-3.5" />
+            )}
+          </button>
+        </div>
 
-        
-
-        {/* Open navigates to the dedicated result reader â€” no Gemini, no usage */}
+        {/* Open Button */}
         <Link
           href={`/dashboard/study-copilot/${generation.id}`}
-          className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-300 hover:text-indigo-200 border border-indigo-500/30 hover:border-indigo-400/40 bg-indigo-500/10 hover:bg-indigo-500/15 px-3 py-1.5 rounded-lg transition-all"
+          className="flex justify-center items-center gap-1.5 text-xs font-black uppercase tracking-widest text-indigo-100 hover:text-white border border-indigo-500/50 hover:border-indigo-400 bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 rounded-xl transition-all shadow-[0_0_15px_rgba(79,70,229,0.2)] hover:shadow-[0_0_20px_rgba(79,70,229,0.4)] w-full sm:w-auto sm:ml-auto"
         >
           Open <ArrowRight className="h-3.5 w-3.5" />
         </Link>

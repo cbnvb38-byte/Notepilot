@@ -75,7 +75,7 @@ export default async function StudyCopilotPage() {
   return (
     <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden flex flex-col font-sans">
       {/* Decorative background */}
-      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none opacity-10 z-0">
+      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none opacity-10 z-0 overflow-hidden">
         <div className="absolute top-[10%] left-[15%] w-[450px] h-[450px] rounded-full bg-indigo-600 blur-[130px] animate-pulse duration-[8000ms]" />
         <div className="absolute top-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-violet-600 blur-[140px] animate-pulse duration-[10000ms]" />
       </div>
@@ -363,7 +363,7 @@ export default async function StudyCopilotPage() {
               </div>
             </div>
           ) : (
-            <div className="godmode-card bg-zinc-950/50 backdrop-blur-md border border-zinc-800/80 p-8 sm:p-10 rounded-3xl relative overflow-hidden flex flex-col md:flex-row gap-8 items-center justify-between group grayscale hover:grayscale-[50%] transition-all duration-700">
+            <div className="godmode-card bg-zinc-950/50 backdrop-blur-md border border-zinc-800/80 p-5 sm:p-10 rounded-3xl relative overflow-hidden flex flex-col md:flex-row gap-8 items-center justify-between group grayscale hover:grayscale-[50%] transition-all duration-700">
               <div className="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-zinc-800/20 to-transparent pointer-events-none" />
               <div className="absolute -right-4 -bottom-8 opacity-[0.02] transform -rotate-12 pointer-events-none">
                 <Rocket className="h-64 w-64 text-zinc-500" />
@@ -371,7 +371,7 @@ export default async function StudyCopilotPage() {
               
               <div className="flex flex-col gap-4 z-10 w-full md:w-auto">
                 <div className="flex items-center gap-3">
-                  <h3 className="text-3xl font-black text-zinc-300 tracking-tight">Exam Sprint Mode</h3>
+                  <h3 className="text-2xl sm:text-3xl font-black text-zinc-300 tracking-tight">Exam Sprint Mode</h3>
                   <span className="bg-zinc-900 text-zinc-500 border border-zinc-800 text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-widest flex items-center gap-1.5 w-fit shadow-inner">
                     <Lock className="h-3 w-3" /> Locked
                   </span>
@@ -411,7 +411,7 @@ export default async function StudyCopilotPage() {
               return (
                 <div
                   key={tool.id}
-                  className="hover-lift premium-glass rounded-3xl p-6 flex flex-col gap-4 transition-all h-full group"
+                  className="hover-lift premium-glass rounded-3xl p-5 sm:p-6 flex flex-col gap-4 transition-all h-full group"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="p-3 rounded-2xl bg-zinc-900 border border-zinc-800/80 text-indigo-400 group-hover:bg-indigo-500/10 group-hover:border-indigo-500/30 group-hover:text-indigo-300 transition-colors shadow-inner group-hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]">
@@ -497,7 +497,7 @@ export default async function StudyCopilotPage() {
         <div className="flex flex-col gap-6 mt-8">
           <div className="mb-2 flex items-start justify-between gap-4 px-2">
             <div>
-              <h2 className="text-2xl font-black text-zinc-100 tracking-tight flex items-center gap-3">
+              <h2 className="text-xl sm:text-2xl font-black text-zinc-100 tracking-tight flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.15)]">
                   <Crown className="h-5 w-5 text-amber-400" /> 
                 </div>

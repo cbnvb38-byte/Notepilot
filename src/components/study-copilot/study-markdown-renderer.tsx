@@ -11,7 +11,7 @@ interface StudyMarkdownRendererProps {
 
 export function StudyMarkdownRenderer({ content }: StudyMarkdownRendererProps) {
   return (
-    <div className="prose prose-invert max-w-none prose-sm text-zinc-300">
+    <div className="prose prose-invert max-w-none prose-sm text-zinc-300 break-words min-w-0 w-full">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
@@ -31,11 +31,14 @@ export function StudyMarkdownRenderer({ content }: StudyMarkdownRendererProps) {
               );
             }
             return (
-              <div className="bg-zinc-950/80 p-3 rounded-xl border border-zinc-800/50 my-3 overflow-x-auto">
-                <code className="text-xs font-mono text-zinc-300" {...props} />
-              </div>
+              <code className="text-xs font-mono text-zinc-300" {...props} />
             );
           },
+          pre: ({ node, ...props }) => (
+            <div className="bg-zinc-950/80 p-3 rounded-xl border border-zinc-800/50 my-3 overflow-x-auto">
+              <pre {...props} />
+            </div>
+          ),
           table: ({ node, ...props }) => (
             <div className="w-full overflow-x-auto my-4 rounded-xl border border-zinc-800/50">
               <table className="w-full text-sm text-left border-collapse" {...props} />

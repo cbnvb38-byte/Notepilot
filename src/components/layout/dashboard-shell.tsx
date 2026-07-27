@@ -21,7 +21,8 @@ import {
   ChevronRight,
   GraduationCap,
   FileUp,
-  Sparkles
+  Sparkles,
+  MoreHorizontal
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,6 +62,13 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
     { name: "Profile", href: "/dashboard/profile", icon: User },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
     ...(isAdminOrModerator ? [{ name: "Admin Panel", href: "/dashboard/admin", icon: ShieldAlert }] : []),
+  ];
+
+  const mobileBottomNav = [
+    { name: "Home", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Browse", href: "/dashboard/browse", icon: Search },
+    { name: "Copilot", href: "/dashboard/study-copilot", icon: Sparkles },
+    { name: "Bookmarks", href: "/dashboard/bookmarks", icon: Bookmark },
   ];
 
   return (
@@ -131,97 +139,22 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
         </div>
       </aside>
 
-      {/* Mobile Drawer Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-zinc-950/80 backdrop-blur-md z-40 md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            <motion.aside
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-              className="fixed inset-y-0 left-0 w-4/5 max-w-sm border-r border-zinc-800 bg-zinc-950/90 backdrop-blur-3xl z-50 flex flex-col md:hidden"
-            >
-              <div className="h-20 flex items-center justify-between px-6 border-b border-zinc-800/60 relative">
-                <Link href="/" className="flex items-center gap-3" onClick={() => setIsMobileMenuOpen(false)}>
-                  <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-2 rounded-xl text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]">
-                    <GraduationCap className="h-5 w-5" />
-                  </div>
-                  <span className="font-black text-base tracking-tight text-white">Study Copilot</span>
-                </Link>
-                <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full">
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
-              <div className="flex-1 overflow-y-auto py-8 px-4 flex flex-col gap-10">
-                <nav className="flex flex-col gap-1.5">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 px-3">Main Menu</div>
-                  {navigation.map((item) => {
-                    const isActive = pathname === item.href;
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all",
-                          isActive ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : "text-zinc-400 hover:text-white"
-                        )}
-                      >
-                        <item.icon className={cn("h-5 w-5", isActive ? "text-indigo-400" : "text-zinc-500")} />
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </nav>
-                <nav className="flex flex-col gap-1.5 mt-auto pb-4">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 px-3">Preferences</div>
-                  {bottomNavigation.map((item) => {
-                    const isActive = pathname === item.href;
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all",
-                          isActive ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : item.name === "Admin Panel" ? "text-amber-500/80" : "text-zinc-400 hover:text-white"
-                        )}
-                      >
-                        <item.icon className={cn("h-5 w-5", isActive ? "text-indigo-400" : item.name === "Admin Panel" ? "text-amber-500/80" : "text-zinc-500")} />
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Mobile Drawer Overlay Removed */}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-zinc-950">
+      <div className="flex-1 flex flex-col min-w-0 w-full max-w-full h-screen overflow-x-hidden bg-zinc-950">
         {/* Top Header */}
-        <header className="h-20 shrink-0 border-b border-zinc-800/60 bg-zinc-950/50 backdrop-blur-2xl sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between">
+        <header className="h-16 md:h-20 shrink-0 border-b border-zinc-800/60 bg-zinc-950/80 md:bg-zinc-950/50 backdrop-blur-2xl sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between w-full min-w-0">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full"
-            >
-              <Menu className="h-6 w-6" />
-            </Button>
-            
-
+            {/* Mobile App Title */}
+            <Link href="/" className="md:hidden flex items-center gap-2 group">
+              <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-1.5 rounded-lg text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+                <GraduationCap className="h-4 w-4" />
+              </div>
+              <span className="font-black text-sm tracking-tight text-zinc-50">
+                NotePilot
+              </span>
+            </Link>
           </div>
 
           <div className="flex items-center gap-3 sm:gap-5">
@@ -273,11 +206,82 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
         </header>
 
         {/* Page Content Scrollable Area */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-8 lg:p-10 relative">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 pb-24 md:pb-10 sm:p-8 lg:p-10 relative w-full min-w-0">
           {/* Subtle background gradient for the main content area */}
           <div className="fixed top-0 left-1/4 w-1/2 h-1/2 bg-indigo-500/5 blur-[150px] pointer-events-none -z-10" />
           {children}
         </main>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-zinc-950/80 backdrop-blur-xl border-t border-zinc-800/60 z-40 flex items-center justify-around px-2 pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        {[
+          { name: "Home", href: "/dashboard", icon: LayoutDashboard },
+          { name: "Notes", href: "/dashboard/browse", icon: Search },
+          { name: "Copilot", href: "/dashboard/study-copilot", icon: Sparkles },
+        ].map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                "flex flex-col items-center justify-center w-[60px] h-full gap-1 transition-colors",
+                isActive ? "text-indigo-400" : "text-zinc-500 hover:text-zinc-300"
+              )}
+            >
+              <div className={cn(
+                "p-1 rounded-full transition-all duration-300",
+                isActive ? "bg-indigo-500/15 shadow-[0_0_15px_rgba(99,102,241,0.2)]" : "bg-transparent"
+              )}>
+                <item.icon className={cn("h-5 w-5", isActive && "fill-indigo-500/20")} />
+              </div>
+              <span className="text-[9px] font-black uppercase tracking-wider">{item.name}</span>
+            </Link>
+          );
+        })}
+        
+        {/* More Dropdown Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex flex-col items-center justify-center w-[60px] h-full gap-1 transition-colors text-zinc-500 hover:text-zinc-300 outline-none cursor-pointer">
+            <div className="p-1 rounded-full bg-transparent">
+              <MoreHorizontal className="h-5 w-5" />
+            </div>
+            <span className="text-[9px] font-black uppercase tracking-wider">More</span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="top" sideOffset={10} className="w-56 bg-zinc-950/95 backdrop-blur-xl border-zinc-800/80 text-zinc-300 rounded-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)] p-2 mb-2">
+            <DropdownMenuLabel className="px-3 py-2 text-xs font-black uppercase tracking-widest text-zinc-500">
+              More Options
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-zinc-800/60" />
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/upload" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <UploadCloud className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">Upload Notes</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/my-uploads" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <FileUp className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">My Uploads</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/bookmarks" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <Bookmark className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">Bookmarks</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-zinc-800/60" />
+            <DropdownMenuItem className="p-0">
+              <Link href="/pricing" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-indigo-500/10 text-indigo-400">
+                <Sparkles className="h-4.5 w-4.5" /> <span className="font-bold text-sm">Pricing</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/settings" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <Settings className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">Settings</span>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

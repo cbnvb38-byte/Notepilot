@@ -587,7 +587,7 @@ function BrowseNotesContent({
                 transition={{ duration: 0.2 }}
                 layout
               >
-                <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 hover:border-indigo-500/40 p-6 rounded-2xl flex flex-col justify-between h-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_rgba(99,102,241,0.15)] group relative overflow-hidden hover-lift">
+                <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 hover:border-indigo-500/40 p-6 rounded-2xl flex flex-col justify-between h-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_rgba(99,102,241,0.15)] group relative overflow-hidden hover-lift min-w-0 w-full">
                   <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                     <FileText className="h-32 w-32" />
                   </div>
@@ -602,7 +602,7 @@ function BrowseNotesContent({
                       </span>
                     </div>
 
-                    <h4 className="font-black text-white text-lg leading-snug line-clamp-1 group-hover:text-indigo-400 transition-colors duration-300 mt-2">
+                    <h4 className="font-black text-white text-lg leading-snug line-clamp-2 break-words group-hover:text-indigo-400 transition-colors duration-300 mt-2">
                       {note.title}
                     </h4>
 
@@ -670,13 +670,13 @@ function BrowseNotesContent({
                   </div>
 
                   <div className="flex flex-col gap-3 pt-3 mt-4 border-t border-zinc-800/50">
-                    <div className="flex items-center justify-between text-[10px] text-zinc-500 font-bold uppercase tracking-wider px-1">
-                      <span>{note.downloads_count} downloads</span>
+                    <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-500 font-bold uppercase tracking-wider px-1">
+                      <span>{note.downloads_count} <span className="hidden sm:inline">downloads</span><span className="sm:hidden">dls</span></span>
                       <span>{note.view_count} views</span>
-                      <span>{note.bookmarks_count} bookmarks</span>
+                      <span>{note.bookmarks_count} <span className="hidden sm:inline">bookmarks</span><span className="sm:hidden">saves</span></span>
                     </div>
 
-                     <div className="grid grid-cols-2 gap-2 mt-2">
+                     <div className="flex flex-col xl:flex-row gap-2 mt-2">
                       <Link
                         href={`/notes/${note.id}`}
                         className={cn(
@@ -697,7 +697,7 @@ function BrowseNotesContent({
                       </Link>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 mt-1">
+                    <div className="flex flex-col xl:flex-row gap-2 mt-1">
                       <Button
                         variant="outline"
                         onClick={() => handleDownload(note.id, note.title)}

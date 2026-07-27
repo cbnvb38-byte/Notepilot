@@ -65,7 +65,7 @@ function NoteMiniCard({ note }: { note: any }) {
   return (
     <Card className="border border-zinc-800/60 bg-zinc-900/35 hover:bg-zinc-900/50 hover:border-indigo-500/25 p-4 rounded-xl flex flex-col justify-between transition-all duration-200 shadow-md group">
       <div className="flex flex-col gap-2">
-        <h4 className="font-bold text-zinc-100 text-sm leading-snug line-clamp-1 group-hover:text-indigo-400 transition-colors duration-200">
+        <h4 className="font-bold text-zinc-100 text-sm leading-snug line-clamp-2 break-words group-hover:text-indigo-400 transition-colors duration-200">
           {note.title}
         </h4>
         <div className="flex items-center gap-1.5 text-[10px] text-zinc-400">

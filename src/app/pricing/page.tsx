@@ -133,7 +133,7 @@ export default async function PricingPage() {
   }  return (
     <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden flex flex-col font-sans selection:bg-indigo-500/30">
       {/* Ambient background blobs */}
-      <div className="absolute inset-0 pointer-events-none z-0">
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden w-full">
         <div className="absolute top-[-10%] left-1/4 w-[600px] h-[600px] rounded-full bg-indigo-600/10 blur-[150px]" />
         <div className="absolute top-[10%] right-1/4 w-[500px] h-[500px] rounded-full bg-violet-600/8 blur-[160px]" />
         <div className="absolute bottom-[20%] left-1/3 w-[450px] h-[450px] rounded-full bg-amber-600/5 blur-[140px]" />

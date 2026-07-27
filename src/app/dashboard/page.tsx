@@ -273,7 +273,7 @@ export default function Dashboard() {
           <motion.div variants={itemVariants} className="flex justify-between items-center bg-zinc-900/40 p-6 rounded-3xl border border-zinc-800/60 shadow-inner backdrop-blur-md relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none" />
             <div className="relative z-10">
-              <h2 className="text-3xl font-black tracking-tight text-white flex items-center gap-3">
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                 Study Command Center
                 <Sparkles className="h-6 w-6 text-indigo-400" />
               </h2>
@@ -281,19 +281,19 @@ export default function Dashboard() {
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="grid sm:grid-cols-3 gap-5">
+          <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
             <Link href="/dashboard/my-uploads">
               <Card className="hover-lift godmode-card border-zinc-800/80 shadow-lg cursor-pointer group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                   <FileText className="h-24 w-24" />
                 </div>
-                <CardContent className="p-6 flex items-center gap-5">
-                  <div className="bg-indigo-500/10 text-indigo-400 p-3.5 rounded-2xl border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
-                    <FileText className="h-6 w-6" />
+                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5">
+                  <div className="bg-indigo-500/10 text-indigo-400 p-2.5 sm:p-3.5 rounded-2xl border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+                    <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-black text-white">{notes.length}</div>
-                    <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-1">Uploaded Notes</div>
+                    <div className="text-lg sm:text-2xl font-black text-white">{notes.length}</div>
+                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1">Uploaded</div>
                   </div>
                 </CardContent>
               </Card>
@@ -303,15 +303,15 @@ export default function Dashboard() {
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                   <ArrowDownToLine className="h-24 w-24" />
                 </div>
-                <CardContent className="p-6 flex items-center gap-5">
-                  <div className="bg-violet-500/10 text-violet-400 p-3.5 rounded-2xl border border-violet-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
-                    <ArrowDownToLine className="h-6 w-6" />
+                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5">
+                  <div className="bg-violet-500/10 text-violet-400 p-2.5 sm:p-3.5 rounded-2xl border border-violet-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+                    <ArrowDownToLine className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-black text-white">
+                    <div className="text-lg sm:text-2xl font-black text-white">
                       {notes.reduce((acc, curr) => acc + (curr.downloads_count || 0), 0)}
                     </div>
-                    <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-1">Total Downloads</div>
+                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1">Downloads</div>
                   </div>
                 </CardContent>
               </Card>
@@ -321,13 +321,13 @@ export default function Dashboard() {
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                   <TrendingUp className="h-24 w-24" />
                 </div>
-                <CardContent className="p-6 flex items-center gap-5">
-                  <div className="bg-pink-500/10 text-pink-400 p-3.5 rounded-2xl border border-pink-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
-                    <TrendingUp className="h-6 w-6" />
+                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5">
+                  <div className="bg-pink-500/10 text-pink-400 p-2.5 sm:p-3.5 rounded-2xl border border-pink-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
+                    <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-black text-white">Sem {notes.length > 0 ? Math.max(...notes.map(n => n.semester)) : 1}</div>
-                    <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-1">Target Semester</div>
+                    <div className="text-lg sm:text-2xl font-black text-white">Sem {notes.length > 0 ? Math.max(...notes.map(n => n.semester)) : 1}</div>
+                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1">Semester</div>
                   </div>
                 </CardContent>
               </Card>
@@ -339,16 +339,16 @@ export default function Dashboard() {
           </motion.div>
 
           {/* Main Tabs panel */}
-          <motion.div variants={itemVariants} className="w-full flex-grow flex flex-col">
-            <Tabs defaultValue="uploads" className="w-full flex-grow flex flex-col">
-            <TabsList className="bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/80 p-1.5 w-fit rounded-2xl gap-1 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-              <TabsTrigger value="uploads" className="text-sm px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold">
+          <motion.div variants={itemVariants} className="w-full max-w-full flex-grow flex flex-col min-w-0">
+            <Tabs defaultValue="uploads" className="w-full max-w-full flex-grow flex flex-col min-w-0">
+            <TabsList className="bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/80 p-1.5 rounded-2xl gap-1 shadow-[0_0_20px_rgba(0,0,0,0.5)] flex overflow-x-auto max-w-full w-full md:w-fit justify-start scrollbar-hide">
+              <TabsTrigger value="uploads" className="text-sm px-4 sm:px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold whitespace-nowrap shrink-0">
                 My Uploads <span className="ml-2 bg-black/20 text-white/90 px-2 py-0.5 rounded-md text-[10px]">{filteredNotes.length}</span>
               </TabsTrigger>
-              <TabsTrigger value="recent" className="text-sm px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold">
+              <TabsTrigger value="recent" className="text-sm px-4 sm:px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold whitespace-nowrap shrink-0">
                 Recently Viewed
               </TabsTrigger>
-              <TabsTrigger value="stats" className="text-sm px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold">
+              <TabsTrigger value="stats" className="text-sm px-4 sm:px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold whitespace-nowrap shrink-0">
                 Contributor Stats
               </TabsTrigger>
             </TabsList>
@@ -356,7 +356,7 @@ export default function Dashboard() {
             {/* Uploads Tab */}
             <TabsContent value="uploads" className="flex-1 mt-6">
               <Card className="premium-glass flex-grow shadow-2xl">
-                <CardContent className="p-8">
+                <CardContent className="p-4 sm:p-8">
                   {filteredNotes.length === 0 ? (
                     <EmptyDashboardState 
                       title="No notes uploaded yet" 
@@ -369,15 +369,15 @@ export default function Dashboard() {
                       {filteredNotes.map((note) => (
                         <div 
                           key={note.id}
-                          className="flex items-center justify-between border border-zinc-800/60 bg-zinc-950/40 hover:bg-zinc-900/60 hover:border-indigo-500/30 px-6 py-5 rounded-2xl transition-all duration-300 group"
+                          className="flex flex-col sm:flex-row items-start sm:items-center justify-between border border-zinc-800/60 bg-zinc-950/40 hover:bg-zinc-900/60 hover:border-indigo-500/30 px-5 sm:px-6 py-5 rounded-2xl transition-all duration-300 group gap-4 w-full min-w-0 overflow-hidden"
                         >
-                          <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(99,102,241,0.1)]">
+                          <div className="flex items-center gap-4 w-full sm:w-auto min-w-0">
+                            <div className="h-12 w-12 bg-indigo-500/10 border border-indigo-500/20 rounded-xl flex shrink-0 items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(99,102,241,0.1)]">
                               <FileText className="h-6 w-6" />
                             </div>
-                            <div>
-                              <h4 className="text-base font-bold text-zinc-100 group-hover:text-white transition-colors">{note.title}</h4>
-                              <p className="text-[11px] font-semibold text-zinc-500 mt-1 flex items-center gap-2 uppercase tracking-wide">
+                            <div className="min-w-0 flex-1">
+                              <h4 className="text-base font-bold text-zinc-100 group-hover:text-white transition-colors truncate">{note.title}</h4>
+                              <p className="text-[11px] font-semibold text-zinc-500 mt-1 flex items-center gap-2 uppercase tracking-wide flex-wrap">
                                 <span>Semester {note.semester}</span>
                                 <span className="h-1 w-1 rounded-full bg-zinc-700" />
                                 <span>{(note.file_size / 1024 / 1024).toFixed(1)} MB</span>
@@ -385,25 +385,25 @@ export default function Dashboard() {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-6">
-                            <div className="flex flex-col items-end">
+                          <div className="flex items-center sm:items-end justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto pt-4 sm:pt-0 border-t border-zinc-800/50 sm:border-0 flex-wrap">
+                            <div className="flex flex-col items-start sm:items-end">
                               <span className="text-sm text-zinc-300 font-black">{note.downloads_count || 0}</span>
                               <span className="text-[9px] uppercase font-bold text-zinc-500 tracking-wider">Downloads</span>
                             </div>
                             
                             {/* Badges for note verification status */}
                             {note.status === "approved" && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 text-[10px] text-emerald-400 font-black uppercase tracking-widest shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                              <span className="inline-flex shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 text-[10px] text-emerald-400 font-black uppercase tracking-widest shadow-[0_0_15px_rgba(16,185,129,0.1)]">
                                 <CheckCircle2 className="h-3.5 w-3.5" /> Approved
                               </span>
                             )}
                             {note.status === "pending_review" && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/15 text-[10px] text-amber-400 font-black uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                              <span className="inline-flex shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/15 text-[10px] text-amber-400 font-black uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.1)]">
                                 <Clock className="h-3.5 w-3.5 animate-spin" /> Pending
                               </span>
                             )}
                             {note.status === "rejected" && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-red-500/30 bg-red-500/15 text-[10px] text-red-400 font-black uppercase tracking-widest shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+                              <span className="inline-flex shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full border border-red-500/30 bg-red-500/15 text-[10px] text-red-400 font-black uppercase tracking-widest shadow-[0_0_15px_rgba(239,68,68,0.1)]">
                                 <AlertCircle className="h-3.5 w-3.5" /> Rejected
                               </span>
                             )}
@@ -419,7 +419,7 @@ export default function Dashboard() {
             {/* Recently Viewed Tab */}
             <TabsContent value="recent" className="flex-grow mt-6">
               <Card className="premium-glass shadow-2xl">
-                <CardContent className="p-8">
+                <CardContent className="p-4 sm:p-8">
                   {recentlyViewed.length === 0 ? (
                     <EmptyDashboardState 
                       title="No recently viewed notes yet" 

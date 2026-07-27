@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
       {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full max-w-7xl h-[800px] pointer-events-none opacity-20 z-0">
+      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full max-w-7xl h-[800px] pointer-events-none opacity-20 z-0 hidden sm:block">
         <div className="absolute top-[5%] left-[10%] w-[550px] h-[550px] rounded-full bg-indigo-600 blur-[130px] animate-pulse duration-[8000ms]" />
         <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] rounded-full bg-violet-600 blur-[140px] animate-pulse duration-[10000ms]" />
       </div>
@@ -44,7 +44,7 @@ export default function Home() {
       <Header />
 
       {/* ═══════════════════ HERO ═══════════════════ */}
-      <section className="relative z-10 pt-24 sm:pt-32 pb-24 px-6 max-w-7xl mx-auto w-full">
+      <section className="relative z-10 pt-24 sm:pt-32 pb-24 px-4 sm:px-6 max-w-7xl mx-auto w-full">
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
           {/* Left — Copy */}
           <div className="flex flex-col gap-8 w-full lg:w-[50%] text-center lg:text-left animate-fade-in-up">
@@ -54,7 +54,7 @@ export default function Home() {
               <span className="uppercase tracking-widest text-[10px]">NotePilot · AI Study Copilot</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] select-none text-zinc-100">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] select-none text-zinc-100 break-words">
               Turn notes into{" "}
               <br className="block" />
               <span className="bg-gradient-to-br from-indigo-400 via-violet-400 to-amber-400 bg-clip-text text-transparent animate-godmode-shimmer bg-[length:200%_auto]">
@@ -71,27 +71,27 @@ export default function Home() {
             </p>
 
             {/* CTAs — Auth-aware */}
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start mt-2">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start mt-2 w-full sm:w-auto">
               <Show when="signed-in">
-                <Link href="/dashboard">
-                  <Button size="lg" className="glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-8 py-6 h-auto rounded-2xl text-base">
+                <Link href="/dashboard" className="w-full sm:w-auto">
+                  <Button size="lg" className="glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-8 py-6 h-auto rounded-2xl text-base w-full sm:w-auto">
                     Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="/dashboard/study-copilot">
-                  <Button size="lg" variant="outline" className="border-indigo-500/30 text-indigo-300 hover:text-indigo-200 hover:bg-indigo-500/10 px-8 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-base shadow-[0_0_20px_rgba(99,102,241,0.05)] hover:shadow-[0_0_30px_rgba(99,102,241,0.15)]">
+                <Link href="/dashboard/study-copilot" className="w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="border-indigo-500/30 text-indigo-300 hover:text-indigo-200 hover:bg-indigo-500/10 px-8 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-base shadow-[0_0_20px_rgba(99,102,241,0.05)] hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] w-full sm:w-auto">
                     Open Study Copilot
                   </Button>
                 </Link>
               </Show>
               <Show when="signed-out">
                 <SignInButton mode="modal">
-                  <Button size="lg" className="glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-8 py-6 h-auto rounded-2xl text-base">
+                  <Button size="lg" className="glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-8 py-6 h-auto rounded-2xl text-base w-full sm:w-auto">
                     Get Started <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </SignInButton>
                 <SignInButton mode="modal">
-                  <Button size="lg" variant="outline" className="glass-panel text-zinc-300 hover:text-zinc-50 hover:bg-zinc-800/40 px-8 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-base">
+                  <Button size="lg" variant="outline" className="glass-panel text-zinc-300 hover:text-zinc-50 hover:bg-zinc-800/40 px-8 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-base w-full sm:w-auto">
                     Sign In
                   </Button>
                 </SignInButton>
@@ -133,7 +133,7 @@ export default function Home() {
               </div>
 
               {/* Signature Integration */}
-              <div className="absolute -bottom-6 right-2 sm:-bottom-8 sm:right-6 w-24 sm:w-32 z-20 pointer-events-none transition-opacity duration-500" style={{ mixBlendMode: 'lighten', filter: 'invert(1) opacity(0.5)' }}>
+              <div className="absolute -bottom-6 right-0 sm:-bottom-8 sm:right-6 w-24 sm:w-32 z-20 pointer-events-none transition-opacity duration-500 hidden sm:block" style={{ mixBlendMode: 'lighten', filter: 'invert(1) opacity(0.5)' }}>
                 <Image 
                   src="/assets/signature.png" 
                   alt="Creator Signature" 
@@ -148,7 +148,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FEATURE SHOWCASE ═══════════════════ */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 w-full mb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-32">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-6">
             <Zap className="h-3 w-3 text-indigo-400" />
@@ -193,7 +193,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FOUNDER SECTION ═══════════════════ */}
-      <section className="relative z-10 max-w-4xl mx-auto px-6 w-full mb-32">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full mb-32">
         <div className="flex items-center justify-center">
           <p className="text-sm font-medium text-zinc-600">
             Created and designed by Raj Dwivedi (RD)
@@ -202,7 +202,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ PREMIUM WORKFLOWS ═══════════════════ */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 w-full mb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-32 hidden sm:block">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[10px] font-black uppercase tracking-widest text-amber-400 mb-6">
             <Crown className="h-3 w-3" />
@@ -296,7 +296,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ HOW IT WORKS ═══════════════════ */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 w-full mb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-32">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-50 mb-4 select-none">
             How it works
@@ -328,7 +328,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ TRUST ═══════════════════ */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 w-full mb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-32">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-50 mb-4 select-none">
             Built for real college study
@@ -357,7 +357,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FAQ ═══════════════════ */}
-      <section className="relative z-10 max-w-4xl mx-auto px-6 w-full mb-32">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full mb-32">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-6">
             <MessageCircleQuestion className="h-3 w-3" /> Got Questions?
@@ -413,14 +413,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════ BOTTOM CTA ═══════════════════ */}
-      <section className="relative z-10 max-w-5xl mx-auto px-6 w-full mb-32">
+      {/* ═══════════════════ CTA ═══════════════════ */}
+      <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 w-full mb-32">
         <div className="relative overflow-hidden godmode-card border-indigo-500/30 rounded-3xl p-12 md:p-20 text-center flex flex-col items-center gap-8 shadow-[0_0_80px_rgba(99,102,241,0.15)] group">
           <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/40 via-transparent to-violet-900/20 pointer-events-none group-hover:opacity-70 transition-opacity duration-500" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-indigo-500/20 blur-[100px] pointer-events-none" />
           
           <Sparkles className="h-10 w-10 text-indigo-400 relative z-10 animate-pulse" />
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-zinc-50 relative z-10 select-none">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-zinc-50 relative z-10 select-none">
             Ready to study smarter?
           </h2>
           <p className="text-lg text-zinc-300 max-w-xl leading-relaxed relative z-10">

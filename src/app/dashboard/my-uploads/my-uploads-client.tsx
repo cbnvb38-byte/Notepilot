@@ -138,7 +138,7 @@ export default function MyUploadsClient({ initialNotes }: { initialNotes: Note[]
                         <FileText className="h-6 w-6" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-zinc-100 text-base leading-snug truncate" title={note.title}>
+                        <h3 className="font-bold text-zinc-100 text-base leading-snug line-clamp-2 break-words" title={note.title}>
                           {note.title}
                         </h3>
                         <p className="text-xs text-zinc-500 mt-1 truncate">

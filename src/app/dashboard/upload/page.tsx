@@ -401,7 +401,7 @@ export default function UploadNotePage() {
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
-                    className={`border-2 border-dashed rounded-2xl p-10 text-center flex flex-col items-center justify-center gap-4 transition-all cursor-pointer relative
+                    className={`border-2 border-dashed rounded-2xl p-10 text-center flex flex-col items-center justify-center gap-4 transition-all cursor-pointer relative w-full
                       ${isDragging ? 'border-indigo-500 bg-indigo-500/10' : 'border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/40 bg-zinc-950/50'}
                       ${isUploading ? 'pointer-events-none opacity-50' : ''}
                     `}
@@ -436,7 +436,7 @@ export default function UploadNotePage() {
                       <div className="bg-red-500/10 p-3 rounded-xl border border-red-500/20 text-red-400">
                         <FileText className="h-6 w-6" />
                       </div>
-                      <div className="flex flex-col max-w-[200px] sm:max-w-xs md:max-w-sm">
+                      <div className="flex flex-col max-w-[200px] sm:max-w-xs md:max-w-sm min-w-0">
                         <span className="text-sm font-bold text-zinc-200 truncate">{file.name}</span>
                         <span className="text-xs text-zinc-500">{(file.size / 1024 / 1024).toFixed(2)} MB • PDF</span>
                       </div>
