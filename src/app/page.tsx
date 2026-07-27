@@ -54,9 +54,9 @@ export default function Home() {
               <span className="uppercase tracking-widest text-[10px]">NotePilot · AI Study Copilot</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight select-none text-zinc-100">
-              Turn college notes into{" "}
-              <br className="hidden sm:block" />
+            <h1 className="text-4xl sm:text-5xl lg:text-5xl font-black tracking-tight leading-tight select-none text-zinc-100">
+              Turn notes into{" "}
+              <br className="block" />
               <span className="bg-gradient-to-br from-indigo-400 via-violet-400 to-amber-400 bg-clip-text text-transparent animate-godmode-shimmer bg-[length:200%_auto]">
                 exam-ready study packs.
               </span>
@@ -109,36 +109,39 @@ export default function Home() {
             {/* Soft Glow Behind Image */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-gradient-to-tr from-indigo-500/20 via-violet-500/20 to-transparent rounded-full blur-[90px] animate-pulse duration-[6000ms]" />
 
-            {/* Hero Image Container */}
-            <div className="relative z-10 w-full max-w-[300px] sm:max-w-sm aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 animate-hero-float motion-reduce:animate-none shadow-[0_0_50px_rgba(99,102,241,0.15)] bg-zinc-900/30">
-              
-              {/* Fallback Visual (behind image) */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-0 p-6 text-center">
-                <div className="h-10 w-10 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-1">
-                  <Sparkles className="h-5 w-5 text-indigo-400" />
+            {/* Image & Signature Wrapper */}
+            <div className="relative z-10 w-full max-w-[300px] sm:max-w-[380px] lg:max-w-[440px] animate-hero-float motion-reduce:animate-none">
+              {/* Hero Image Container */}
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 shadow-[0_0_50px_rgba(99,102,241,0.15)] bg-zinc-900/30">
+                
+                {/* Fallback Visual (behind image) */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-0 p-6 text-center">
+                  <div className="h-10 w-10 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-1">
+                    <Sparkles className="h-5 w-5 text-indigo-400" />
+                  </div>
+                  <span className="font-bold text-zinc-300 text-sm">NotePilot</span>
                 </div>
-                <span className="font-bold text-zinc-300 text-sm">NotePilot</span>
+
+                <Image 
+                  src="/assets/notepilot-hero.png" 
+                  alt="NotePilot AI study workspace preview" 
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 z-10 text-transparent"
+                />
               </div>
 
-              <Image 
-                src="/assets/notepilot-hero.png" 
-                alt="NotePilot AI study workspace preview" 
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 z-10 text-transparent"
-              />
-            </div>
-
-            {/* Signature Integration */}
-            <div className="absolute -bottom-6 right-4 sm:right-10 lg:-bottom-10 lg:right-0 w-32 sm:w-40 z-20 opacity-80" style={{ mixBlendMode: 'screen', filter: 'invert(1) brightness(1.2)' }}>
-              <Image 
-                src="/assets/signature.png" 
-                alt="Creator Signature" 
-                width={160}
-                height={80}
-                className="w-full h-auto object-contain"
-              />
+              {/* Signature Integration */}
+              <div className="absolute -bottom-8 -right-2 sm:-bottom-10 sm:-right-6 w-28 sm:w-36 z-20 pointer-events-none transition-opacity duration-500" style={{ mixBlendMode: 'lighten', filter: 'invert(1) opacity(0.65)' }}>
+                <Image 
+                  src="/assets/signature.png" 
+                  alt="Creator Signature" 
+                  width={144}
+                  height={72}
+                  className="w-full h-auto object-contain drop-shadow-md"
+                />
+              </div>
             </div>
           </div>
         </div>
