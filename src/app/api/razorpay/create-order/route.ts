@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
-import { razorpay } from "@/lib/razorpay/server";
+import { getRazorpayClient } from "@/lib/razorpay/server";
 
 export async function POST(req: Request) {
   try {
@@ -48,6 +48,7 @@ export async function POST(req: Request) {
       },
     };
 
+    const razorpay = getRazorpayClient();
     const order = await razorpay.orders.create(orderOptions);
 
     if (!order || !order.id) {
