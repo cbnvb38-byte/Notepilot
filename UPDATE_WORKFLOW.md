@@ -1,56 +1,24 @@
 # Update Workflow
 
-This document outlines the standard workflow for safely updating the College Notes application without breaking the production environment.
+Follow this strict workflow when pushing updates to the live production environment to prevent outages and regressions.
 
-## 1. Create a Branch or Backup
-Never push directly to the `main` branch.
-```bash
-git checkout main
-git pull origin main
-git checkout -b feature/your-feature-name
-```
+## 1. Development & Verification
+1. Make your changes locally on your development environment.
+2. Run `npm run build` to ensure the application compiles cleanly without Next.js or TypeScript errors.
+3. Test the affected features manually using the local development server.
 
-## 2. Make Changes
-- Implement your UI or logic changes.
-- Ensure you are running the local development server (`npm run dev`) to catch immediate errors.
-- Do NOT expose any new secrets via `NEXT_PUBLIC_` unless they are explicitly meant for the client browser.
+## 2. Version Control
+4. Check the `git diff` to ensure no accidental debug logs, secrets, or unrelated changes are included.
+5. Commit with a clear and descriptive message that notes the phase or feature name (e.g., `git commit -m "Phase 8.9C - Security audit and deployment docs"`).
+6. Push to the GitHub repository.
 
-## 3. Run Build
-Before committing any changes, verify that the production build succeeds locally:
-```bash
-npm run build
-```
-If there are any TypeScript or Turbopack errors, fix them before proceeding.
+## 3. Staging & Deployment
+7. Test the Vercel Preview Deployment to ensure cloud environments build and run correctly.
+8. Deploy to Production **only after** the preview deployment passes all manual checks.
 
-## 4. Test Important Routes
-Verify the following critical paths locally:
-- Dashboard (`/dashboard`)
-- Notes Browser (`/dashboard/browse`)
-- Upload Note (`/dashboard/upload`)
-- Note Details Page (`/notes/[id]`)
-- Study Copilot (`/dashboard/study-copilot` and generated results)
-
-## 5. Commit and Push
-```bash
-git add .
-git commit -m "Brief description of changes"
-git push origin feature/your-feature-name
-```
-
-## 6. Check Vercel Preview
-- Open a Pull Request on GitHub.
-- Vercel will automatically generate a Preview Deployment.
-- Review the Preview URL to ensure everything works in a production-like environment.
-
-## 7. Deploy to Production
-- Merge the Pull Request into `main`.
-- Vercel will trigger a production deployment.
-- Verify the live site.
-
-## 8. Rollback Plan
-If the deployment breaks production:
-1. Go to the Vercel Dashboard for the project.
-2. Navigate to the **Deployments** tab.
-3. Find the last stable deployment.
-4. Click the three dots (...) and select **Promote to Production** (or **Rollback**).
-5. Revert the bad commit on the `main` branch locally and push to fix the repository state.
+## 4. Rollback Strategy
+If a production deployment breaks:
+- **Use Vercel Rollback**: Navigate to the Vercel dashboard and instantly rollback to the previous stable deployment.
+- **Git Revert**: Revert the last Git commit locally and push if the codebase needs fixing immediately.
+- **Do not panic-edit production**: Never edit production files live. Fix locally, build, and push.
+- **Database Issues**: For DB breakages, create corrective SQL migrations instead of manually mutating tables.

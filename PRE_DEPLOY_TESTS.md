@@ -1,26 +1,41 @@
 # Pre-Deploy Tests
 
-Before pushing code to production, perform the following manual testing checklist. This ensures core features are intact and functional.
+Before any major deployment to production, perform the following manual tests to ensure all core workflows function smoothly.
 
-## Core Workflows
-- [ ] **Auth**: Sign out, sign back in (using Clerk). Verify redirection to `/dashboard`.
-- [ ] **Dashboard**: Verify stats load, recent notes are visible, and Study Copilot shortcuts work.
-- [ ] **Notes Browser**: Check that sorting/filtering works, and note cards render the correct 4-button layout (Preview, Study, Download, Save).
-- [ ] **Upload**: Complete a full note upload flow. Verify it appears in "Pending" status in the admin panel, or your uploaded list.
-- [ ] **Note Details**: Open a note detail page. Ensure the PDF previews correctly and the Copilot sidebar is functional.
+## Auth
+- [ ] Signup flow works successfully.
+- [ ] Login flow works successfully.
+- [ ] Logout works successfully.
 
-## Study Copilot & AI Features
-- [ ] **Saved Results**: Open an existing AI generation from the dashboard history. Verify it does *not* increment usage counters.
-- [ ] **Multi-PDF Study Pack**: Start a Multi-PDF generation with multiple files. Verify the markdown renders properly.
-- [ ] **Exam Sprint**: Test the 4-step guided revision workflow from the `/sprint` route.
-- [ ] **Single Note Generation**: Generate a Smart Summary for a single note. Verify the loading state and success formatting.
-- [ ] **Error Handling**: Temporarily disconnect the internet or mock an API failure. Verify the UI handles it gracefully without crashing.
+## Notes
+- [ ] Upload PDF flow works and correctly stores the document in Supabase Storage.
+- [ ] Browse approved notes lists the notes appropriately.
+- [ ] Open note details page renders all required metadata and UI.
+- [ ] Download and view PDF functionality works correctly.
 
-## Operations & Admin
-- [ ] **Admin Panel**: Visit `/dashboard/admin`. Ensure the "Pending", "Approved", and "Rejected" tabs filter correctly. Verify the Approve/Reject buttons function. (Must be logged in as an admin).
-- [ ] **Notifications**: Check the notification bell. Ensure marking notifications as read works.
+## Study Copilot
+- [ ] **Smart Summary**: Generates successfully and saves.
+- [ ] **Practice Quiz (MCQ)**: Generates successfully and saves.
+- [ ] **Flashcards**: Generates successfully and saves.
+- [ ] **Important Questions**: Generates successfully and saves.
+- [ ] **Ask Doubt**: Generates successfully and saves.
+- [ ] **Saved Results**: Can view and open previously generated results.
+- [ ] **Reader**: Displays saved results correctly.
+- [ ] **Exam Sprint**: Missing steps are generated successfully when initiated.
+- [ ] **Multi-PDF Study Pack**: Combines selected PDFs and generates successfully.
+- [ ] **Scanned PDF Behavior**: Falls back to document reading appropriately when text extraction is impossible.
 
-## Polish & Responsiveness
-- [ ] **Mobile Layout**: Open DevTools, switch to a mobile viewport (e.g., iPhone 14 Pro). Ensure there is NO horizontal overflow and the navigation fits correctly.
-- [ ] **Modals**: Ensure all pop-ups (Reject Dialog, Delete Dialog) fit on the screen without scrolling awkwardly.
-- [ ] **Pricing**: Visit the Pricing page and ensure the Godmode UI tier cards display correctly.
+## Premium
+- [ ] **Free Limit**: Enforces standard generation limits correctly.
+- [ ] **Premium Limit**: Enforces premium generation limits correctly.
+- [ ] **Expired Premium Fallback**: Properly restricts users whose premium has expired.
+- [ ] **Pricing Page**: Renders limits and upgrade options accurately.
+
+## Admin
+- [ ] Approve / reject pending notes in the admin dashboard.
+- [ ] Verify that a normal user cannot access admin routes (e.g. `/dashboard/admin`).
+
+## Security & Deployment
+- [ ] Verify no `.env.local` is staged in Git.
+- [ ] Verify no frontend secrets are exposed (no `NEXT_PUBLIC` for private keys).
+- [ ] Verify `npm run build` passes locally with zero errors.
