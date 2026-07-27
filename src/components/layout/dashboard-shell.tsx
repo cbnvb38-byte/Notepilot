@@ -221,20 +221,7 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
               <Menu className="h-6 w-6" />
             </Button>
             
-            {/* Omni-search */}
-            <div className="relative hidden sm:block w-72 md:w-96 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 group-focus-within:text-indigo-400 transition-colors" />
-              <Input 
-                type="text"
-                placeholder="Search notes, courses, or ask Study Copilot..." 
-                className="pl-11 bg-zinc-900/60 border-zinc-800/80 text-sm h-11 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 text-zinc-200 rounded-2xl transition-all duration-300 placeholder:text-zinc-600 shadow-inner shadow-black/20"
-              />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                <kbd className="hidden lg:inline-flex items-center gap-1 rounded bg-zinc-800/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400 border border-zinc-700">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </div>
-            </div>
+
           </div>
 
           <div className="flex items-center gap-3 sm:gap-5">

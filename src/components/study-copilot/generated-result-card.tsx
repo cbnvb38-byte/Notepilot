@@ -631,7 +631,7 @@ export function GeneratedResultCard({
           <details className="text-xs">
             <summary className="cursor-pointer text-zinc-500 font-black uppercase tracking-widest mb-3 hover:text-zinc-300 transition-colors">View raw fallback</summary>
             <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-xl overflow-x-auto shadow-inner">
-              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText || JSON.stringify(resultJson, null, 2)}</pre>
+              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText ? resultText.replace(/\\n/g, '\n') : JSON.stringify(resultJson, null, 2)}</pre>
             </div>
           </details>
         </div>
@@ -647,7 +647,7 @@ export function GeneratedResultCard({
           <details className="text-xs">
             <summary className="cursor-pointer text-zinc-500 font-black uppercase tracking-widest mb-3 hover:text-zinc-300 transition-colors">View raw fallback</summary>
             <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-xl overflow-x-auto shadow-inner">
-              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText || JSON.stringify(resultJson, null, 2)}</pre>
+              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText ? resultText.replace(/\\n/g, '\n') : JSON.stringify(resultJson, null, 2)}</pre>
             </div>
           </details>
         </div>
@@ -663,7 +663,7 @@ export function GeneratedResultCard({
           <details className="text-xs">
             <summary className="cursor-pointer text-zinc-500 font-black uppercase tracking-widest mb-3 hover:text-zinc-300 transition-colors">View raw fallback</summary>
             <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-xl overflow-x-auto shadow-inner">
-              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText || JSON.stringify(resultJson, null, 2)}</pre>
+              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText ? resultText.replace(/\\n/g, '\n') : JSON.stringify(resultJson, null, 2)}</pre>
             </div>
           </details>
         </div>
@@ -679,7 +679,7 @@ export function GeneratedResultCard({
           <details className="text-xs">
             <summary className="cursor-pointer text-zinc-500 font-black uppercase tracking-widest mb-3 hover:text-zinc-300 transition-colors">View raw fallback</summary>
             <div className="bg-zinc-950 border border-zinc-800 p-5 rounded-xl overflow-x-auto shadow-inner">
-              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText || JSON.stringify(resultJson, null, 2)}</pre>
+              <pre className="text-zinc-400 whitespace-pre-wrap font-mono">{resultText ? resultText.replace(/\\n/g, '\n') : JSON.stringify(resultJson, null, 2)}</pre>
             </div>
           </details>
         </div>

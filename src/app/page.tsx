@@ -47,14 +47,14 @@ export default function Home() {
       <section className="relative z-10 pt-24 sm:pt-32 pb-24 px-6 max-w-7xl mx-auto w-full">
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
           {/* Left — Copy */}
-          <div className="flex flex-col gap-8 w-full lg:w-[55%] text-center lg:text-left animate-fade-in-up">
+          <div className="flex flex-col gap-8 w-full lg:w-[50%] text-center lg:text-left animate-fade-in-up">
             {/* Banner Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/25 bg-indigo-500/10 text-indigo-300 text-xs font-semibold shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:border-indigo-500/40 hover:bg-indigo-500/15 transition-all duration-300 mx-auto lg:mx-0 w-fit">
               <Sparkles className="h-4 w-4 text-indigo-400 animate-pulse" />
               <span className="uppercase tracking-widest text-[10px]">NotePilot · AI Study Copilot</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-5xl font-black tracking-tight leading-tight select-none text-zinc-100">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] select-none text-zinc-100">
               Turn notes into{" "}
               <br className="block" />
               <span className="bg-gradient-to-br from-indigo-400 via-violet-400 to-amber-400 bg-clip-text text-transparent animate-godmode-shimmer bg-[length:200%_auto]">
@@ -105,12 +105,12 @@ export default function Home() {
           </div>
 
           {/* Right — Floating Visual: AI Study Pilot */}
-          <div className="w-full lg:w-[45%] relative h-[350px] sm:h-[450px] lg:h-[500px] flex flex-col items-center justify-center pointer-events-none group mt-10 lg:mt-0">
+          <div className="w-full lg:w-[50%] relative h-[350px] sm:h-[450px] lg:h-[500px] flex flex-col items-center justify-center pointer-events-none group mt-10 lg:mt-0">
             {/* Soft Glow Behind Image */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-gradient-to-tr from-indigo-500/20 via-violet-500/20 to-transparent rounded-full blur-[90px] animate-pulse duration-[6000ms]" />
 
             {/* Image & Signature Wrapper */}
-            <div className="relative z-10 w-full max-w-[300px] sm:max-w-[380px] lg:max-w-[440px] animate-hero-float motion-reduce:animate-none">
+            <div className="relative z-10 w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[480px] animate-hero-float motion-reduce:animate-none">
               {/* Hero Image Container */}
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 shadow-[0_0_50px_rgba(99,102,241,0.15)] bg-zinc-900/30">
                 
@@ -133,7 +133,7 @@ export default function Home() {
               </div>
 
               {/* Signature Integration */}
-              <div className="absolute -bottom-8 -right-2 sm:-bottom-10 sm:-right-6 w-28 sm:w-36 z-20 pointer-events-none transition-opacity duration-500" style={{ mixBlendMode: 'lighten', filter: 'invert(1) opacity(0.65)' }}>
+              <div className="absolute -bottom-6 right-2 sm:-bottom-8 sm:right-6 w-24 sm:w-32 z-20 pointer-events-none transition-opacity duration-500" style={{ mixBlendMode: 'lighten', filter: 'invert(1) opacity(0.5)' }}>
                 <Image 
                   src="/assets/signature.png" 
                   alt="Creator Signature" 

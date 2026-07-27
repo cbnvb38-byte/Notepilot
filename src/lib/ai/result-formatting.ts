@@ -158,13 +158,14 @@ export function getResultPreview(generation: SavedGeneration): string {
   const text = safelyExtractText(generation.result_text, generation.result_json as Record<string, unknown> | null);
   
   if (!text || (text.trim().startsWith("{") && text.trim().endsWith("}"))) {
-    return "Smart Summary generated";
+    return "Generation saved.";
   }
 
   // Get first clean sentence for summary
   const cleanText = text
     .replace(/##\s*/g, "")
     .replace(/\*\*/g, "")
+    .replace(/\\n/g, " ")
     .replace(/\n+/g, " ")
     .replace(/\[.*?\]/g, "")
     .trim();
@@ -175,7 +176,7 @@ export function getResultPreview(generation: SavedGeneration): string {
   }
 
   const preview = cleanText.slice(0, 120);
-  return preview ? preview + (cleanText.length > 120 ? '...' : '') : "Smart Summary generated";
+  return preview ? preview + (cleanText.length > 120 ? '...' : '') : "Generation saved.";
 }
 
 export function parseMCQResult(resultText: string | null, resultJson: Record<string, unknown> | null): any[] | null {
