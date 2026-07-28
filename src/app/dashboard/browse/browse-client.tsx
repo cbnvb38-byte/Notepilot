@@ -758,7 +758,7 @@ function BrowseNotesContent({
             <ChevronLeft className="h-4 w-4" /> Previous
           </Button>
 
-          <div className="flex flex-wrap justify-center items-center gap-1.5">
+          <div className="flex items-center gap-1.5">
             {[...Array(totalPages)].map((_, i) => {
               const pageNumber = i + 1;
               const isCurrent = pageNumber === page;

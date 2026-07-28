@@ -132,7 +132,7 @@ export default async function PricingPage() {
       isPremiumExpired = usageResult.data.isPremiumExpired || false;
     }
   }  return (
-    <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-x-hidden w-full min-w-0 flex flex-col font-sans selection:bg-indigo-500/30">
+    <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden flex flex-col font-sans selection:bg-indigo-500/30">
       {/* Ambient background blobs */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden w-full">
         <div className="absolute top-[-10%] left-1/4 w-[600px] h-[600px] rounded-full bg-indigo-600/10 blur-[150px]" />
@@ -288,8 +288,7 @@ export default async function PricingPage() {
             <p className="text-sm font-medium text-zinc-400">Everything side by side.</p>
           </div>
 
-          <div className="godmode-card rounded-3xl border border-zinc-800/80 bg-zinc-950/60 backdrop-blur-xl overflow-x-auto shadow-[0_15px_50px_rgba(0,0,0,0.5)]">
-            <div className="min-w-[500px]">
+          <div className="godmode-card rounded-3xl border border-zinc-800/80 bg-zinc-950/60 backdrop-blur-xl overflow-hidden shadow-[0_15px_50px_rgba(0,0,0,0.5)]">
             <div className="grid grid-cols-3 border-b border-zinc-800/80 bg-zinc-900/80">
               <div className="px-6 py-5 text-xs font-black text-zinc-500 uppercase tracking-widest">Feature</div>
               <div className="px-6 py-5 text-xs font-black text-zinc-300 uppercase tracking-widest text-center border-l border-zinc-800/80">Free</div>
@@ -312,7 +311,6 @@ export default async function PricingPage() {
                 </div>
               </div>
             ))}
-            </div>
           </div>
         </div>
 

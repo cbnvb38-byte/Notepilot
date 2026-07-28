@@ -34,7 +34,7 @@ import { Show, SignInButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-x-hidden w-full min-w-0 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
       {/* Decorative Blur Backgrounds */}
       <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full max-w-7xl h-[800px] pointer-events-none opacity-20 z-0 hidden sm:block">
         <div className="absolute top-[5%] left-[10%] w-[550px] h-[550px] rounded-full bg-indigo-600 blur-[130px] animate-pulse duration-[8000ms]" />
@@ -428,25 +428,25 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-4 mt-4 relative z-10 justify-center">
             <Show when="signed-in">
-              <Link href="/dashboard" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-10 py-6 h-auto rounded-2xl text-lg">
+              <Link href="/dashboard">
+                <Button size="lg" className="glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-10 py-6 h-auto rounded-2xl text-lg">
                   Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Link href="/dashboard/study-copilot" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto glass-panel text-indigo-300 hover:text-indigo-200 hover:bg-indigo-500/10 px-10 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-lg border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.05)]">
+              <Link href="/dashboard/study-copilot">
+                <Button size="lg" variant="outline" className="glass-panel text-indigo-300 hover:text-indigo-200 hover:bg-indigo-500/10 px-10 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-lg border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                   Open Study Copilot
                 </Button>
               </Link>
             </Show>
             <Show when="signed-out">
               <SignInButton mode="modal">
-                <Button size="lg" className="w-full sm:w-auto glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-10 py-6 h-auto rounded-2xl text-lg">
+                <Button size="lg" className="glow-border bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-bold shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 px-10 py-6 h-auto rounded-2xl text-lg">
                   Get Started Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </SignInButton>
-              <Link href="/dashboard/browse" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto glass-panel text-zinc-300 hover:text-zinc-50 hover:bg-zinc-800/40 px-10 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-lg border-zinc-700/50">
+              <Link href="/dashboard/browse">
+                <Button size="lg" variant="outline" className="glass-panel text-zinc-300 hover:text-zinc-50 hover:bg-zinc-800/40 px-10 py-6 h-auto rounded-2xl font-bold transition-all duration-300 text-lg border-zinc-700/50">
                   Explore Notes
                 </Button>
               </Link>
