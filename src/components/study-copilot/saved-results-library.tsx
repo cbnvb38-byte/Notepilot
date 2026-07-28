@@ -196,17 +196,19 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
       </div>
 
       {/* Filters and Search Bar */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-zinc-900/30 p-2.5 rounded-2xl border border-zinc-800/60 backdrop-blur-md relative z-20">
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-zinc-900/30 p-2.5 rounded-2xl border border-zinc-800/60 backdrop-blur-md relative z-20 w-full max-w-full min-w-0">
         
         {/* Tabs */}
-        <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+        <div className="w-full max-w-full min-w-0 overflow-hidden md:w-auto">
+          <div className="w-full max-w-full overflow-x-auto scrollbar-hide pb-2 md:pb-0">
+            <div className="flex w-max items-center gap-1.5">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id as TabType)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all border ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-all border ${
                   isActive
                     ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]"
                     : "bg-zinc-900/50 text-zinc-400 border-zinc-800/60 hover:bg-zinc-800 hover:text-zinc-200 hover:border-zinc-700"
@@ -219,6 +221,8 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
               </button>
             );
           })}
+            </div>
+          </div>
         </div>
 
         {/* Search & Sort */}
