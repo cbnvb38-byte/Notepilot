@@ -270,30 +270,30 @@ export default function Dashboard() {
         <div className="col-span-3 flex flex-col gap-6">
           
           {/* Dashboard Title & Visual Stats Grid */}
-          <motion.div variants={itemVariants} className="flex justify-between items-center bg-zinc-900/40 p-6 rounded-3xl border border-zinc-800/60 shadow-inner backdrop-blur-md relative overflow-hidden">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-zinc-900/40 p-5 sm:p-6 rounded-3xl border border-zinc-800/60 shadow-inner backdrop-blur-md relative overflow-hidden gap-3 w-full min-w-0">
             <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-            <div className="relative z-10">
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+            <div className="relative z-10 min-w-0 w-full">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-white flex items-center gap-2 sm:gap-3 flex-wrap">
                 Study Command Center
-                <Sparkles className="h-6 w-6 text-indigo-400" />
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-400 shrink-0" />
               </h2>
-              <p className="text-zinc-400 text-sm mt-1 font-medium">Welcome back, {profile?.name?.split(' ')[0] || 'Student'}. Here's your study overview.</p>
+              <p className="text-zinc-400 text-xs sm:text-sm mt-1 font-medium break-words whitespace-normal w-full max-w-full">Welcome back, {profile?.name?.split(' ')[0] || 'Student'}. Here's your study overview.</p>
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
+          <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 w-full min-w-0">
             <Link href="/dashboard/my-uploads">
               <Card className="hover-lift godmode-card border-zinc-800/80 shadow-lg cursor-pointer group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                   <FileText className="h-24 w-24" />
                 </div>
-                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5">
-                  <div className="bg-indigo-500/10 text-indigo-400 p-2.5 sm:p-3.5 rounded-2xl border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5 min-w-0 w-full">
+                  <div className="bg-indigo-500/10 text-indigo-400 p-2.5 sm:p-3.5 rounded-2xl border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(99,102,241,0.15)] shrink-0">
                     <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
-                  <div>
-                    <div className="text-lg sm:text-2xl font-black text-white">{notes.length}</div>
-                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1">Uploaded</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-lg sm:text-2xl font-black text-white truncate">{notes.length}</div>
+                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1 truncate">Uploaded</div>
                   </div>
                 </CardContent>
               </Card>
@@ -303,15 +303,15 @@ export default function Dashboard() {
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                   <ArrowDownToLine className="h-24 w-24" />
                 </div>
-                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5">
-                  <div className="bg-violet-500/10 text-violet-400 p-2.5 sm:p-3.5 rounded-2xl border border-violet-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5 min-w-0 w-full">
+                  <div className="bg-violet-500/10 text-violet-400 p-2.5 sm:p-3.5 rounded-2xl border border-violet-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(139,92,246,0.15)] shrink-0">
                     <ArrowDownToLine className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
-                  <div>
-                    <div className="text-lg sm:text-2xl font-black text-white">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-lg sm:text-2xl font-black text-white truncate">
                       {notes.reduce((acc, curr) => acc + (curr.downloads_count || 0), 0)}
                     </div>
-                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1">Downloads</div>
+                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1 truncate">Downloads</div>
                   </div>
                 </CardContent>
               </Card>
@@ -321,13 +321,13 @@ export default function Dashboard() {
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                   <TrendingUp className="h-24 w-24" />
                 </div>
-                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5">
-                  <div className="bg-pink-500/10 text-pink-400 p-2.5 sm:p-3.5 rounded-2xl border border-pink-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
+                <CardContent className="p-4 sm:p-6 flex items-center gap-3 sm:gap-5 min-w-0 w-full">
+                  <div className="bg-pink-500/10 text-pink-400 p-2.5 sm:p-3.5 rounded-2xl border border-pink-500/20 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(236,72,153,0.15)] shrink-0">
                     <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
-                  <div>
-                    <div className="text-lg sm:text-2xl font-black text-white">Sem {notes.length > 0 ? Math.max(...notes.map(n => n.semester)) : 1}</div>
-                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1">Semester</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-lg sm:text-2xl font-black text-white truncate">Sem {notes.length > 0 ? Math.max(...notes.map(n => n.semester)) : 1}</div>
+                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest font-black mt-0.5 sm:mt-1 truncate">Semester</div>
                   </div>
                 </CardContent>
               </Card>
@@ -354,9 +354,9 @@ export default function Dashboard() {
             </TabsList>
 
             {/* Uploads Tab */}
-            <TabsContent value="uploads" className="flex-1 mt-6">
-              <Card className="premium-glass flex-grow shadow-2xl">
-                <CardContent className="p-4 sm:p-8">
+            <TabsContent value="uploads" className="flex-1 mt-6 w-full min-w-0 max-w-full">
+              <Card className="premium-glass flex-grow shadow-2xl w-full min-w-0 overflow-hidden">
+                <CardContent className="p-4 sm:p-8 min-w-0 w-full overflow-hidden">
                   {filteredNotes.length === 0 ? (
                     <EmptyDashboardState 
                       title="No notes uploaded yet" 
@@ -417,9 +417,9 @@ export default function Dashboard() {
             </TabsContent>
 
             {/* Recently Viewed Tab */}
-            <TabsContent value="recent" className="flex-grow mt-6">
-              <Card className="premium-glass shadow-2xl">
-                <CardContent className="p-4 sm:p-8">
+            <TabsContent value="recent" className="flex-grow mt-6 w-full min-w-0 max-w-full">
+              <Card className="premium-glass shadow-2xl w-full min-w-0 overflow-hidden">
+                <CardContent className="p-4 sm:p-8 min-w-0 w-full overflow-hidden">
                   {recentlyViewed.length === 0 ? (
                     <EmptyDashboardState 
                       title="No recently viewed notes yet" 
@@ -487,9 +487,9 @@ export default function Dashboard() {
             </TabsContent>
 
             {/* Contributor Stats Tab */}
-            <TabsContent value="stats" className="flex-1 mt-6">
-              <Card className="premium-glass shadow-2xl">
-                <CardContent className="p-8 flex flex-col gap-8">
+            <TabsContent value="stats" className="flex-1 mt-6 w-full min-w-0 max-w-full">
+              <Card className="premium-glass shadow-2xl w-full min-w-0 overflow-hidden">
+                <CardContent className="p-4 sm:p-8 flex flex-col gap-6 sm:gap-8 min-w-0 w-full overflow-hidden">
                   {(() => {
                     const totalUploaded = notes.length;
                     const approved = notes.filter(n => n.status === "approved").length;
@@ -518,7 +518,7 @@ export default function Dashboard() {
                         </div>
 
                         {/* Top Summary Cards */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 w-full min-w-0">
                           <div className="godmode-card p-5 border-zinc-800/80 rounded-2xl text-center flex flex-col gap-2 justify-center shadow-lg hover:shadow-indigo-500/10 transition-shadow">
                             <span className="text-3xl font-black text-white">{totalUploaded}</span>
                             <span className="text-[10px] uppercase font-black tracking-widest text-indigo-400">Total Uploads</span>
@@ -558,20 +558,20 @@ export default function Dashboard() {
                           </div>
 
                           {/* Right: Feedback & Ratings Summary */}
-                          <div className="flex flex-col gap-4">
+                          <div className="flex flex-col gap-4 w-full min-w-0">
                             <h4 className="text-xs font-black text-zinc-500 uppercase tracking-widest pl-1">Feedback Summary</h4>
-                            <div className="flex flex-col bg-zinc-950/60 border border-zinc-800/60 rounded-2xl overflow-hidden divide-y divide-zinc-800/60 shadow-inner">
-                              <div className="flex justify-between items-center py-3.5 px-5 text-sm hover:bg-zinc-900/50 transition-colors">
-                                <span className="text-zinc-400 font-bold">Total Ratings Received</span>
-                                <span className="font-black text-zinc-200">{totalRatings}</span>
+                            <div className="flex flex-col bg-zinc-950/60 border border-zinc-800/60 rounded-2xl overflow-hidden divide-y divide-zinc-800/60 shadow-inner w-full min-w-0">
+                              <div className="flex justify-between items-center py-3.5 px-4 sm:px-5 text-sm hover:bg-zinc-900/50 transition-colors gap-2">
+                                <span className="text-zinc-400 font-bold truncate">Total Ratings</span>
+                                <span className="font-black text-zinc-200 shrink-0">{totalRatings}</span>
                               </div>
-                              <div className="flex justify-between items-center py-3.5 px-5 text-sm hover:bg-zinc-900/50 transition-colors">
-                                <span className="text-zinc-400 font-bold">Total Written Reviews</span>
-                                <span className="font-black text-zinc-200">{totalReviews}</span>
+                              <div className="flex justify-between items-center py-3.5 px-4 sm:px-5 text-sm hover:bg-zinc-900/50 transition-colors gap-2">
+                                <span className="text-zinc-400 font-bold truncate">Total Reviews</span>
+                                <span className="font-black text-zinc-200 shrink-0">{totalReviews}</span>
                               </div>
-                              <div className="flex justify-between items-center py-3.5 px-5 text-sm hover:bg-zinc-900/50 transition-colors">
-                                <span className="text-zinc-400 font-bold">Average rating across uploaded notes</span>
-                                <span className="font-black text-yellow-500 flex items-center gap-1.5 bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/20">
+                              <div className="flex flex-col sm:flex-row justify-between sm:items-center py-3.5 px-4 sm:px-5 text-sm hover:bg-zinc-900/50 transition-colors gap-3 sm:gap-2">
+                                <span className="text-zinc-400 font-bold break-words whitespace-normal leading-tight">Average rating across uploaded notes</span>
+                                <span className="font-black text-yellow-500 flex items-center justify-center gap-1.5 bg-yellow-500/10 px-2 py-1 rounded border border-yellow-500/20 shrink-0 w-fit">
                                   {averageRating} <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
                                 </span>
                               </div>
@@ -602,15 +602,15 @@ interface EmptyStateProps {
 
 function EmptyDashboardState({ title, description, actionLink, actionText }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-16 px-4">
+    <div className="flex flex-col items-center justify-center text-center py-12 sm:py-16 px-2 sm:px-4 w-full min-w-0 max-w-full">
       <div className="relative mb-6 group">
         <div className="absolute inset-0 bg-indigo-500/20 blur-xl rounded-full group-hover:bg-indigo-500/30 transition-colors" />
         <div className="h-20 w-20 bg-zinc-950/80 backdrop-blur-sm border-2 border-indigo-500/30 text-indigo-400 rounded-3xl flex items-center justify-center relative z-10 shadow-[0_0_30px_rgba(99,102,241,0.2)] group-hover:scale-110 transition-transform duration-500 group-hover:rotate-3">
           <History className="h-8 w-8" />
         </div>
       </div>
-      <h3 className="font-black text-xl text-white mb-2">{title}</h3>
-      <p className="text-zinc-400 text-sm leading-relaxed max-w-md font-medium">
+      <h3 className="font-black text-lg sm:text-xl text-white mb-2 break-words whitespace-normal max-w-full px-2">{title}</h3>
+      <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-md font-medium break-words whitespace-normal px-2">
         {description}
       </p>
       <Link href={actionLink} className="mt-8">
