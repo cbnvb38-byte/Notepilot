@@ -392,8 +392,8 @@ function BrowseNotesContent({
   return (
     <div className="flex flex-col gap-6">
       {/* Advanced Filter panel */}
-      <div className="flex flex-col gap-4 bg-zinc-900/15 border border-zinc-800/40 p-5 rounded-2xl backdrop-blur-md">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="flex flex-col gap-3 sm:gap-4 bg-zinc-900/15 border border-zinc-800/40 p-4 sm:p-5 rounded-2xl backdrop-blur-md">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           {/* Search Box */}
           <div className="relative md:col-span-2 group">
             <Search className="absolute left-4 top-3.5 h-4 w-4 text-zinc-500 group-focus-within:text-indigo-400 transition-colors" />
@@ -425,7 +425,7 @@ function BrowseNotesContent({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {/* Branch Dropdown */}
           <div className="relative">
             <select
@@ -587,7 +587,7 @@ function BrowseNotesContent({
                 transition={{ duration: 0.2 }}
                 layout
               >
-                <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 hover:border-indigo-500/40 p-6 rounded-2xl flex flex-col justify-between h-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_rgba(99,102,241,0.15)] group relative overflow-hidden hover-lift min-w-0 w-full">
+                <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 hover:border-indigo-500/40 p-4 sm:p-6 rounded-2xl flex flex-col justify-between h-full transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_rgba(99,102,241,0.15)] group relative overflow-hidden hover-lift min-w-0 w-full">
                   <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                     <FileText className="h-32 w-32" />
                   </div>
@@ -676,7 +676,7 @@ function BrowseNotesContent({
                       <span>{note.bookmarks_count} <span className="hidden sm:inline">bookmarks</span><span className="sm:hidden">saves</span></span>
                     </div>
 
-                     <div className="flex flex-col xl:flex-row gap-2 mt-2">
+                     <div className="flex flex-col gap-2 mt-3">
                       <Link
                         href={`/notes/${note.id}`}
                         className={cn(
@@ -686,52 +686,52 @@ function BrowseNotesContent({
                       >
                         <Eye className="h-4 w-4" /> View Note
                       </Link>
-                      <Link
-                        href={`/dashboard/study-copilot/sprint/${note.id}`}
-                        className={cn(
-                          buttonVariants({ variant: "outline", size: "sm" }),
-                          "border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 text-xs py-3 rounded-xl gap-2 font-bold h-10 inline-flex items-center justify-center transition-all w-full"
-                        )}
-                      >
-                        <Bot className="h-4 w-4" /> Study
-                      </Link>
-                    </div>
-
-                    <div className="flex flex-col xl:flex-row gap-2 mt-1">
-                      <Button
-                        variant="outline"
-                        onClick={() => handleDownload(note.id, note.title)}
-                        disabled={!!downloadingNotes[note.id]}
-                        className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/50 hover:text-white text-xs py-3 rounded-xl gap-2 font-bold h-10 transition-colors"
-                      >
-                        {downloadingNotes[note.id] ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Download className="h-4 w-4" />
-                        )}
-                        Download
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleToggleBookmark(note.id);
-                        }}
-                        disabled={!!bookmarkingIds[note.id]}
-                        className={`border-zinc-800 text-xs py-3 rounded-xl gap-2 font-bold h-10 transition-colors ${
-                          bookmarkedIds.has(note.id) 
-                            ? "bg-pink-500/10 text-pink-500 border-pink-500/20 hover:bg-pink-500/20 shadow-inner" 
-                            : "text-zinc-300 hover:bg-zinc-800/50 hover:text-white"
-                        }`}
-                      >
-                        {bookmarkingIds[note.id] ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Bookmark className={`h-4 w-4 ${bookmarkedIds.has(note.id) ? "fill-pink-500" : ""}`} />
-                        )}
-                        {bookmarkedIds.has(note.id) ? "Saved" : "Save"}
-                      </Button>
+                      
+                      <div className="grid grid-cols-3 gap-2">
+                        <Link
+                          href={`/dashboard/study-copilot/sprint/${note.id}`}
+                          className={cn(
+                            buttonVariants({ variant: "outline", size: "sm" }),
+                            "border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 text-xs py-3 rounded-xl gap-1.5 font-bold h-10 inline-flex items-center justify-center transition-all w-full px-2"
+                          )}
+                        >
+                          <Bot className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Study</span>
+                        </Link>
+                        <Button
+                          variant="outline"
+                          onClick={() => handleDownload(note.id, note.title)}
+                          disabled={!!downloadingNotes[note.id]}
+                          className="border-zinc-800 text-zinc-300 hover:bg-zinc-800/50 hover:text-white text-xs py-3 rounded-xl gap-1.5 font-bold h-10 transition-colors px-2 w-full"
+                        >
+                          {downloadingNotes[note.id] ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Download className="h-3.5 w-3.5" />
+                          )}
+                          <span className="hidden sm:inline">DL</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleToggleBookmark(note.id);
+                          }}
+                          disabled={!!bookmarkingIds[note.id]}
+                          className={`border-zinc-800 text-xs py-3 rounded-xl gap-1.5 font-bold h-10 transition-colors px-2 w-full ${
+                            bookmarkedIds.has(note.id) 
+                              ? "bg-pink-500/10 text-pink-500 border-pink-500/20 hover:bg-pink-500/20 shadow-inner" 
+                              : "text-zinc-300 hover:bg-zinc-800/50 hover:text-white"
+                          }`}
+                        >
+                          {bookmarkingIds[note.id] ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Bookmark className={`h-3.5 w-3.5 ${bookmarkedIds.has(note.id) ? "fill-pink-500" : ""}`} />
+                          )}
+                          <span className="hidden sm:inline">{bookmarkedIds.has(note.id) ? "Saved" : "Save"}</span>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </Card>

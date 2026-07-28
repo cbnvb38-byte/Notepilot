@@ -158,10 +158,10 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[280px] max-w-[80vw] bg-zinc-950 border-l border-zinc-800/80 shadow-2xl z-50 md:hidden flex flex-col"
+              className="fixed top-0 right-0 h-full w-[280px] max-w-[80vw] bg-zinc-950/95 backdrop-blur-2xl border-l border-zinc-800/60 shadow-2xl z-[100] md:hidden flex flex-col"
             >
-              <div className="h-16 shrink-0 border-b border-zinc-800/60 px-4 flex items-center justify-between">
-                <span className="font-black text-sm tracking-tight text-zinc-50">NotePilot Menu</span>
+              <div className="h-16 shrink-0 border-b border-zinc-800/40 px-6 flex items-center justify-between">
+                <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-300 bg-clip-text text-transparent">NotePilot Menu</span>
                 <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full h-8 w-8">
                   <X className="h-4 w-4" />
                 </Button>
@@ -178,13 +178,13 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                         prefetch={true}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
-                          "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all duration-200",
+                          "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200",
                           isActive 
-                            ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" 
-                            : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
+                            ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[inset_0_0_20px_rgba(99,102,241,0.05)]" 
+                            : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 border border-transparent"
                         )}
                       >
-                        <item.icon className={cn("h-4.5 w-4.5", isActive ? "text-indigo-400" : "text-zinc-500")} />
+                        <item.icon className={cn("h-5 w-5", isActive ? "text-indigo-400" : "text-zinc-500")} />
                         {item.name}
                       </Link>
                     );
@@ -201,15 +201,15 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                         prefetch={true}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
-                          "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all duration-200",
+                          "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200",
                           isActive 
-                            ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" 
+                            ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[inset_0_0_20px_rgba(99,102,241,0.05)]" 
                             : item.name === "Admin Panel" 
-                              ? "text-amber-500/80 hover:text-amber-400 hover:bg-amber-500/10"
-                              : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
+                              ? "text-amber-500/80 hover:text-amber-400 hover:bg-amber-500/10 border border-transparent"
+                              : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 border border-transparent"
                         )}
                       >
-                        <item.icon className={cn("h-4.5 w-4.5", isActive ? "text-indigo-400" : item.name === "Admin Panel" ? "text-amber-500/80" : "text-zinc-500")} />
+                        <item.icon className={cn("h-5 w-5", isActive ? "text-indigo-400" : item.name === "Admin Panel" ? "text-amber-500/80" : "text-zinc-500")} />
                         {item.name}
                       </Link>
                     );

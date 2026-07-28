@@ -270,18 +270,18 @@ export default function Dashboard() {
         <div className="col-span-3 flex flex-col gap-6">
           
           {/* Dashboard Title & Visual Stats Grid */}
-          <motion.div variants={itemVariants} className="flex justify-between items-center bg-zinc-900/40 p-6 rounded-3xl border border-zinc-800/60 shadow-inner backdrop-blur-md relative overflow-hidden">
+          <motion.div variants={itemVariants} className="flex justify-between items-center bg-zinc-900/40 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-zinc-800/60 shadow-inner backdrop-blur-md relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none" />
             <div className="relative z-10 w-full min-w-0">
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3 flex-wrap break-words whitespace-normal">
+              <h2 className="text-xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2 sm:gap-3 flex-wrap break-words whitespace-normal">
                 Study Command Center
-                <Sparkles className="h-6 w-6 text-indigo-400" />
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-400" />
               </h2>
-              <p className="text-zinc-400 text-sm mt-1 font-medium">Welcome back, {profile?.name?.split(' ')[0] || 'Student'}. Here's your study overview.</p>
+              <p className="text-zinc-400 text-xs sm:text-sm mt-1 sm:mt-2 font-medium">Welcome back, {profile?.name?.split(' ')[0] || 'Student'}. Here's your study overview.</p>
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 w-full">
+          <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 w-full">
             <Link href="/dashboard/my-uploads">
               <Card className="hover-lift godmode-card border-zinc-800/80 shadow-lg cursor-pointer group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
@@ -316,7 +316,7 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </Link>
-            <Link href="/dashboard/profile">
+            <Link href="/dashboard/profile" className="col-span-2 sm:col-span-1">
               <Card className="hover-lift godmode-card border-zinc-800/80 shadow-lg cursor-pointer group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
                   <TrendingUp className="h-24 w-24" />

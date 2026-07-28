@@ -44,7 +44,7 @@ export default function Home() {
       <Header />
 
       {/* ═══════════════════ HERO ═══════════════════ */}
-      <section className="relative z-10 pt-24 sm:pt-32 pb-24 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+      <section className="relative z-10 pt-16 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 max-w-7xl mx-auto w-full">
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
           {/* Left — Copy */}
           <div className="flex flex-col gap-8 w-full lg:w-[50%] text-center lg:text-left animate-fade-in-up">
@@ -148,7 +148,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FEATURE SHOWCASE ═══════════════════ */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-20 sm:mb-32">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-6">
             <Zap className="h-3 w-3 text-indigo-400" />
@@ -175,7 +175,7 @@ export default function Home() {
           ].map(({ icon: Icon, title, desc, color }) => (
             <div
               key={title}
-              className="hover-lift godmode-card rounded-3xl p-7 text-left group flex flex-col gap-4 relative overflow-hidden"
+              className="hover-lift godmode-card rounded-3xl p-6 sm:p-7 text-left group flex flex-col gap-4 relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none transform translate-x-4 -translate-y-4">
                 <Icon className="h-24 w-24" />
@@ -193,7 +193,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FOUNDER SECTION ═══════════════════ */}
-      <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full mb-32">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full mb-20 sm:mb-32">
         <div className="flex items-center justify-center">
           <p className="text-sm font-medium text-zinc-600">
             Created and designed by Raj Dwivedi (RD)
@@ -296,7 +296,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ HOW IT WORKS ═══════════════════ */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-20 sm:mb-32">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-50 mb-4 select-none">
             How it works
@@ -328,7 +328,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ TRUST ═══════════════════ */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full mb-20 sm:mb-32">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-50 mb-4 select-none">
             Built for real college study
@@ -357,7 +357,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ FAQ ═══════════════════ */}
-      <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full mb-32">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full mb-20 sm:mb-32">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-6">
             <MessageCircleQuestion className="h-3 w-3" /> Got Questions?
@@ -414,8 +414,8 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════ CTA ═══════════════════ */}
-      <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 w-full mb-32">
-        <div className="relative overflow-hidden godmode-card border-indigo-500/30 rounded-3xl p-12 md:p-20 text-center flex flex-col items-center gap-8 shadow-[0_0_80px_rgba(99,102,241,0.15)] group">
+      <section className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 w-full mb-20 sm:mb-32">
+        <div className="relative overflow-hidden godmode-card border-indigo-500/30 rounded-3xl p-8 md:p-20 text-center flex flex-col items-center gap-6 sm:gap-8 shadow-[0_0_80px_rgba(99,102,241,0.15)] group">
           <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/40 via-transparent to-violet-900/20 pointer-events-none group-hover:opacity-70 transition-opacity duration-500" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-indigo-500/20 blur-[100px] pointer-events-none" />
           
