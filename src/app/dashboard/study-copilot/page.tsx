@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
+
 import { Button } from "@/components/ui/button";
 import {
   Sparkles,
@@ -80,8 +79,7 @@ export default async function StudyCopilotPage() {
         <div className="absolute top-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-violet-600 blur-[140px] animate-pulse duration-[10000ms]" />
       </div>
 
-      <Header />
-      <main className="flex-grow z-10 pt-24 pb-16 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
+      <main className="flex-grow z-10 pt-6 pb-16 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
 
         {/* ── A. Hero Section ── */}
         <div className="flex flex-col lg:flex-row gap-12 items-center justify-between relative mb-8">
@@ -595,7 +593,6 @@ export default async function StudyCopilotPage() {
         </div>
 
       </main>
-      <Footer />
     </div>
   );
 }
