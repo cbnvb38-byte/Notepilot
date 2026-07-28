@@ -32,13 +32,20 @@ NotePilot is a modern, AI-powered study companion designed to help students orga
 
 ## Screenshots
 
-<div align="center">
-  <img src="/public/screenshots/landing.png" alt="Landing Page" width="45%" onerror="this.onerror=null; this.src='https://placehold.co/600x400/png?text=Landing+Page\n(Screenshot+coming+soon)';"/>
-  <img src="/public/screenshots/dashboard.png" alt="Dashboard" width="45%" onerror="this.onerror=null; this.src='https://placehold.co/600x400/png?text=Dashboard\n(Screenshot+coming+soon)';"/>
-  <br/>
-  <img src="/public/screenshots/study-copilot.png" alt="Study Copilot" width="45%" onerror="this.onerror=null; this.src='https://placehold.co/600x400/png?text=Study+Copilot\n(Screenshot+coming+soon)';"/>
-  <img src="/public/screenshots/pricing.png" alt="Pricing" width="45%" onerror="this.onerror=null; this.src='https://placehold.co/600x400/png?text=Pricing\n(Screenshot+coming+soon)';"/>
-</div>
+### Landing Page
+![Landing Page](docs/screenshots/landing.png)
+
+Premium landing experience with hero section and product positioning.
+
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+Student dashboard with uploads, discovery, and activity overview.
+
+### Study Copilot
+![Study Copilot](docs/screenshots/study-copilot.png)
+
+AI-powered Study Copilot with summaries, quizzes, flashcards, and saved generations.
 
 ## Architecture Overview
 
