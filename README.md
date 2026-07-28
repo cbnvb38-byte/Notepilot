@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NotePilot: Your AI Study Copilot
 
-## Getting Started
+🚀 **Live Production Link:** [https://notepilot-flame.vercel.app](https://notepilot-flame.vercel.app)
 
-First, run the development server:
+NotePilot is an AI-powered study companion that helps you organize notes, generate insights, and accelerate your learning using advanced Gemini AI.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Key Features
+- **Smart Note Management:** Easily organize and access your study materials.
+- **AI Study Copilot:** Generate summaries, ask questions, and create study plans instantly.
+- **Premium Tier:** Unlock unlimited AI generations and advanced features.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Note on Premium/Razorpay (Test Mode)
+The platform currently uses Razorpay in **Test Mode** for prototype purposes. You can test the premium checkout flow without real money.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
+- **Frontend:** Next.js (App Router), React, Tailwind CSS
+- **Backend:** Next.js API Routes, Supabase (PostgreSQL)
+- **Authentication:** Clerk
+- **AI Engine:** Google Gemini API
+- **Payments:** Razorpay
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Screenshots
+![Dashboard Placeholder](/public/screenshots/dashboard-placeholder.png)
+*(Screenshots coming soon)*
 
-## Learn More
+## Local Setup
+1. Clone the repository.
+2. Install dependencies: `npm install`
+3. Copy `.env.example` to `.env.local` and fill in your secrets.
+4. Run the development server: `npm run dev`
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
+See `.env.example` for the required keys. Never commit your `.env.local` file!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database Setup (Supabase)
+Run the SQL migrations located in the `supabase/migrations/` folder on your Supabase project to create the required tables and Row Level Security (RLS) policies. See `docs/SUPABASE_SETUP.md` for details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
+This project is configured for seamless deployment on Vercel. Ensure all environment variables (including `SUPABASE_SERVICE_ROLE_KEY`) are correctly set in the Vercel dashboard. See `docs/DEPLOYMENT.md`.
 
-## Deploy on Vercel
+## Security Notes
+Please review [SECURITY.md](SECURITY.md) for critical safety guidelines, including protecting API keys and service roles.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Roadmap
+- Integrate more AI models
+- Collaborative study groups
+- Mobile app version
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Author
+Developed and maintained by **Raj Dwivedi**.
