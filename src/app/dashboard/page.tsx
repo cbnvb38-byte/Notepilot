@@ -272,8 +272,8 @@ export default function Dashboard() {
           {/* Dashboard Title & Visual Stats Grid */}
           <motion.div variants={itemVariants} className="flex justify-between items-center bg-zinc-900/40 p-6 rounded-3xl border border-zinc-800/60 shadow-inner backdrop-blur-md relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-            <div className="relative z-10 w-full min-w-0">
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3 flex-wrap break-words whitespace-normal">
+            <div className="relative z-10">
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
                 Study Command Center
                 <Sparkles className="h-6 w-6 text-indigo-400" />
               </h2>
@@ -281,7 +281,7 @@ export default function Dashboard() {
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 w-full">
+          <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
             <Link href="/dashboard/my-uploads">
               <Card className="hover-lift godmode-card border-zinc-800/80 shadow-lg cursor-pointer group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none transform translate-x-2 -translate-y-2">
@@ -341,8 +341,7 @@ export default function Dashboard() {
           {/* Main Tabs panel */}
           <motion.div variants={itemVariants} className="w-full max-w-full flex-grow flex flex-col min-w-0">
             <Tabs defaultValue="uploads" className="w-full max-w-full flex-grow flex flex-col min-w-0">
-            <div className="w-full max-w-full overflow-hidden min-w-0">
-              <TabsList className="bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/80 p-1.5 rounded-2xl gap-1 shadow-[0_0_20px_rgba(0,0,0,0.5)] flex overflow-x-auto w-full md:w-fit justify-start scrollbar-hide">
+            <TabsList className="bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/80 p-1.5 rounded-2xl gap-1 shadow-[0_0_20px_rgba(0,0,0,0.5)] flex overflow-x-auto max-w-full w-full md:w-fit justify-start scrollbar-hide">
               <TabsTrigger value="uploads" className="text-sm px-4 sm:px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold whitespace-nowrap shrink-0">
                 My Uploads <span className="ml-2 bg-black/20 text-white/90 px-2 py-0.5 rounded-md text-[10px]">{filteredNotes.length}</span>
               </TabsTrigger>
@@ -352,8 +351,7 @@ export default function Dashboard() {
               <TabsTrigger value="stats" className="text-sm px-4 sm:px-6 py-2.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-[0_0_15px_rgba(99,102,241,0.4)] focus-visible:outline-none transition-all font-bold whitespace-nowrap shrink-0">
                 Contributor Stats
               </TabsTrigger>
-              </TabsList>
-            </div>
+            </TabsList>
 
             {/* Uploads Tab */}
             <TabsContent value="uploads" className="flex-1 mt-6">
@@ -604,7 +602,7 @@ interface EmptyStateProps {
 
 function EmptyDashboardState({ title, description, actionLink, actionText }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-16 px-4 w-full max-w-full min-w-0">
+    <div className="flex flex-col items-center justify-center text-center py-16 px-4">
       <div className="relative mb-6 group">
         <div className="absolute inset-0 bg-indigo-500/20 blur-xl rounded-full group-hover:bg-indigo-500/30 transition-colors" />
         <div className="h-20 w-20 bg-zinc-950/80 backdrop-blur-sm border-2 border-indigo-500/30 text-indigo-400 rounded-3xl flex items-center justify-center relative z-10 shadow-[0_0_30px_rgba(99,102,241,0.2)] group-hover:scale-110 transition-transform duration-500 group-hover:rotate-3">

@@ -99,7 +99,6 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                 <Link
                   key={item.name}
                   href={item.href}
-                  prefetch={true}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 group",
                     isActive 
@@ -122,7 +121,6 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                 <Link
                   key={item.name}
                   href={item.href}
-                  prefetch={true}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 group",
                     isActive 
@@ -141,85 +139,7 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
         </div>
       </aside>
 
-      {/* Mobile Drawer Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-zinc-950/80 backdrop-blur-sm z-40 md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[280px] max-w-[80vw] bg-zinc-950 border-l border-zinc-800/80 shadow-2xl z-50 md:hidden flex flex-col"
-            >
-              <div className="h-16 shrink-0 border-b border-zinc-800/60 px-4 flex items-center justify-between">
-                <span className="font-black text-sm tracking-tight text-zinc-50">NotePilot Menu</span>
-                <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full h-8 w-8">
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-8 scrollbar-hide">
-                <nav className="flex flex-col gap-1.5">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2 px-3">Main Menu</div>
-                  {navigation.map((item) => {
-                    const isActive = pathname === item.href;
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        prefetch={true}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all duration-200",
-                          isActive 
-                            ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" 
-                            : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
-                        )}
-                      >
-                        <item.icon className={cn("h-4.5 w-4.5", isActive ? "text-indigo-400" : "text-zinc-500")} />
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </nav>
-                <nav className="flex flex-col gap-1.5 mt-auto pb-4">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2 px-3">Preferences</div>
-                  {bottomNavigation.map((item) => {
-                    const isActive = pathname === item.href;
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        prefetch={true}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all duration-200",
-                          isActive 
-                            ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" 
-                            : item.name === "Admin Panel" 
-                              ? "text-amber-500/80 hover:text-amber-400 hover:bg-amber-500/10"
-                              : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
-                        )}
-                      >
-                        <item.icon className={cn("h-4.5 w-4.5", isActive ? "text-indigo-400" : item.name === "Admin Panel" ? "text-amber-500/80" : "text-zinc-500")} />
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Mobile Drawer Overlay Removed */}
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 w-full max-w-full h-screen overflow-x-hidden bg-zinc-950">
@@ -282,27 +202,87 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            
-            {/* Hamburger Menu Trigger */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="md:hidden text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full h-9 w-9 border-2 border-zinc-800/50"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
           </div>
         </header>
 
         {/* Page Content Scrollable Area */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 pb-10 sm:p-8 lg:p-10 relative w-full min-w-0">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 pb-24 md:pb-10 sm:p-8 lg:p-10 relative w-full min-w-0">
           {/* Subtle background gradient for the main content area */}
           <div className="fixed top-0 left-1/4 w-1/2 h-1/2 bg-indigo-500/5 blur-[150px] pointer-events-none -z-10" />
           {children}
         </main>
       </div>
 
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-zinc-950/80 backdrop-blur-xl border-t border-zinc-800/60 z-40 flex items-center justify-around px-2 pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        {[
+          { name: "Home", href: "/dashboard", icon: LayoutDashboard },
+          { name: "Notes", href: "/dashboard/browse", icon: Search },
+          { name: "Copilot", href: "/dashboard/study-copilot", icon: Sparkles },
+        ].map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                "flex flex-col items-center justify-center w-[60px] h-full gap-1 transition-colors",
+                isActive ? "text-indigo-400" : "text-zinc-500 hover:text-zinc-300"
+              )}
+            >
+              <div className={cn(
+                "p-1 rounded-full transition-all duration-300",
+                isActive ? "bg-indigo-500/15 shadow-[0_0_15px_rgba(99,102,241,0.2)]" : "bg-transparent"
+              )}>
+                <item.icon className={cn("h-5 w-5", isActive && "fill-indigo-500/20")} />
+              </div>
+              <span className="text-[9px] font-black uppercase tracking-wider">{item.name}</span>
+            </Link>
+          );
+        })}
+        
+        {/* More Dropdown Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex flex-col items-center justify-center w-[60px] h-full gap-1 transition-colors text-zinc-500 hover:text-zinc-300 outline-none cursor-pointer">
+            <div className="p-1 rounded-full bg-transparent">
+              <MoreHorizontal className="h-5 w-5" />
+            </div>
+            <span className="text-[9px] font-black uppercase tracking-wider">More</span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="top" sideOffset={10} className="w-56 bg-zinc-950/95 backdrop-blur-xl border-zinc-800/80 text-zinc-300 rounded-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)] p-2 mb-2">
+            <DropdownMenuLabel className="px-3 py-2 text-xs font-black uppercase tracking-widest text-zinc-500">
+              More Options
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-zinc-800/60" />
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/upload" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <UploadCloud className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">Upload Notes</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/my-uploads" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <FileUp className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">My Uploads</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/bookmarks" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <Bookmark className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">Bookmarks</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-zinc-800/60" />
+            <DropdownMenuItem className="p-0">
+              <Link href="/pricing" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-indigo-500/10 text-indigo-400">
+                <Sparkles className="h-4.5 w-4.5" /> <span className="font-bold text-sm">Pricing</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="p-0">
+              <Link href="/dashboard/settings" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl cursor-pointer hover:bg-zinc-800/50">
+                <Settings className="h-4.5 w-4.5 text-zinc-400" /> <span className="font-bold text-sm">Settings</span>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 }
