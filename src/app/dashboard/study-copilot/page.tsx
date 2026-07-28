@@ -206,7 +206,7 @@ export default async function StudyCopilotPage() {
                  </h3>
                  <p className="text-sm text-zinc-400 font-medium">
                    {usageState.isPremiumEndingSoon 
-                     ? "Renewal coming soon. You'll switch to the free plan if it expires." 
+                     ? "Your plan will switch to Free if it expires. Renew to keep your limits." 
                      : "Unlocks higher monthly limits and advanced study workflows."}
                  </p>
                  
@@ -245,10 +245,10 @@ export default async function StudyCopilotPage() {
                    </span>
                  </div>
                  <h3 className="text-2xl font-black text-white mt-2 tracking-tight">Your premium membership has ended.</h3>
-                 <p className="text-sm text-zinc-400 font-medium">You are now on the Free Plan. Renewal options coming soon.</p>
+                 <p className="text-sm text-zinc-400 font-medium">You are now on the Free Plan. Renew Premium to restore higher limits.</p>
                  <Link href="/pricing" className="mt-4 block w-fit">
                    <Button variant="outline" className="text-zinc-300 border-zinc-700/80 hover:bg-zinc-800 hover:text-white font-bold h-11 text-sm rounded-xl transition-all px-8">
-                     View Plans
+                     Renew Premium
                    </Button>
                  </Link>
                </div>

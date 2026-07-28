@@ -103,7 +103,7 @@ const FAQS = [
   },
   {
     q: "Is payment available now?",
-    a: "Online payment is coming soon. Premium access is being finalized. Contact the admin to request early access.",
+    a: "Yes! You can upgrade to Premium anytime for a one-time payment of ₹99, giving you 30 days of full access to all Godmode features.",
   },
 ];
 
