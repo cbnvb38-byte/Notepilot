@@ -142,10 +142,10 @@ export default async function PricingPage() {
 
       <Header />
 
-      <main className="flex-grow z-10 pt-20 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6 max-w-6xl mx-auto w-full flex flex-col gap-16 sm:gap-24 relative">
+      <main className="flex-grow z-10 pt-28 pb-24 px-4 sm:px-6 max-w-6xl mx-auto w-full flex flex-col gap-24 relative">
 
         {/* HERO */}
-        <div className="flex flex-col items-center text-center gap-6 pt-4 sm:pt-10">
+        <div className="flex flex-col items-center text-center gap-6 pt-10">
           {isPremiumActive && (
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/10 to-purple-500/10 border border-amber-500/20 shadow-inner">
               <Crown className="h-4 w-4 text-amber-400" />
@@ -165,7 +165,7 @@ export default async function PricingPage() {
             </div>
           )}
           
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1] max-w-4xl drop-shadow-2xl">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1] max-w-4xl drop-shadow-2xl">
             Choose Your{" "}
             <span className="bg-gradient-to-br from-indigo-400 via-violet-400 to-amber-400 bg-clip-text text-transparent drop-shadow-lg">
               Study Plan
@@ -180,7 +180,7 @@ export default async function PricingPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto w-full">
 
           {/* Free */}
-          <div className="godmode-card flex flex-col gap-6 sm:gap-8 bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-10 relative overflow-hidden shadow-[0_15px_50px_rgba(0,0,0,0.5)]">
+          <div className="godmode-card flex flex-col gap-8 bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 rounded-[2.5rem] p-8 sm:p-10 relative overflow-hidden shadow-[0_15px_50px_rgba(0,0,0,0.5)]">
             <div className="flex flex-col gap-2">
               <span className="text-xs font-black uppercase tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-lg w-fit shadow-inner">Free</span>
               <div className="flex items-baseline gap-1 mt-2">
@@ -236,7 +236,7 @@ export default async function PricingPage() {
           </div>
 
           {/* Premium */}
-          <div className="godmode-card flex flex-col gap-6 sm:gap-8 bg-gradient-to-b from-zinc-950/80 to-zinc-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-10 relative shadow-[0_20px_80px_rgba(245,158,11,0.15)] overflow-hidden">
+          <div className="godmode-card flex flex-col gap-8 bg-gradient-to-b from-zinc-950/80 to-zinc-900/80 backdrop-blur-xl border border-amber-500/30 rounded-[2.5rem] p-8 sm:p-10 relative shadow-[0_20px_80px_rgba(245,158,11,0.15)] overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent shadow-[0_0_30px_rgba(245,158,11,0.6)]" />
             <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
 
@@ -324,7 +324,7 @@ export default async function PricingPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {WHY_UPGRADE.map(({ icon, title, desc }) => (
-              <div key={title} className="godmode-card flex flex-col gap-4 bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:border-indigo-500/30 hover:bg-zinc-900/60 transition-all shadow-lg hover:shadow-[0_15px_40px_rgba(99,102,241,0.1)] group">
+              <div key={title} className="godmode-card flex flex-col gap-4 bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 rounded-3xl p-8 hover:border-indigo-500/30 hover:bg-zinc-900/60 transition-all shadow-lg hover:shadow-[0_15px_40px_rgba(99,102,241,0.1)] group">
                 <div className="p-3.5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 w-fit shadow-inner group-hover:scale-110 transition-transform">
                   <IconFor name={icon} />
                 </div>
@@ -360,7 +360,7 @@ export default async function PricingPage() {
         </div>
 
         {/* BOTTOM CTA */}
-        <div className="flex flex-col items-center gap-6 sm:gap-8 text-center godmode-card bg-zinc-950/60 border border-zinc-800/80 rounded-3xl sm:rounded-[3rem] py-12 sm:py-20 px-6 sm:px-8 backdrop-blur-xl relative overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] max-w-4xl mx-auto w-full">
+        <div className="flex flex-col items-center gap-8 text-center godmode-card bg-zinc-950/60 border border-zinc-800/80 rounded-[3rem] py-20 px-8 backdrop-blur-xl relative overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] max-w-4xl mx-auto w-full">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-indigo-600/10 blur-[100px] rounded-full" />
           </div>
