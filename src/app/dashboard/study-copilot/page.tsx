@@ -73,7 +73,7 @@ export default async function StudyCopilotPage() {
   const hasSaved = savedData.length > 0;
 
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-hidden flex flex-col font-sans">
+    <div className="relative min-h-screen bg-zinc-950 text-zinc-50 overflow-x-hidden w-full min-w-0 flex flex-col font-sans">
       {/* Decorative background */}
       <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none opacity-10 z-0 overflow-hidden">
         <div className="absolute top-[10%] left-[15%] w-[450px] h-[450px] rounded-full bg-indigo-600 blur-[130px] animate-pulse duration-[8000ms]" />
