@@ -44,14 +44,37 @@ export async function POST(req: Request) {
 
       const supabase = createAdminSupabaseClient();
 
-      // Check if user is already premium
+      // 1. Record payment event safely and idempotently FIRST
+      const razorpay_payment_id = paymentEntity?.id;
+      const razorpay_order_id = paymentEntity?.order_id || orderEntity?.id;
+      const amount = paymentEntity?.amount || orderEntity?.amount;
+      
+      if (razorpay_payment_id) {
+        const { error: eventError } = await (supabase.from("payment_events" as any).upsert({
+          user_id: userId,
+          provider: "razorpay",
+          razorpay_order_id,
+          razorpay_payment_id,
+          amount: amount,
+          currency: paymentEntity?.currency || "INR",
+          status: "captured",
+        }, { onConflict: 'razorpay_payment_id', ignoreDuplicates: true }) as any);
+
+        if (eventError) {
+          console.error("Webhook failed to insert payment event:", eventError.message || eventError);
+          // We can return 500 to let Razorpay retry if the DB failed here
+          return NextResponse.json({ error: "Failed to record payment event" }, { status: 500 });
+        }
+      }
+
+      // 2. Check if user is already premium
       const { data: profile } = await (supabase
         .from("profiles")
         .select("plan, premium_status")
         .eq("id", userId)
         .single() as any);
 
-      // Only extend/activate if needed (in case the client verify-payment already did it)
+      // 3. Only extend/activate if needed (in case the client verify-payment already did it)
       if (profile?.plan !== "premium" || profile?.premium_status !== "active") {
         const now = new Date();
         const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -68,24 +91,8 @@ export async function POST(req: Request) {
 
         if (updateError) {
           console.error("Webhook failed to update profile:", updateError);
+          return NextResponse.json({ error: "Failed to activate premium" }, { status: 500 });
         }
-      }
-
-      // Record payment event safely
-      const razorpay_payment_id = paymentEntity?.id;
-      const razorpay_order_id = paymentEntity?.order_id || orderEntity?.id;
-      const amount = paymentEntity?.amount || orderEntity?.amount;
-      
-      if (razorpay_payment_id) {
-        await (supabase.from("payment_events" as any).insert({
-          user_id: userId,
-          provider: "razorpay",
-          razorpay_order_id,
-          razorpay_payment_id,
-          amount: amount,
-          currency: paymentEntity?.currency || "INR",
-          status: "captured",
-        }) as any);
       }
     }
 

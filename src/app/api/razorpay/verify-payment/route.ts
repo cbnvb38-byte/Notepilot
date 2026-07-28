@@ -39,11 +39,33 @@ export async function POST(req: Request) {
 
     const supabase = createAdminSupabaseClient();
 
-    // Calculate 30 days from now
+    // 1. Record payment event first (idempotent)
+    const amountInINR = Number(process.env.RAZORPAY_PREMIUM_AMOUNT_INR || 99);
+    const amountInPaise = amountInINR * 100;
+    
+    const { error: eventError } = await (supabase.from("payment_events" as any).upsert({
+      user_id: userId,
+      provider: "razorpay",
+      razorpay_order_id,
+      razorpay_payment_id,
+      amount: amountInPaise,
+      currency: "INR",
+      status: "captured",
+    }, { onConflict: 'razorpay_payment_id', ignoreDuplicates: true }) as any);
+
+    if (eventError) {
+      console.error("Failed to insert payment event:", eventError.message || eventError);
+      return NextResponse.json(
+        { error: "Payment verified but failed to record event. Please contact support." },
+        { status: 500 }
+      );
+    }
+
+    // 2. Calculate 30 days from now
     const now = new Date();
     const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    // Update user profile to premium
+    // 3. Update user profile to premium
     const { error: updateError } = await (supabase
       .from("profiles")
       .update({
@@ -61,19 +83,6 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
-
-    // Attempt to log the payment event if the table exists (ignore error if migration not applied)
-    const amountInINR = Number(process.env.RAZORPAY_PREMIUM_AMOUNT_INR || 99);
-    const amountInPaise = amountInINR * 100;
-    await (supabase.from("payment_events" as any).insert({
-      user_id: userId,
-      provider: "razorpay",
-      razorpay_order_id,
-      razorpay_payment_id,
-      amount: amountInPaise,
-      currency: "INR",
-      status: "captured",
-    }) as any); // we ignore result because migration might not be run yet
 
     return NextResponse.json({ success: true, message: "Premium activated successfully." });
   } catch (error: any) {
