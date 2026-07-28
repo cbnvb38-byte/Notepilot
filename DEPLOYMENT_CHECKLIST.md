@@ -21,6 +21,13 @@ The following environment variables must be securely set in your deployment envi
 - `GEMINI_MODEL`: Model name (e.g., `gemini-2.5-flash`).
 - `GEMINI_FALLBACK_MODEL`: Fallback model name if needed.
 
+### Payments (Razorpay)
+- `NEXT_PUBLIC_RAZORPAY_KEY_ID`: Your Razorpay Key ID (safe for public).
+- `RAZORPAY_KEY_SECRET`: Your Razorpay Key Secret (**KEEP SECRET**, server-side only).
+- `RAZORPAY_WEBHOOK_SECRET`: The secret you set in the Razorpay Webhook dashboard (**KEEP SECRET**, server-side only).
+- `RAZORPAY_PREMIUM_AMOUNT_INR`: Default is 99 (₹).
+- `NEXT_PUBLIC_APP_URL`: Your full app URL (e.g., `https://notepilot.vercel.app`).
+
 ## 2. Security Rules
 - **Never expose service role key as NEXT_PUBLIC**.
 - **Never expose Gemini key as NEXT_PUBLIC**.

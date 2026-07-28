@@ -16,6 +16,7 @@ import {
   ArrowRight,
   FileWarning,
 } from "lucide-react";
+import { RazorpayCheckoutButton } from "@/components/pricing/razorpay-checkout-button";
 
 export const dynamic = "force-dynamic";
 
@@ -102,7 +103,7 @@ const FAQS = [
   },
   {
     q: "Is payment available now?",
-    a: "Online payment is coming soon. Premium access is being finalized. Contact the admin to request early access.",
+    a: "Yes! You can upgrade to Premium anytime for a one-time payment of ₹99, giving you 30 days of full access to all Godmode features.",
   },
 ];
 
@@ -247,8 +248,9 @@ export default async function PricingPage() {
 
             <div className="flex flex-col gap-2 relative z-10">
               <span className="text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-lg w-fit shadow-inner">Premium</span>
-              <div className="mt-2">
-                <span className="text-4xl font-black text-white tracking-tight">Coming Soon</span>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-4xl sm:text-6xl font-black text-white tracking-tight">₹99</span>
+                <span className="text-sm font-bold uppercase tracking-widest text-amber-500/80">/ 30 Days</span>
               </div>
               <p className="text-sm font-medium text-zinc-400 mt-2">For serious Godmode exam preparation.</p>
             </div>
@@ -265,31 +267,14 @@ export default async function PricingPage() {
             </ul>
 
             <div className="mt-auto pt-8 flex flex-col gap-4 relative z-10">
-              {isPremiumExpired ? (
-                <button
-                  disabled
-                  className="w-full py-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-500 font-black uppercase tracking-widest text-xs cursor-not-allowed shadow-inner"
-                >
-                  Renew Premium — Coming Soon
-                </button>
-              ) : isPremiumActive ? (
-                <button
-                  disabled
-                  className="w-full py-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-500 font-black uppercase tracking-widest text-xs cursor-default shadow-inner"
-                >
-                  ✓ Current Plan: Premium
-                </button>
-              ) : (
-                <button
-                  disabled
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500/20 to-amber-400/10 border border-amber-500/30 text-amber-400/50 font-black uppercase tracking-widest text-xs cursor-not-allowed shadow-inner"
-                >
-                  Upgrade Coming Soon
-                </button>
-              )}
+              <RazorpayCheckoutButton 
+                isPremiumExpired={isPremiumExpired}
+                isPremiumActive={isPremiumActive}
+                userId={userId}
+              />
               <Link href="/dashboard/contact" className="block w-full">
                 <button className="w-full py-3.5 rounded-2xl bg-zinc-950/80 hover:bg-zinc-900 border border-zinc-800/80 text-zinc-400 hover:text-white font-bold text-xs transition-colors shadow-inner">
-                  Contact Admin / Request Access
+                  Contact Admin / Questions
                 </button>
               </Link>
             </div>
