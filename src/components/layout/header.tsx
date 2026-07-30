@@ -134,6 +134,16 @@ export function Header() {
           >
             Pricing
           </Link>
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="text-left text-sm font-medium text-zinc-300 hover:text-zinc-50 py-2 transition-colors w-full"
+              >
+                Sign In
+              </button>
+            </SignInButton>
+          </Show>
         </div>
       )}
     </header>

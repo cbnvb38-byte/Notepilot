@@ -32,7 +32,6 @@ export default async function GenerationReaderPage({ params }: PageProps) {
   if (!res.success || !res.data) {
     return (
       <div className="relative min-h-screen bg-zinc-950 text-zinc-50 flex flex-col font-sans">
-        <Header />
         <main className="flex-grow z-10 pt-28 pb-16 px-6 max-w-4xl mx-auto w-full flex flex-col items-center justify-center gap-6 text-center">
           <div className="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
             <FileText className="h-10 w-10 text-zinc-600 mx-auto mb-4" />
@@ -47,7 +46,6 @@ export default async function GenerationReaderPage({ params }: PageProps) {
             </Link>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -83,7 +81,6 @@ export default async function GenerationReaderPage({ params }: PageProps) {
         <div className="absolute top-16 right-1/4 w-80 h-80 rounded-full bg-violet-600 blur-[130px]" />
       </div>
 
-      <Header />
       <main className="flex-grow z-10 pt-24 pb-16 px-6 max-w-4xl mx-auto w-full flex flex-col gap-6">
 
         {/* ── Navigation bar ── */}
@@ -161,7 +158,6 @@ export default async function GenerationReaderPage({ params }: PageProps) {
         )}
 
       </main>
-      <Footer />
     </div>
   );
 }

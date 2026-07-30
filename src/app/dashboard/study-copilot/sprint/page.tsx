@@ -1,4 +1,4 @@
-﻿import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getUserAIUsage } from "@/app/actions/ai-usage";
 import { fetchRecentlyViewedNotesAction } from "@/app/actions/notes";
@@ -31,7 +31,6 @@ export default async function SprintSelectorPage() {
   if (!isPremiumActive) {
     return (
       <div className="min-h-screen bg-zinc-950 flex flex-col font-sans selection:bg-indigo-500/30">
-        <Header />
         <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-lg mx-auto">
           <div className="bg-zinc-900/50 border border-zinc-800/80 p-8 rounded-3xl flex flex-col items-center gap-6">
             <div className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800 text-amber-500">
@@ -61,7 +60,6 @@ export default async function SprintSelectorPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col font-sans selection:bg-indigo-500/30">
-      <Header />
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-12 md:py-20 flex flex-col gap-8">
         
         <div className="flex flex-col gap-4 text-center items-center">

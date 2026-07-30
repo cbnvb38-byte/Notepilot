@@ -1,11 +1,10 @@
-﻿import { Header } from "@/components/layout/header";
+import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Rocket, Loader2 } from "lucide-react";
 
 export default function LoadingSprintDashboard() {
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col font-sans selection:bg-indigo-500/30">
-      <Header />
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8 md:py-12 flex flex-col gap-8 items-center justify-center min-h-[50vh]">
         <div className="flex flex-col items-center gap-6 text-center animate-pulse">
           <div className="relative">
@@ -25,7 +24,6 @@ export default function LoadingSprintDashboard() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

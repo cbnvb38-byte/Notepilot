@@ -57,7 +57,6 @@ export default async function SprintDashboardPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col font-sans selection:bg-indigo-500/30">
-      <Header />
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8 md:py-12 flex flex-col gap-8">
         
         {/* Back Link */}
@@ -99,7 +98,6 @@ export default async function SprintDashboardPage({ params }: PageProps) {
         />
 
       </main>
-      <Footer />
     </div>
   );
 }

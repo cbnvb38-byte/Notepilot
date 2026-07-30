@@ -21,7 +21,9 @@ import {
   ChevronRight,
   GraduationCap,
   FileUp,
-  Sparkles
+  Sparkles,
+  HelpCircle,
+  Zap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +31,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -160,10 +161,15 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                   <X className="h-5 w-5" />
                 </Button>
               </div>
-              <div className="flex-1 overflow-y-auto py-8 px-4 flex flex-col gap-10">
+              <div className="flex-1 overflow-y-auto py-8 px-4 flex flex-col gap-8">
                 <nav className="flex flex-col gap-1.5">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 px-3">Main Menu</div>
-                  {navigation.map((item) => {
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 px-3">Main</div>
+                  {[
+                    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+                    { name: "Browse Notes", href: "/dashboard/browse", icon: Search },
+                    { name: "Study Copilot", href: "/dashboard/study-copilot", icon: Sparkles },
+                    { name: "Upload Notes", href: "/dashboard/upload", icon: UploadCloud },
+                  ].map((item) => {
                     const isActive = pathname === item.href;
                     return (
                       <Link
@@ -172,7 +178,7 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
                           "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all",
-                          isActive ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : "text-zinc-400 hover:text-white"
+                          isActive ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : "text-zinc-400 hover:text-white hover:bg-zinc-800/40"
                         )}
                       >
                         <item.icon className={cn("h-5 w-5", isActive ? "text-indigo-400" : "text-zinc-500")} />
@@ -181,9 +187,14 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                     );
                   })}
                 </nav>
-                <nav className="flex flex-col gap-1.5 mt-auto pb-4">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 px-3">Preferences</div>
-                  {bottomNavigation.map((item) => {
+
+                <nav className="flex flex-col gap-1.5">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 px-3">Library</div>
+                  {[
+                    { name: "My Uploads", href: "/dashboard/my-uploads", icon: FileUp },
+                    { name: "Bookmarks", href: "/dashboard/bookmarks", icon: Bookmark },
+                    { name: "Saved Results", href: "/dashboard/study-copilot", icon: BookOpen },
+                  ].map((item) => {
                     const isActive = pathname === item.href;
                     return (
                       <Link
@@ -192,7 +203,34 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
                           "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all",
-                          isActive ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : item.name === "Admin Panel" ? "text-amber-500/80" : "text-zinc-400 hover:text-white"
+                          isActive ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : "text-zinc-400 hover:text-white hover:bg-zinc-800/40"
+                        )}
+                      >
+                        <item.icon className={cn("h-5 w-5", isActive ? "text-indigo-400" : "text-zinc-500")} />
+                        {item.name}
+                      </Link>
+                    );
+                  })}
+                </nav>
+
+                <nav className="flex flex-col gap-1.5 mt-auto pb-4">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 px-3">Account</div>
+                  {[
+                    { name: "Upgrade", href: "/pricing", icon: Zap },
+                    { name: "Profile", href: "/dashboard/profile", icon: User },
+                    { name: "Settings", href: "/dashboard/settings", icon: Settings },
+                    { name: "Help", href: "/dashboard/help", icon: HelpCircle },
+                    ...(isAdminOrModerator ? [{ name: "Admin Panel", href: "/dashboard/admin", icon: ShieldAlert }] : []),
+                  ].map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all",
+                          isActive ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" : item.name === "Admin Panel" ? "text-amber-500/80 hover:bg-amber-500/10" : "text-zinc-400 hover:text-white hover:bg-zinc-800/40"
                         )}
                       >
                         <item.icon className={cn("h-5 w-5", isActive ? "text-indigo-400" : item.name === "Admin Panel" ? "text-amber-500/80" : "text-zinc-500")} />
@@ -200,6 +238,13 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
                       </Link>
                     );
                   })}
+
+                  <SignOutButton>
+                    <button className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all text-red-400 hover:text-red-300 hover:bg-red-500/10 w-full text-left mt-2">
+                      <LogOut className="h-5 w-5" />
+                      Sign Out
+                    </button>
+                  </SignOutButton>
                 </nav>
               </div>
             </motion.aside>
@@ -210,65 +255,74 @@ export function DashboardShell({ children, userRole = "student" }: DashboardShel
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-zinc-950">
         {/* Top Header */}
-        <header className="h-20 shrink-0 border-b border-zinc-800/60 bg-zinc-950/50 backdrop-blur-2xl sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between">
+        <header className="h-16 md:h-20 shrink-0 border-b border-zinc-800/60 bg-zinc-950/80 md:bg-zinc-950/50 backdrop-blur-2xl sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full"
-            >
-              <Menu className="h-6 w-6" />
-            </Button>
-            
-
+            <Link href="/dashboard" className="md:hidden flex items-center gap-2 group">
+              <div className="bg-gradient-to-tr from-indigo-500 via-indigo-600 to-violet-600 p-1.5 rounded-lg text-white shadow-md shadow-indigo-500/15">
+                <GraduationCap className="h-4 w-4" />
+              </div>
+              <span className="font-black text-lg tracking-tight text-white">
+                NotePilot
+              </span>
+            </Link>
           </div>
 
           <div className="flex items-center gap-3 sm:gap-5">
             <NotificationBell />
 
-            <div className="h-8 w-px bg-zinc-800 hidden sm:block" />
+            <div className="h-6 md:h-8 w-px bg-zinc-800/80 block" />
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-2 outline-none cursor-pointer rounded-full p-1 hover:bg-zinc-800/50 transition-colors group">
-                {user?.imageUrl ? (
-                  <img 
-                    src={user.imageUrl} 
-                    alt="Avatar" 
-                    className="h-9 w-9 rounded-full border-2 border-zinc-800 group-hover:border-indigo-500/50 transition-colors"
-                  />
-                ) : (
-                  <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border-2 border-indigo-500/30 text-indigo-400 flex items-center justify-center font-bold text-sm shadow-[0_0_10px_rgba(99,102,241,0.2)]">
-                    {user?.firstName?.charAt(0).toUpperCase() || "S"}
-                  </div>
-                )}
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-zinc-950/90 backdrop-blur-xl border-zinc-800 text-zinc-300 w-64 rounded-2xl shadow-2xl p-2" align="end">
-                <div className="flex flex-col gap-1 p-3 cursor-default select-none">
-                  <span className="text-sm font-black text-white">{user?.fullName || "Student"}</span>
-                  <span className="text-xs text-zinc-500 font-medium">{user?.primaryEmailAddress?.emailAddress}</span>
-                </div>
-                <DropdownMenuSeparator className="bg-zinc-800/60 my-1" />
-                <DropdownMenuItem className="p-0">
-                  <Link href="/dashboard/profile" className="flex items-center gap-3 w-full px-3 py-2.5 hover:bg-zinc-800/60 text-sm font-medium cursor-pointer rounded-xl transition-colors">
-                    <User className="h-4.5 w-4.5 text-zinc-400" /> Profile & Account
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="p-0">
-                  <Link href="/dashboard/settings" className="flex items-center gap-3 w-full px-3 py-2.5 hover:bg-zinc-800/60 text-sm font-medium cursor-pointer rounded-xl transition-colors">
-                    <Settings className="h-4.5 w-4.5 text-zinc-400" /> Preferences
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-zinc-800/60 my-1" />
-                <DropdownMenuItem className="p-0 group">
-                  <SignOutButton>
-                    <div className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 cursor-pointer rounded-xl transition-colors">
-                      <LogOut className="h-4.5 w-4.5 group-hover:scale-110 transition-transform" /> Sign Out
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full h-9 w-9"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+
+            <div className="hidden md:block">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-2 outline-none cursor-pointer rounded-full p-1 hover:bg-zinc-800/50 transition-colors group">
+                  {user?.imageUrl ? (
+                    <img 
+                      src={user.imageUrl} 
+                      alt="Avatar" 
+                      className="h-9 w-9 rounded-full border-2 border-zinc-800 group-hover:border-indigo-500/50 transition-colors"
+                    />
+                  ) : (
+                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border-2 border-indigo-500/30 text-indigo-400 flex items-center justify-center font-bold text-sm shadow-[0_0_10px_rgba(99,102,241,0.2)]">
+                      {user?.firstName?.charAt(0).toUpperCase() || "S"}
                     </div>
-                  </SignOutButton>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  )}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-zinc-950/90 backdrop-blur-xl border-zinc-800 text-zinc-300 w-64 rounded-2xl shadow-2xl p-2" align="end">
+                  <div className="flex flex-col gap-1 p-3 cursor-default select-none">
+                    <span className="text-sm font-black text-white">{user?.fullName || "Student"}</span>
+                    <span className="text-xs text-zinc-500 font-medium">{user?.primaryEmailAddress?.emailAddress}</span>
+                  </div>
+                  <DropdownMenuSeparator className="bg-zinc-800/60 my-1" />
+                  <DropdownMenuItem className="p-0">
+                    <Link href="/dashboard/profile" className="flex items-center gap-3 w-full px-3 py-2.5 hover:bg-zinc-800/60 text-sm font-medium cursor-pointer rounded-xl transition-colors">
+                      <User className="h-4.5 w-4.5 text-zinc-400" /> Profile & Account
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="p-0">
+                    <Link href="/dashboard/settings" className="flex items-center gap-3 w-full px-3 py-2.5 hover:bg-zinc-800/60 text-sm font-medium cursor-pointer rounded-xl transition-colors">
+                      <Settings className="h-4.5 w-4.5 text-zinc-400" /> Preferences
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-zinc-800/60 my-1" />
+                  <DropdownMenuItem className="p-0 group">
+                    <SignOutButton>
+                      <div className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 cursor-pointer rounded-xl transition-colors">
+                        <LogOut className="h-4.5 w-4.5 group-hover:scale-110 transition-transform" /> Sign Out
+                      </div>
+                    </SignOutButton>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </header>
 
