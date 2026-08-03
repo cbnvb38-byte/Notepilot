@@ -45,18 +45,29 @@ export default async function MyUploadsPage() {
   });
 
   return (
-    <div className="flex flex-col gap-6 max-w-6xl mx-auto pb-12">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent flex items-center gap-2">
+    <div className="flex flex-col lg:gap-6 max-w-6xl mx-auto pb-12 w-full">
+      <div className="flex flex-col gap-2 px-4 lg:px-0 pt-6 lg:pt-0 pb-4 lg:pb-0">
+        {/* Desktop Header */}
+        <h1 className="hidden lg:flex text-3xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent items-center gap-2">
           My Uploads
           <Sparkles className="h-5 w-5 text-indigo-400" />
         </h1>
-        <p className="text-zinc-400 text-sm">
+        <p className="hidden lg:block text-zinc-400 text-sm">
           Manage your contributed study materials, check their review status, and track engagement.
+        </p>
+
+        {/* Mobile Header */}
+        <h1 className="flex lg:hidden text-2xl font-black tracking-tight text-white items-center gap-2">
+          My Uploads <Sparkles className="h-5 w-5 text-indigo-400" />
+        </h1>
+        <p className="block lg:hidden text-zinc-400 text-sm font-medium">
+          Track your shared materials.
         </p>
       </div>
 
-      <MyUploadsClient initialNotes={processedNotes} />
+      <div className="px-4 lg:px-0">
+        <MyUploadsClient initialNotes={processedNotes} />
+      </div>
     </div>
   );
 }

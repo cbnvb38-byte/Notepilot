@@ -222,276 +222,520 @@ export default function UploadNotePage() {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex flex-col gap-8 max-w-3xl mx-auto pb-12"
-    >
-      <div className="flex flex-col gap-2 relative z-10">
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white flex items-center gap-3">
-          Upload a Note <Sparkles className="h-6 w-6 text-indigo-400" />
-        </h1>
-        <p className="text-zinc-400 text-sm md:text-base font-medium max-w-2xl">
-          Share your knowledge with the community. Please ensure your PDF is high quality and readable. Max size: 20MB.
-        </p>
-        <div className="flex flex-wrap gap-2 mt-2">
-          <span className="text-[10px] uppercase font-black tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5">
-            <CheckCircle2 className="h-3.5 w-3.5" /> PDF Supported
-          </span>
-          <span className="text-[10px] uppercase font-black tracking-widest text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5" /> AI-Ready
-          </span>
-        </div>
+    <>
+      {/* DESKTOP VIEW */}
+      <div className="hidden lg:block">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="flex flex-col gap-8 max-w-3xl mx-auto pb-12"
+        >
+          <div className="flex flex-col gap-2 relative z-10">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white flex items-center gap-3">
+              Upload a Note <Sparkles className="h-6 w-6 text-indigo-400" />
+            </h1>
+            <p className="text-zinc-400 text-sm md:text-base font-medium max-w-2xl">
+              Share your knowledge with the community. Please ensure your PDF is high quality and readable. Max size: 20MB.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-2">
+              <span className="text-[10px] uppercase font-black tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5" /> PDF Supported
+              </span>
+              <span className="text-[10px] uppercase font-black tracking-widest text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5" /> AI-Ready
+              </span>
+            </div>
+          </div>
+
+          <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 shadow-2xl overflow-hidden relative">
+            {/* Animated Progress Bar */}
+            <AnimatePresence>
+              {isUploading && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 4 }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="absolute top-0 left-0 right-0 bg-zinc-900 z-50"
+                >
+                  <motion.div 
+                    className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]"
+                    initial={{ width: "0%" }}
+                    animate={{ width: `${uploadProgress}%` }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <CardHeader className="pb-4 border-b border-zinc-800/50 flex-row items-center gap-4 bg-zinc-900/30">
+              <div className="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl border border-indigo-500/30 shadow-inner">
+                <UploadCloud className="h-6 w-6" />
+              </div>
+              <div>
+                <CardTitle className="text-base font-black text-white">Submit Document</CardTitle>
+                <CardDescription className="text-xs text-zinc-400 font-medium mt-1">Provide accurate metadata to help others find your notes.</CardDescription>
+              </div>
+            </CardHeader>
+
+            <CardContent className="pt-6 pb-8">
+              <form onSubmit={handleUploadSubmit} className="flex flex-col gap-8">
+                
+                {/* Title & Description */}
+                <div className="flex flex-col gap-5 bg-zinc-950/40 p-6 rounded-2xl border border-zinc-800/50 shadow-inner">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Note Title *</label>
+                    <Input
+                      required
+                      placeholder="e.g. Linear Algebra Unit 1 Summary"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      disabled={isUploading}
+                      className="bg-zinc-900/60 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-100 rounded-xl h-12 shadow-inner"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Description</label>
+                    <textarea
+                      rows={2}
+                      placeholder="Summarize the topics covered..."
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      disabled={isUploading}
+                      className="bg-zinc-900/80 border-zinc-800 text-zinc-200 text-sm rounded-xl p-3.5 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none placeholder-zinc-500 resize-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Academic Metadata */}
+                <div className="grid sm:grid-cols-2 gap-4 bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/50">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Branch *</label>
+                    <select
+                      required
+                      value={branchId}
+                      onChange={(e) => setBranchId(e.target.value)}
+                      disabled={isUploading || isLoadingMetadata}
+                      className="bg-zinc-900/80 border border-zinc-800 text-xs rounded-xl h-10 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer disabled:opacity-50"
+                    >
+                      {isLoadingMetadata ? (
+                        <option value="">Loading branches...</option>
+                      ) : branches.length === 0 ? (
+                        <option value="">No branches found</option>
+                      ) : (
+                        branches.map(b => (
+                          <option key={b.id} value={b.id}>{b.name} ({b.code})</option>
+                        ))
+                      )}
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Semester *</label>
+                    <select
+                      required
+                      value={semester}
+                      onChange={(e) => setSemester(e.target.value)}
+                      disabled={isUploading}
+                      className="bg-zinc-900/80 border border-zinc-800 text-xs rounded-xl h-10 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer disabled:opacity-50"
+                    >
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                        <option key={sem} value={String(sem)}>Semester {sem}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col gap-2 sm:col-span-2">
+                    <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Subject *</label>
+                    <select
+                      required
+                      value={subjectId}
+                      onChange={(e) => setSubjectId(e.target.value)}
+                      disabled={isUploading || isLoadingMetadata || !branchId}
+                      className="bg-zinc-900/80 border border-zinc-800 text-xs rounded-xl h-10 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer disabled:opacity-50"
+                    >
+                      {!branchId ? (
+                        <option value="">Select a branch first</option>
+                      ) : subjects.length === 0 ? (
+                        <option value="">No subjects available</option>
+                      ) : (
+                        subjects.map(s => (
+                          <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
+                        ))
+                      )}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Additional Details */}
+                <div className="grid sm:grid-cols-2 gap-4 bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/50">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">College (Optional)</label>
+                    <Input
+                      placeholder="e.g. MIT, Stanford"
+                      value={college}
+                      onChange={(e) => setCollege(e.target.value)}
+                      disabled={isUploading}
+                      className="bg-zinc-900/80 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-200 rounded-xl"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Professor (Optional)</label>
+                    <Input
+                      placeholder="e.g. Dr. Alan Turing"
+                      value={professor}
+                      onChange={(e) => setProfessor(e.target.value)}
+                      disabled={isUploading}
+                      className="bg-zinc-900/80 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-200 rounded-xl"
+                    />
+                  </div>
+                </div>
+
+                {/* File Upload Zone */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">File Attachment *</label>
+                  
+                  <AnimatePresence mode="wait">
+                    {!file ? (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        className={`border-2 border-dashed rounded-2xl p-10 text-center flex flex-col items-center justify-center gap-4 transition-all cursor-pointer relative
+                          ${isDragging ? 'border-indigo-500 bg-indigo-500/10' : 'border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/40 bg-zinc-950/50'}
+                          ${isUploading ? 'pointer-events-none opacity-50' : ''}
+                        `}
+                      >
+                        <input
+                          type="file"
+                          accept="application/pdf"
+                          onChange={handleFileChange}
+                          disabled={isUploading}
+                          ref={fileInputRef}
+                          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                        />
+                        <div className={`p-4 rounded-full ${isDragging ? 'bg-indigo-500/20 text-indigo-400' : 'bg-zinc-900 text-zinc-500'}`}>
+                          <FileUp className="h-8 w-8" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-zinc-200">
+                            Drag and drop your PDF here
+                          </p>
+                          <p className="text-xs text-zinc-500 mt-1">
+                            or click to browse files (Max 20MB)
+                          </p>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="flex items-center justify-between p-4 bg-zinc-900/80 border border-zinc-700/50 rounded-2xl relative overflow-hidden"
+                      >
+                        <div className="flex items-center gap-4 z-10">
+                          <div className="bg-red-500/10 p-3 rounded-xl border border-red-500/20 text-red-400">
+                            <FileText className="h-6 w-6" />
+                          </div>
+                          <div className="flex flex-col max-w-[200px] sm:max-w-xs md:max-w-sm">
+                            <span className="text-sm font-bold text-zinc-200 truncate">{file.name}</span>
+                            <span className="text-xs text-zinc-500">{(file.size / 1024 / 1024).toFixed(2)} MB • PDF</span>
+                          </div>
+                        </div>
+                        {!isUploading && (
+                          <Button 
+                            type="button" 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={clearFile}
+                            className="text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-full z-10"
+                          >
+                            <X className="h-5 w-5" />
+                          </Button>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Error Message */}
+                  <AnimatePresence>
+                    {errorMsg && (
+                      <motion.p 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="text-xs text-red-400 font-bold flex items-center gap-1.5 mt-2 bg-red-500/10 p-3 rounded-lg border border-red-500/20"
+                      >
+                        <FileWarning className="h-4 w-4 shrink-0" /> 
+                        <span>{errorMsg}</span>
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  disabled={isUploading || !title || !file || !branchId || !subjectId}
+                  className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center gap-2 rounded-xl text-sm py-6 shadow-xl shadow-indigo-500/10 mt-4 disabled:opacity-50 transition-all active:scale-[0.98]"
+                >
+                  {isUploading ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" /> 
+                      Uploading {uploadProgress}%
+                    </>
+                  ) : (
+                    <>
+                      <UploadCloud className="h-5 w-5" /> Submit Note for Verification
+                    </>
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
-      <Card className="godmode-card bg-zinc-950/60 border-zinc-800/80 shadow-2xl overflow-hidden relative">
-        {/* Animated Progress Bar */}
-        <AnimatePresence>
-          {isUploading && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 4 }}
-              exit={{ opacity: 0, height: 0 }}
-              className="absolute top-0 left-0 right-0 bg-zinc-900 z-50"
-            >
-              <motion.div 
-                className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]"
-                initial={{ width: "0%" }}
-                animate={{ width: `${uploadProgress}%` }}
-                transition={{ duration: 0.3 }}
+      {/* MOBILE VIEW */}
+      <div className="block lg:hidden px-4 pt-6 pb-24 space-y-6">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
+            Upload Notes <Sparkles className="h-5 w-5 text-indigo-400" />
+          </h1>
+          <p className="text-zinc-400 text-sm font-medium">
+            Share your knowledge with the community.
+          </p>
+        </div>
+
+        <form onSubmit={handleUploadSubmit} className="flex flex-col gap-5">
+          {/* File Upload Zone */}
+          <div className="flex flex-col gap-2">
+            <AnimatePresence mode="wait">
+              {!file ? (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className={`border-2 border-dashed rounded-2xl p-8 text-center flex flex-col items-center justify-center gap-3 transition-all relative
+                    ${isUploading ? 'pointer-events-none opacity-50' : ''}
+                    border-zinc-800 bg-zinc-950/50
+                  `}
+                >
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    disabled={isUploading}
+                    ref={fileInputRef}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                  />
+                  <div className="bg-zinc-900 text-zinc-500 p-3 rounded-full">
+                    <FileUp className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-zinc-200">
+                      Tap to select PDF
+                    </p>
+                    <p className="text-xs text-zinc-500 mt-1">
+                      Max 20MB
+                    </p>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center justify-between p-3 bg-zinc-900/80 border border-zinc-700/50 rounded-xl relative overflow-hidden"
+                >
+                  <div className="flex items-center gap-3 z-10 min-w-0">
+                    <div className="bg-red-500/10 p-2 rounded-lg border border-red-500/20 text-red-400 shrink-0">
+                      <FileText className="h-5 w-5" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-sm font-bold text-zinc-200 truncate">{file.name}</span>
+                      <span className="text-[10px] text-zinc-500">{(file.size / 1024 / 1024).toFixed(2)} MB • PDF</span>
+                    </div>
+                  </div>
+                  {!isUploading && (
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={clearFile}
+                      className="text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-full h-8 w-8 z-10 shrink-0 ml-2"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Error Message */}
+            <AnimatePresence>
+              {errorMsg && (
+                <motion.p 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="text-xs text-red-400 font-bold flex items-center gap-1.5 mt-2 bg-red-500/10 p-3 rounded-lg border border-red-500/20"
+                >
+                  <FileWarning className="h-4 w-4 shrink-0" /> 
+                  <span>{errorMsg}</span>
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="bg-zinc-900/40 rounded-2xl border border-zinc-800/50 p-4 flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Note Title *</label>
+              <Input
+                required
+                placeholder="e.g. Linear Algebra Unit 1"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                disabled={isUploading}
+                className="bg-zinc-950 border-zinc-800/80 text-zinc-100 rounded-xl h-12 shadow-sm text-sm"
               />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <CardHeader className="pb-4 border-b border-zinc-800/50 flex-row items-center gap-4 bg-zinc-900/30">
-          <div className="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl border border-indigo-500/30 shadow-inner">
-            <UploadCloud className="h-6 w-6" />
-          </div>
-          <div>
-            <CardTitle className="text-base font-black text-white">Submit Document</CardTitle>
-            <CardDescription className="text-xs text-zinc-400 font-medium mt-1">Provide accurate metadata to help others find your notes.</CardDescription>
-          </div>
-        </CardHeader>
-
-        <CardContent className="pt-6 pb-8">
-          <form onSubmit={handleUploadSubmit} className="flex flex-col gap-8">
-            
-            {/* Title & Description */}
-            <div className="flex flex-col gap-5 bg-zinc-950/40 p-6 rounded-2xl border border-zinc-800/50 shadow-inner">
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Note Title *</label>
-                <Input
-                  required
-                  placeholder="e.g. Linear Algebra Unit 1 Summary"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  disabled={isUploading}
-                  className="bg-zinc-900/60 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-100 rounded-xl h-12 shadow-inner"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Description</label>
-                <textarea
-                  rows={2}
-                  placeholder="Summarize the topics covered..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  disabled={isUploading}
-                  className="bg-zinc-900/80 border-zinc-800 text-zinc-200 text-sm rounded-xl p-3.5 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none placeholder-zinc-500 resize-none"
-                />
-              </div>
             </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Description</label>
+              <textarea
+                rows={2}
+                placeholder="Briefly describe the note..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                disabled={isUploading}
+                className="bg-zinc-950 border-zinc-800/80 text-zinc-100 text-sm rounded-xl p-3 outline-none resize-none shadow-sm placeholder:text-zinc-600"
+              />
+            </div>
+          </div>
 
-            {/* Academic Metadata */}
-            <div className="grid sm:grid-cols-2 gap-4 bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/50">
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Branch *</label>
+          <div className="bg-zinc-900/40 rounded-2xl border border-zinc-800/50 p-4 flex flex-col gap-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Branch *</label>
                 <select
                   required
                   value={branchId}
                   onChange={(e) => setBranchId(e.target.value)}
                   disabled={isUploading || isLoadingMetadata}
-                  className="bg-zinc-900/80 border border-zinc-800 text-xs rounded-xl h-10 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer disabled:opacity-50"
+                  className="bg-zinc-950 border border-zinc-800/80 text-xs rounded-xl h-11 px-3 text-zinc-200 outline-none w-full"
                 >
                   {isLoadingMetadata ? (
-                    <option value="">Loading branches...</option>
+                    <option value="">Loading...</option>
                   ) : branches.length === 0 ? (
-                    <option value="">No branches found</option>
+                    <option value="">No branches</option>
                   ) : (
                     branches.map(b => (
-                      <option key={b.id} value={b.id}>{b.name} ({b.code})</option>
+                      <option key={b.id} value={b.id}>{b.code}</option>
                     ))
                   )}
                 </select>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Semester *</label>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Semester *</label>
                 <select
                   required
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
                   disabled={isUploading}
-                  className="bg-zinc-900/80 border border-zinc-800 text-xs rounded-xl h-10 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer disabled:opacity-50"
+                  className="bg-zinc-950 border border-zinc-800/80 text-xs rounded-xl h-11 px-3 text-zinc-200 outline-none w-full"
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-                    <option key={sem} value={String(sem)}>Semester {sem}</option>
+                    <option key={sem} value={String(sem)}>Sem {sem}</option>
                   ))}
                 </select>
               </div>
-
-              <div className="flex flex-col gap-2 sm:col-span-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Subject *</label>
-                <select
-                  required
-                  value={subjectId}
-                  onChange={(e) => setSubjectId(e.target.value)}
-                  disabled={isUploading || isLoadingMetadata || !branchId}
-                  className="bg-zinc-900/80 border border-zinc-800 text-xs rounded-xl h-10 px-3 text-zinc-300 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 outline-none cursor-pointer disabled:opacity-50"
-                >
-                  {!branchId ? (
-                    <option value="">Select a branch first</option>
-                  ) : subjects.length === 0 ? (
-                    <option value="">No subjects available</option>
-                  ) : (
-                    subjects.map(s => (
-                      <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
-                    ))
-                  )}
-                </select>
-              </div>
             </div>
 
-            {/* Additional Details */}
-            <div className="grid sm:grid-cols-2 gap-4 bg-zinc-950/50 p-5 rounded-2xl border border-zinc-800/50">
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">College (Optional)</label>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Subject *</label>
+              <select
+                required
+                value={subjectId}
+                onChange={(e) => setSubjectId(e.target.value)}
+                disabled={isUploading || isLoadingMetadata || !branchId}
+                className="bg-zinc-950 border border-zinc-800/80 text-xs rounded-xl h-11 px-3 text-zinc-200 outline-none w-full truncate"
+              >
+                {!branchId ? (
+                  <option value="">Select branch first</option>
+                ) : subjects.length === 0 ? (
+                  <option value="">No subjects available</option>
+                ) : (
+                  subjects.map(s => (
+                    <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
+                  ))
+                )}
+              </select>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3 mt-1">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">College</label>
                 <Input
-                  placeholder="e.g. MIT, Stanford"
+                  placeholder="Optional"
                   value={college}
                   onChange={(e) => setCollege(e.target.value)}
                   disabled={isUploading}
-                  className="bg-zinc-900/80 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-200 rounded-xl"
+                  className="bg-zinc-950 border-zinc-800/80 text-zinc-200 rounded-xl text-xs h-10"
                 />
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Professor (Optional)</label>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Professor</label>
                 <Input
-                  placeholder="e.g. Dr. Alan Turing"
+                  placeholder="Optional"
                   value={professor}
                   onChange={(e) => setProfessor(e.target.value)}
                   disabled={isUploading}
-                  className="bg-zinc-900/80 border-zinc-800 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-200 rounded-xl"
+                  className="bg-zinc-950 border-zinc-800/80 text-zinc-200 rounded-xl text-xs h-10"
                 />
               </div>
             </div>
+          </div>
 
-            {/* File Upload Zone */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">File Attachment *</label>
-              
-              <AnimatePresence mode="wait">
-                {!file ? (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    className={`border-2 border-dashed rounded-2xl p-10 text-center flex flex-col items-center justify-center gap-4 transition-all cursor-pointer relative
-                      ${isDragging ? 'border-indigo-500 bg-indigo-500/10' : 'border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/40 bg-zinc-950/50'}
-                      ${isUploading ? 'pointer-events-none opacity-50' : ''}
-                    `}
-                  >
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={handleFileChange}
-                      disabled={isUploading}
-                      ref={fileInputRef}
-                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
-                    />
-                    <div className={`p-4 rounded-full ${isDragging ? 'bg-indigo-500/20 text-indigo-400' : 'bg-zinc-900 text-zinc-500'}`}>
-                      <FileUp className="h-8 w-8" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-zinc-200">
-                        Drag and drop your PDF here
-                      </p>
-                      <p className="text-xs text-zinc-500 mt-1">
-                        or click to browse files (Max 20MB)
-                      </p>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center justify-between p-4 bg-zinc-900/80 border border-zinc-700/50 rounded-2xl relative overflow-hidden"
-                  >
-                    <div className="flex items-center gap-4 z-10">
-                      <div className="bg-red-500/10 p-3 rounded-xl border border-red-500/20 text-red-400">
-                        <FileText className="h-6 w-6" />
-                      </div>
-                      <div className="flex flex-col max-w-[200px] sm:max-w-xs md:max-w-sm">
-                        <span className="text-sm font-bold text-zinc-200 truncate">{file.name}</span>
-                        <span className="text-xs text-zinc-500">{(file.size / 1024 / 1024).toFixed(2)} MB • PDF</span>
-                      </div>
-                    </div>
-                    {!isUploading && (
-                      <Button 
-                        type="button" 
-                        variant="ghost" 
-                        size="icon" 
-                        onClick={clearFile}
-                        className="text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-full z-10"
-                      >
-                        <X className="h-5 w-5" />
-                      </Button>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Error Message */}
-              <AnimatePresence>
-                {errorMsg && (
-                  <motion.p 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="text-xs text-red-400 font-bold flex items-center gap-1.5 mt-2 bg-red-500/10 p-3 rounded-lg border border-red-500/20"
-                  >
-                    <FileWarning className="h-4 w-4 shrink-0" /> 
-                    <span>{errorMsg}</span>
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={isUploading || !title || !file || !branchId || !subjectId}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center gap-2 rounded-xl text-sm py-6 shadow-xl shadow-indigo-500/10 mt-4 disabled:opacity-50 transition-all active:scale-[0.98]"
-            >
-              {isUploading ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" /> 
-                  Uploading {uploadProgress}%
-                </>
-              ) : (
-                <>
-                  <UploadCloud className="h-5 w-5" /> Submit Note for Verification
-                </>
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </motion.div>
+          <Button
+            type="submit"
+            disabled={isUploading || !title || !file || !branchId || !subjectId}
+            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center justify-center gap-2 rounded-xl py-6 mt-2 shadow-lg shadow-indigo-500/20 disabled:opacity-50"
+          >
+            {isUploading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" /> 
+                Uploading {uploadProgress}%
+              </>
+            ) : (
+              <>
+                <UploadCloud className="h-5 w-5" /> Submit Note
+              </>
+            )}
+          </Button>
+          
+          {/* Mobile Upload Progress Bar */}
+          <AnimatePresence>
+            {isUploading && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 4 }}
+                exit={{ opacity: 0, height: 0 }}
+                className="w-full bg-zinc-900 rounded-full overflow-hidden mt-2"
+              >
+                <motion.div 
+                  className="h-full bg-indigo-500"
+                  initial={{ width: "0%" }}
+                  animate={{ width: `${uploadProgress}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </form>
+      </div>
+    </>
   );
 }
+

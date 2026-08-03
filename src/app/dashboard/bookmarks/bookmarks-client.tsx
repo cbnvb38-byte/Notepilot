@@ -103,17 +103,27 @@ export default function BookmarksClient({ initialBookmarks }: { initialBookmarks
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-4xl mx-auto pb-12">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent">
+    <div className="flex flex-col lg:gap-6 max-w-4xl mx-auto pb-24 lg:pb-12 w-full">
+      <div className="flex flex-col gap-2 px-4 lg:px-0 pt-6 lg:pt-0 pb-2 lg:pb-0">
+        {/* Desktop Header */}
+        <h1 className="hidden lg:block text-3xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent">
           My Bookmarks
         </h1>
-        <p className="text-zinc-400 text-sm">
+        <p className="hidden lg:block text-zinc-400 text-sm">
           Access study materials you have bookmarked for quick learning.
+        </p>
+
+        {/* Mobile Header */}
+        <h1 className="block lg:hidden text-2xl font-black tracking-tight text-white">
+          Bookmarks
+        </h1>
+        <p className="block lg:hidden text-zinc-400 text-sm font-medium">
+          Your saved study material.
         </p>
       </div>
 
-      {bookmarks.length === 0 ? (
+      <div className="px-4 lg:px-0 flex-grow">
+        {bookmarks.length === 0 ? (
         <Card className="bg-zinc-900/15 border-zinc-800/50 flex-grow shadow-inner py-16 text-center">
           <CardContent className="flex flex-col items-center justify-center text-zinc-500 gap-4">
             <Bookmark className="h-10 w-10 text-zinc-650" />
@@ -219,8 +229,9 @@ export default function BookmarksClient({ initialBookmarks }: { initialBookmarks
               </Card>
             );
           })}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
