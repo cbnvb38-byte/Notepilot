@@ -18,7 +18,7 @@ export function DiscoverySections({
   if (recommendedNotes.length === 0 && trendingNotes.length === 0 && recentlyViewedNotes === undefined) return null;
 
   return (
-    <div className="flex flex-col gap-8 mb-4">
+    <div className="hidden lg:flex flex-col gap-8 mb-4">
       {recentlyViewedNotes !== undefined && (
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-bold tracking-tight text-zinc-100 flex items-center gap-2">

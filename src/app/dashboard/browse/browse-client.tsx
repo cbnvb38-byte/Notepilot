@@ -18,12 +18,13 @@ import {
   Loader2,
   FileWarning,
   Bot,
+  Clock,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useSupabase } from "@/hooks/useSupabase";
-import { browseNotesAction, logDownloadAction } from "@/app/actions/notes";
+import { browseNotesAction, logDownloadAction, fetchRecentlyViewedNotesAction } from "@/app/actions/notes";
 import { addBookmark, removeBookmark } from "@/app/actions/bookmarks";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -131,6 +132,24 @@ function BrowseNotesContent({
   // Bookmarks State
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set(initialBookmarkedIds));
   const [bookmarkingIds, setBookmarkingIds] = useState<Record<string, boolean>>({});
+
+  // Recently Viewed State
+  const [recentlyViewed, setRecentlyViewed] = useState<any[]>([]);
+  const [discoveryTab, setDiscoveryTab] = useState<"recent" | "trending">("recent");
+
+  useEffect(() => {
+    async function loadRecent() {
+      try {
+        const res = await fetchRecentlyViewedNotesAction(10);
+        if (res.success && res.data) {
+          setRecentlyViewed(res.data);
+        }
+      } catch (err) {
+        console.warn("Failed to fetch recently viewed", err);
+      }
+    }
+    loadRecent();
+  }, []);
 
   const handleToggleBookmark = async (noteId: string) => {
     if (bookmarkingIds[noteId]) return; // Guard against rapid clicks
@@ -389,8 +408,318 @@ function BrowseNotesContent({
     fetchNotes(searchQuery, "all", "0", "all", "newest", 1);
   };
 
+  const trendingNotes = [...notes].sort((a, b) => (b.downloads_count + b.view_count) - (a.downloads_count + a.view_count)).slice(0, 5);
+
   return (
-    <div className="flex flex-col gap-6">
+    <div className="w-full">
+      {/* ── Mobile Layout ── */}
+      <div className="flex lg:hidden flex-col gap-6 w-full">
+        {/* 1. Mobile Premium Header */}
+        <div className="flex flex-col gap-1.5 pt-1 pb-2">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 w-fit">
+            <Sparkles className="h-3 w-3 text-indigo-400" />
+            <span className="text-[9px] font-bold text-indigo-400 tracking-wide uppercase">AI Notes Library</span>
+          </div>
+          <h1 className="text-xl font-bold text-white tracking-tight leading-tight">Explore Notes</h1>
+          <p className="text-xs text-zinc-400 font-medium">Find trusted notes, topics, and study material.</p>
+        </div>
+
+        {/* TOP DISCOVERY REEL - only discovery section on mobile */}
+        <div className="flex flex-col gap-3 -mx-4">
+          <div className="px-4 flex flex-col gap-1.5">
+            <h2 className="text-sm font-bold text-zinc-100 flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-indigo-400" />
+              Continue & Discover
+            </h2>
+            <p className="text-[11px] text-zinc-500 font-medium mb-1">Recent notes and popular study material.</p>
+            
+            {/* Tabs */}
+            <div className="flex gap-2 mb-2">
+              <button 
+                onClick={() => setDiscoveryTab("recent")}
+                className={`text-[10px] font-bold px-3 py-1.5 rounded-full transition-all border ${
+                  discoveryTab === "recent" 
+                    ? "bg-indigo-600/20 text-indigo-400 border-indigo-500/30" 
+                    : "bg-zinc-900/60 border-zinc-800/80 text-zinc-400 hover:text-zinc-300"
+                }`}
+              >
+                Recently Viewed
+              </button>
+              <button 
+                onClick={() => setDiscoveryTab("trending")}
+                className={`text-[10px] font-bold px-3 py-1.5 rounded-full transition-all border ${
+                  discoveryTab === "trending" 
+                    ? "bg-indigo-600/20 text-indigo-400 border-indigo-500/30" 
+                    : "bg-zinc-900/60 border-zinc-800/80 text-zinc-400 hover:text-zinc-300"
+                }`}
+              >
+                Trending
+              </button>
+            </div>
+          </div>
+
+          <div className="w-full overflow-x-auto pb-4 scrollbar-hide px-4">
+            <div className="flex gap-3 w-max">
+              {discoveryTab === "recent" ? (
+                recentlyViewed.length > 0 ? (
+                  recentlyViewed.map((note) => (
+                    <Link href={`/notes/${note.id}`} key={`recent-${note.id}`} className="block w-[260px] max-w-[85vw]">
+                      <div className="flex flex-col justify-between gap-3 p-4 rounded-2xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-md hover:bg-zinc-900/60 transition-colors h-full shadow-sm">
+                        <div className="flex flex-col gap-1.5 min-w-0">
+                          <h4 className="text-[13px] font-bold text-zinc-100 line-clamp-1 leading-snug">{note.title}</h4>
+                          <div className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+                            <span className="truncate flex items-center gap-1"><GraduationCap className="h-3 w-3" /> {note.subjects?.name || "Subject"}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between mt-1">
+                          <div className="flex flex-wrap gap-1.5 items-center">
+                            {note.subjects?.code && (
+                              <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-zinc-800/50 border border-zinc-700/50 text-zinc-300">{note.subjects.code}</span>
+                            )}
+                            <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-zinc-800/50 border border-zinc-700/50 text-zinc-300">Sem {note.semester}</span>
+                          </div>
+                          <span className="text-[10px] font-bold text-indigo-400">Open Note &rarr;</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="w-[260px] max-w-[85vw] text-center px-4 py-6 border border-dashed border-zinc-800 rounded-2xl text-[11px] text-zinc-500 bg-zinc-900/20">
+                    Recently opened notes will appear here.
+                  </div>
+                )
+              ) : (
+                trendingNotes.length > 0 ? (
+                  trendingNotes.map((note) => (
+                    <Link href={`/notes/${note.id}`} key={`trending-${note.id}`} className="block w-[260px] max-w-[85vw]">
+                      <div className="flex flex-col justify-between gap-3 p-4 rounded-2xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-md hover:bg-zinc-900/60 transition-colors h-full shadow-sm">
+                        <div className="flex flex-col gap-1.5 min-w-0">
+                          <h4 className="text-[13px] font-bold text-zinc-100 line-clamp-1 leading-snug">{note.title}</h4>
+                          <div className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+                            <span className="truncate flex items-center gap-1"><GraduationCap className="h-3 w-3" /> {note.subjects?.name || "Subject"}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between mt-1">
+                          <div className="flex flex-wrap gap-2 items-center text-[10px] font-bold text-zinc-500">
+                            <span className="flex items-center gap-1"><Download className="h-3 w-3" /> {note.downloads_count}</span>
+                            <span className="flex items-center gap-1"><Eye className="h-3 w-3" /> {note.view_count}</span>
+                          </div>
+                          <span className="text-[10px] font-bold text-indigo-400">Open Note &rarr;</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="w-[260px] max-w-[85vw] text-center px-4 py-6 border border-dashed border-zinc-800 rounded-2xl text-[11px] text-zinc-500 bg-zinc-900/20">
+                    Popular notes will appear as students use the library.
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* SEARCH AND FILTERS */}
+        <div className="relative group">
+          <Search className="absolute left-4 top-3.5 h-4 w-4 text-zinc-500 group-focus-within:text-indigo-400 transition-colors" />
+          <Input
+            placeholder="Search notes, subjects, topics..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="pl-10 bg-zinc-900/60 border-zinc-800/80 focus:border-indigo-500/50 focus:ring-indigo-500/10 text-zinc-100 rounded-2xl h-11 shadow-inner text-[13px] placeholder:text-zinc-500 transition-all"
+          />
+        </div>
+
+        {/* 3. Clean Mobile Filters */}
+        <div className="w-full overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
+          <div className="flex items-center gap-2 w-max">
+            <select
+              value={selectedBranch}
+              onChange={handleBranchChange}
+              className="bg-zinc-900/50 border border-zinc-800/60 text-[11px] font-bold rounded-xl h-8 px-3 text-zinc-300 focus:border-indigo-500/50 outline-none cursor-pointer appearance-none"
+            >
+              <option value="all">All Branches</option>
+              {initialBranches.map(b => <option key={b.id} value={b.id}>{b.code}</option>)}
+            </select>
+            
+            <select
+              value={selectedSemester}
+              onChange={handleSemesterChange}
+              className="bg-zinc-900/50 border border-zinc-800/60 text-[11px] font-bold rounded-xl h-8 px-3 text-zinc-300 focus:border-indigo-500/50 outline-none cursor-pointer appearance-none"
+            >
+              <option value="0">All Sems</option>
+              {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>Sem {s}</option>)}
+            </select>
+
+            <select
+              value={selectedSubject}
+              onChange={handleSubjectChange}
+              className="bg-zinc-900/50 border border-zinc-800/60 text-[11px] font-bold rounded-xl h-8 px-3 text-zinc-300 focus:border-indigo-500/50 outline-none cursor-pointer appearance-none max-w-[120px] truncate"
+              disabled={isLoadingSubjects}
+            >
+              <option value="all">{isLoadingSubjects ? "Loading..." : "All Subjects"}</option>
+              {subjects.map((sub) => (
+                <option key={sub.id} value={sub.id}>{sub.name}</option>
+              ))}
+            </select>
+
+            <select
+              value={sortBy}
+              onChange={handleSortChange}
+              className="bg-indigo-500/10 border border-indigo-500/20 text-[11px] font-bold rounded-xl h-8 px-3 text-indigo-300 focus:border-indigo-500/50 outline-none cursor-pointer appearance-none"
+            >
+              <option value="relevance">Relevance</option>
+              <option value="newest">Newest</option>
+              <option value="downloads">Most Downloaded</option>
+              <option value="highest_rated">Highest Rated</option>
+            </select>
+
+            {(searchQuery || selectedBranch !== "all" || selectedSemester !== "0" || selectedSubject !== "all" || sortBy !== "newest") && (
+              <button
+                onClick={handleResetFilters}
+                className="bg-red-500/10 border border-red-500/20 text-[11px] font-bold rounded-xl h-8 px-3 text-red-400 flex items-center gap-1 shrink-0"
+              >
+                Reset
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* ALL NOTES LIST - no Recently Viewed/Trending below this point */}
+        <div className="flex flex-col gap-3">
+          <h2 className="text-sm font-black text-zinc-100 mb-1">
+            {searchQuery ? "Search Results" : "All Notes"} <span className="text-zinc-500 text-[10px]">({totalCount})</span>
+          </h2>
+          
+          {isLoadingNotes ? (
+            <div className="py-10 text-center flex flex-col items-center justify-center gap-3">
+              <Loader2 className="h-6 w-6 animate-spin text-indigo-400" />
+              <p className="text-xs font-bold text-zinc-500">Loading notes...</p>
+            </div>
+          ) : notes.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 px-4 text-center bg-zinc-950/40 rounded-3xl border border-zinc-800/50 shadow-inner">
+              <div className="p-3 bg-zinc-900 rounded-2xl border border-zinc-800 mb-3 shadow-inner">
+                <FileWarning className="h-6 w-6 text-zinc-500" />
+              </div>
+              <h3 className="font-black text-zinc-300 text-sm mb-1">No notes matched your search.</h3>
+              <p className="text-xs text-zinc-500 mb-4 max-w-[200px]">Try adjusting filters or searching for something else.</p>
+              <div className="flex items-center gap-2 w-full max-w-[200px]">
+                <Button onClick={handleResetFilters} variant="outline" className="w-full text-xs font-bold rounded-xl h-10 border-zinc-800 text-zinc-400 hover:text-zinc-300">
+                  Reset Filters
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {notes.map((note) => (
+                <div key={`mob-${note.id}`} className="flex flex-col gap-3 p-5 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-md shadow-sm relative overflow-hidden group">
+                  <div className="flex flex-col gap-1 min-w-0 z-10">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {note.subjects?.code && (
+                          <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-lg bg-zinc-800/80 border border-zinc-700/50 text-zinc-300">{note.subjects.code}</span>
+                        )}
+                        <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-lg bg-indigo-500/15 border border-indigo-500/30 text-indigo-400">Sem {note.semester}</span>
+                      </div>
+                      {note.average_rating > 0 && (
+                        <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-lg">
+                          <span className="text-[10px] font-bold text-amber-400">{note.average_rating.toFixed(1)} ★</span>
+                        </div>
+                      )}
+                    </div>
+                    <Link href={`/notes/${note.id}`} className="block">
+                      <h3 className="text-base font-black text-zinc-100 line-clamp-2 leading-snug mb-1.5">{note.title}</h3>
+                      <p className="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed font-medium mb-3">{note.description || "No description provided."}</p>
+                    </Link>
+                    
+                    <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-medium bg-zinc-950/40 px-3 py-2 rounded-xl border border-zinc-800/40 w-fit">
+                      <User className="h-3 w-3" />
+                      <span className="truncate max-w-[150px]">
+                        {note.profiles?.name || "Anonymous"}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col gap-3 pt-4 mt-2 border-t border-zinc-800/50 z-10">
+                    <div className="flex items-center justify-between text-[10px] font-bold text-zinc-500 px-1">
+                      <span className="flex items-center gap-1.5"><Eye className="h-3.5 w-3.5 text-zinc-400" /> {note.view_count} views</span>
+                      <span className="flex items-center gap-1.5"><Download className="h-3.5 w-3.5 text-zinc-400" /> {note.downloads_count} dls</span>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-2 mt-1">
+                      <Link href={`/notes/${note.id}`} className="col-span-2">
+                        <Button className="w-full h-10 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md">
+                          Open Note
+                        </Button>
+                      </Link>
+                      
+                      <Button
+                        variant="outline"
+                        onClick={() => handleDownload(note.id, note.title)}
+                        disabled={!!downloadingNotes[note.id]}
+                        className="h-9 rounded-xl border-zinc-800 text-zinc-300 text-[11px] font-bold bg-zinc-900/50"
+                      >
+                        {downloadingNotes[note.id] ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" /> : <Download className="h-3.5 w-3.5 mr-1.5" />}
+                        Download
+                      </Button>
+                      
+                      <Button
+                        variant="outline"
+                        onClick={(e) => { e.preventDefault(); handleToggleBookmark(note.id); }}
+                        disabled={!!bookmarkingIds[note.id]}
+                        className={`h-9 rounded-xl text-[11px] font-bold transition-all ${
+                          bookmarkedIds.has(note.id)
+                            ? "bg-pink-500/10 border-pink-500/30 text-pink-500"
+                            : "border-zinc-800 text-zinc-300 bg-zinc-900/50"
+                        }`}
+                      >
+                        {bookmarkingIds[note.id] ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" /> : <Bookmark className={`h-3.5 w-3.5 mr-1.5 ${bookmarkedIds.has(note.id) ? "fill-current" : ""}`} />}
+                        {bookmarkedIds.has(note.id) ? "Saved" : "Save"}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              {/* Pagination for mobile */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between gap-2 mt-4 pt-4 border-t border-zinc-800/50">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      const newPage = Math.max(page - 1, 1);
+                      setPage(newPage);
+                      updateUrl({ page: String(newPage) });
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    disabled={page === 1}
+                    className="h-9 px-4 rounded-xl border-zinc-800 text-zinc-300 text-xs font-bold"
+                  >
+                    <ChevronLeft className="h-4 w-4 mr-1" /> Prev
+                  </Button>
+                  <span className="text-[10px] font-bold text-zinc-500">Page {page} of {totalPages}</span>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      const newPage = Math.min(page + 1, totalPages);
+                      setPage(newPage);
+                      updateUrl({ page: String(newPage) });
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    disabled={page === totalPages}
+                    className="h-9 px-4 rounded-xl border-zinc-800 text-zinc-300 text-xs font-bold"
+                  >
+                    Next <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Desktop Layout ── */}
+      <div className="hidden lg:flex flex-col gap-6">
       {/* Advanced Filter panel */}
       <div className="flex flex-col gap-4 bg-zinc-900/15 border border-zinc-800/40 p-5 rounded-2xl backdrop-blur-md">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -798,6 +1127,7 @@ function BrowseNotesContent({
           </Button>
         </div>
       )}
+      </div>
     </div>
   );
 }

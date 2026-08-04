@@ -26,6 +26,11 @@ import {
   Library,
   Timer,
   CheckCircle2,
+  BrainCircuit,
+  Layers,
+  MessageSquare,
+  Target,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -428,7 +433,326 @@ export default function NoteDetailsClient({
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="w-full">
+      {/* ── Mobile Layout ── */}
+      <div className="flex lg:hidden flex-col gap-6 w-full pb-10">
+        
+        {/* Back & Top Badges */}
+        <div className="flex items-center justify-between mt-2">
+          <Link href="/dashboard/browse">
+            <Button variant="ghost" className="text-zinc-400 hover:text-zinc-50 hover:bg-zinc-900/50 rounded-xl gap-2 font-semibold h-9 px-3 text-[11px] uppercase tracking-wider">
+              <ArrowLeft className="h-3.5 w-3.5" /> Library
+            </Button>
+          </Link>
+          <div className="flex items-center gap-1.5 flex-wrap justify-end">
+            {averageRating > 0 && (
+              <span className="text-[9px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded font-black uppercase tracking-widest shadow-inner shrink-0">
+                {averageRating.toFixed(1)} ★
+              </span>
+            )}
+            <span className="text-[9px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-black uppercase tracking-widest shadow-inner shrink-0 max-w-[120px] truncate">
+              {note.subjects?.branches?.code || "Branch"} &bull; S{note.semester}
+            </span>
+          </div>
+        </div>
+
+        {/* 1. Premium Note Header */}
+        <div className="flex flex-col gap-3 px-1">
+          <h1 className="text-xl sm:text-2xl font-black text-zinc-100 leading-tight min-w-0 break-words whitespace-normal">{note.title}</h1>
+          <p className="text-xs text-zinc-400 font-medium leading-relaxed min-w-0 break-words whitespace-normal">
+            {note.description || "No description provided."}
+          </p>
+          <div className="flex flex-wrap items-center gap-2 mt-1">
+            {note.subjects?.code && (
+              <span className="text-[10px] bg-zinc-900 text-zinc-400 border border-zinc-800 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest shrink-0 max-w-[150px] truncate">
+                {note.subjects.name}
+              </span>
+            )}
+            <span className="text-[10px] text-zinc-500 font-bold shrink-0 flex items-center gap-1"><Eye className="h-3 w-3" /> {note.view_count} views</span>
+            <span className="text-[10px] text-zinc-500 font-bold shrink-0 flex items-center gap-1"><Download className="h-3 w-3" /> {note.downloads_count} dls</span>
+          </div>
+        </div>
+
+        {downloadError && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl flex items-start gap-2 text-xs font-semibold">
+            <FileWarning className="h-4 w-4 shrink-0 mt-0.5" />
+            <div className="min-w-0 break-words whitespace-normal w-full">{downloadError}</div>
+          </div>
+        )}
+
+        {/* 2. Primary Action Area */}
+        <div className="flex flex-col gap-2">
+          <Button
+            onClick={handleDownload}
+            disabled={isDownloading}
+            className="w-full glow-border bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black flex items-center justify-center gap-2 rounded-xl text-sm h-14 shadow-xl shadow-indigo-500/20 disabled:opacity-50 transition-all"
+          >
+            {isDownloading ? <><Loader2 className="h-5 w-5 animate-spin" /> Downloading...</> : <><Download className="h-5 w-5" /> Download Note</>}
+          </Button>
+          <div className="grid grid-cols-2 gap-2">
+            <Button
+              onClick={handleToggleBookmark}
+              disabled={isBookmarking}
+              variant="outline"
+              className={`h-11 rounded-xl text-xs font-bold gap-2 transition-all shadow-inner border-zinc-800 ${
+                isBookmarked 
+                  ? "bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 border-pink-500/20" 
+                  : "bg-zinc-950 text-zinc-300 hover:bg-zinc-900"
+              }`}
+            >
+              {isBookmarking ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Bookmark className={`h-4 w-4 ${isBookmarked ? "fill-pink-500" : ""}`} /> {isBookmarked ? "Saved" : "Save"}</>}
+            </Button>
+            {userId && (
+              <Button
+                onClick={() => setIsReportModalOpen(true)}
+                disabled={isAuthor}
+                variant="outline"
+                className="h-11 rounded-xl text-xs font-bold gap-2 transition-all shadow-inner bg-zinc-950 border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
+              >
+                <FileWarning className="h-4 w-4" /> Report
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* 3. Mobile PDF Preview */}
+        {note.file_url && (
+          <div className="flex flex-col gap-3">
+            <h2 className="text-sm font-black text-zinc-100 flex items-center gap-2 px-1">
+              <FileText className="h-4 w-4 text-indigo-400" />
+              Document Preview
+            </h2>
+            <div className="bg-zinc-950/60 border border-zinc-800/80 rounded-2xl overflow-hidden h-[450px] sm:h-[550px] shadow-inner relative flex flex-col w-full">
+              <div className="absolute inset-0 z-0 bg-zinc-950">
+                {!previewError ? (
+                  <iframe
+                    src={`${note.file_url}#toolbar=0`}
+                    onError={() => setPreviewError(true)}
+                    className="w-full h-full border-none opacity-90"
+                    title={note.title}
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-3">
+                    <FileText className="h-6 w-6 text-zinc-500" />
+                    <h3 className="font-black text-sm text-zinc-300">Preview not available</h3>
+                  </div>
+                )}
+              </div>
+            </div>
+            <a href={note.file_url} target="_blank" rel="noreferrer" className="w-full">
+              <Button variant="outline" className="w-full border-zinc-800 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-900 h-10 rounded-xl text-[11px] font-bold uppercase tracking-widest gap-2">
+                Open in full tab <ExternalLink className="h-3.5 w-3.5" />
+              </Button>
+            </a>
+          </div>
+        )}
+
+        {/* 4. Study this note with AI */}
+        {note.file_path && (
+          <div className="flex flex-col gap-3 mt-2">
+            <h2 className="text-sm font-black text-zinc-100 flex items-center gap-2 px-1">
+              <Sparkles className="h-4 w-4 text-violet-400" />
+              Study with AI
+            </h2>
+            <div className="bg-zinc-950/60 border border-zinc-800/80 rounded-3xl p-4 shadow-inner flex flex-col gap-4">
+              <p className="text-[11px] text-zinc-400 font-medium">Generate study material instantly from this note.</p>
+              
+              <div className="flex flex-col gap-2 w-full">
+                <Button onClick={() => handleGenerate("summary")} disabled={isGenerating !== null} className="w-full bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/20 h-12 rounded-xl flex items-center justify-start px-4 gap-3 font-bold transition-all disabled:opacity-50">
+                  <div className="bg-indigo-500/20 p-1.5 rounded-lg shrink-0"><BookOpen className="h-4 w-4 text-indigo-400" /></div>
+                  <span className="text-sm truncate">Smart Summary</span>
+                </Button>
+                
+                <div className="grid grid-cols-2 gap-2">
+                  <Button onClick={() => handleGenerate("mcq")} disabled={isGenerating !== null} className="w-full bg-violet-500/10 hover:bg-violet-500/20 text-violet-400 border border-violet-500/20 h-12 rounded-xl flex items-center justify-start px-4 gap-2 font-bold transition-all disabled:opacity-50">
+                    <div className="bg-violet-500/20 p-1 rounded-md shrink-0"><BrainCircuit className="h-3.5 w-3.5 text-violet-400" /></div>
+                    <span className="text-xs truncate">Quiz</span>
+                  </Button>
+                  <Button onClick={() => handleGenerate("flashcards")} disabled={isGenerating !== null} className="w-full bg-fuchsia-500/10 hover:bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/20 h-12 rounded-xl flex items-center justify-start px-4 gap-2 font-bold transition-all disabled:opacity-50">
+                    <div className="bg-fuchsia-500/20 p-1 rounded-md shrink-0"><Layers className="h-3.5 w-3.5 text-fuchsia-400" /></div>
+                    <span className="text-xs truncate">Flashcards</span>
+                  </Button>
+                </div>
+                
+                <Button onClick={() => handleGenerate("important_questions")} disabled={isGenerating !== null} className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 h-12 rounded-xl flex items-center justify-start px-4 gap-3 font-bold transition-all disabled:opacity-50">
+                  <div className="bg-amber-500/20 p-1.5 rounded-lg shrink-0"><Target className="h-4 w-4 text-amber-400" /></div>
+                  <span className="text-sm truncate">Important Questions</span>
+                </Button>
+                
+                <Button onClick={() => setIsDoubtModalOpen(true)} disabled={isGenerating !== null} className="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 h-12 rounded-xl flex items-center justify-start px-4 gap-3 font-bold transition-all disabled:opacity-50">
+                  <div className="bg-emerald-500/20 p-1.5 rounded-lg shrink-0"><MessageSquare className="h-4 w-4 text-emerald-400" /></div>
+                  <span className="text-sm truncate">Ask Doubt</span>
+                </Button>
+              </div>
+
+              {/* Scanned PDF Confirmation (Mobile) */}
+              {showScannedConfirmation && !generatedResult && (
+                <div className="flex flex-col gap-3 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl mt-2 animate-in fade-in">
+                  <div className="flex items-center gap-3">
+                    <Sparkles className="h-5 w-5 text-indigo-400 shrink-0" />
+                    <h4 className="text-sm font-black text-zinc-100">Scanned PDF detected</h4>
+                  </div>
+                  <p className="text-xs text-zinc-300 leading-relaxed font-medium">
+                    This PDF does not contain selectable text. Try Gemini reading (uses more API quota).
+                  </p>
+                  <div className="flex gap-2 mt-1">
+                    <Button
+                      onClick={handleDocumentFallback}
+                      disabled={isGenerating !== null}
+                      className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold h-9 rounded-xl"
+                    >
+                      {isGenerating !== null ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}
+                      Use Gemini Reader
+                    </Button>
+                    <Button
+                      onClick={() => setShowScannedConfirmation(false)}
+                      disabled={isGenerating !== null}
+                      variant="ghost"
+                      className="text-zinc-400 text-[10px] font-bold h-9 rounded-xl border border-zinc-700"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Inline Error Display (Mobile) */}
+              {generateError && !generatedResult && (
+                <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl mt-2">
+                  <FileWarning className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+                  <p className="text-xs text-red-300 font-bold leading-relaxed">{generateError}</p>
+                </div>
+              )}
+
+              {/* Compact success state (Mobile) */}
+              {generatedResult && (
+                <div className="flex flex-col gap-3 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl mt-2 shadow-[0_0_15px_rgba(16,185,129,0.05)]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1 bg-emerald-500/20 rounded-md">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                    </div>
+                    <p className="text-[11px] text-emerald-300 font-bold">
+                      {getGenerationTypeLabel(generatedResult.type)} saved.
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/dashboard/study-copilot/${generatedResult.id}`}
+                      className="flex-1 text-center py-2 text-[10px] font-black uppercase tracking-widest text-indigo-300 border border-indigo-500/40 bg-indigo-500/10 rounded-xl hover:bg-indigo-500/20 transition-colors"
+                    >
+                      Open Reader
+                    </Link>
+                    <CopyResultButton 
+                      text={getCopyableResultText({
+                        id: generatedResult.id,
+                        note_id: note.id,
+                        generation_type: generatedResult.type,
+                        status: "completed",
+                        result_text: generatedResult.text,
+                        result_json: generatedResult.json || null,
+                        created_at: new Date().toISOString(),
+                        note_title: note.title
+                      })}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 5. About this note */}
+        <div className="flex flex-col gap-3 mt-2 px-1">
+          <h2 className="text-sm font-black text-zinc-100 flex items-center gap-2">
+            <Info className="h-4 w-4 text-zinc-400" />
+            About this note
+          </h2>
+          <div className="flex flex-col gap-2">
+            {note.professor && (
+              <div className="bg-zinc-950/60 border border-zinc-800/80 p-3 rounded-2xl flex items-center gap-3">
+                <div className="p-2 bg-zinc-900 rounded-xl border border-zinc-800"><User className="h-4 w-4 text-zinc-400" /></div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Professor</span>
+                  <span className="text-xs font-bold text-zinc-200 truncate">{note.professor}</span>
+                </div>
+              </div>
+            )}
+            {note.college && (
+              <div className="bg-zinc-950/60 border border-zinc-800/80 p-3 rounded-2xl flex items-center gap-3">
+                <div className="p-2 bg-zinc-900 rounded-xl border border-zinc-800"><GraduationCap className="h-4 w-4 text-zinc-400" /></div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">College</span>
+                  <span className="text-xs font-bold text-zinc-200 truncate">{note.college}</span>
+                </div>
+              </div>
+            )}
+            <div className="bg-zinc-950/60 border border-zinc-800/80 p-3 rounded-2xl flex items-center gap-3">
+                <div className="p-2 bg-zinc-900 rounded-xl border border-zinc-800"><Calendar className="h-4 w-4 text-zinc-400" /></div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Uploaded</span>
+                  <span className="text-xs font-bold text-zinc-200 truncate">{new Date(note.created_at).toLocaleDateString()}</span>
+                </div>
+            </div>
+            {note.profiles?.name && (
+              <div className="bg-zinc-950/60 border border-zinc-800/80 p-3 rounded-2xl flex items-center gap-3">
+                <div className="p-2 bg-zinc-900 rounded-xl border border-zinc-800"><User className="h-4 w-4 text-zinc-400" /></div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Contributor</span>
+                  <span className="text-xs font-bold text-zinc-200 truncate">{note.profiles.name}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 6. Reviews */}
+        <div className="mt-4 -mx-4">
+          <ReviewsSection 
+            noteId={note.id}
+            isAuthor={isAuthor}
+            averageRating={averageRating}
+            ratingCount={ratingCount}
+            totalReviews={totalReviews}
+            distribution={distribution}
+            initialUserRating={userRating}
+            initialUserReviewTitle={userReviewTitle}
+            initialUserReviewText={userReviewText}
+            onRatingUpdate={handleRatingUpdate}
+          />
+        </div>
+
+        {/* 7. Related Notes Slider */}
+        {relatedNotes.length > 0 && (
+          <div className="flex flex-col gap-3 mt-4 -mx-4">
+            <div className="px-4">
+              <h2 className="text-sm font-black text-zinc-100 flex items-center gap-2">
+                <FileText className="h-4 w-4 text-zinc-400" />
+                Related Notes
+              </h2>
+              <p className="text-[10px] text-zinc-500 font-medium">More from {note.subjects?.code || "this subject"}.</p>
+            </div>
+            <div className="w-full overflow-x-auto pb-4 scrollbar-hide px-4">
+              <div className="flex gap-3 w-max">
+                {relatedNotes.map((relNote) => (
+                  <Link href={`/notes/${relNote.id}`} key={`mobile-rel-${relNote.id}`} className="block w-[240px]">
+                    <div className="flex flex-col gap-2 p-3.5 rounded-2xl border border-zinc-800/80 bg-zinc-950/60 shadow-sm hover:bg-zinc-900/60 transition-colors h-full">
+                      <div className="flex flex-col gap-1.5 min-w-0">
+                        <p className="text-[11px] font-black text-zinc-200 line-clamp-2 leading-tight">{relNote.title}</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          <span className="text-[8px] font-bold uppercase px-1.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-1"><Eye className="h-[8px] w-[8px]" /> {relNote.view_count}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Desktop Layout ── */}
+      <div className="hidden lg:flex flex-col gap-8 w-full">
       {/* Header Back Button */}
       <div className="flex items-center justify-between">
         <Link href="/dashboard/browse">
@@ -1259,8 +1583,11 @@ export default function NoteDetailsClient({
         )}
       </div>
 
+      </div>
+      
+      {/* ── Globals (Modals/Dialogs) ── */}
       {isReportModalOpen && (
-        <div className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-[100] flex items-center justify-center p-4">
           <Card className="godmode-card bg-zinc-950 border-zinc-800/80 w-full max-w-md shadow-[0_15px_50px_rgba(0,0,0,0.8)] overflow-hidden">
             <CardHeader className="border-b border-zinc-800/60 bg-zinc-900/50">
               <CardTitle className="text-base font-black text-red-400 flex items-center gap-2">
@@ -1342,7 +1669,7 @@ export default function NoteDetailsClient({
 
       {/* Ask Doubt Modal */}
       {isDoubtModalOpen && (
-        <div className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-[100] flex items-center justify-center p-4">
           <Card className="godmode-card bg-zinc-950 border-zinc-800/80 w-full max-w-md shadow-[0_15px_50px_rgba(0,0,0,0.8)] overflow-hidden relative">
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-violet-500/5 pointer-events-none opacity-50" />
             <CardHeader className="border-b border-zinc-800/60 relative z-10 flex flex-row items-center gap-4 bg-zinc-900/50">

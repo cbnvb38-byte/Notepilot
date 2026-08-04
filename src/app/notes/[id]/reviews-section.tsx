@@ -303,33 +303,33 @@ export function ReviewsSection({
           
           {/* Write Review Form */}
           {showReviewForm && !isAuthor && (
-            <div className="godmode-card bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 p-6 rounded-2xl flex flex-col gap-5 relative overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.4)]">
+            <div className="godmode-card bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 p-5 sm:p-6 rounded-2xl flex flex-col gap-5 relative overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.4)]">
               <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-yellow-400 to-yellow-600 shadow-[0_0_20px_rgba(250,204,21,0.5)]" />
               <h3 className="font-black text-lg text-white tracking-tight ml-2">Write a Review</h3>
               
-              <div className="flex flex-col gap-3 ml-2">
+              <div className="flex flex-col gap-3 ml-0 sm:ml-2">
                 <Input 
                   placeholder="Review Title (e.g., Extremely helpful for midterms!)" 
                   value={userReviewTitle ?? ""}
                   onChange={e => setUserReviewTitle(e.target.value.substring(0, 100))}
-                  className="bg-zinc-900 border-zinc-800 text-white focus-visible:ring-2 focus-visible:ring-yellow-500/20 focus-visible:border-yellow-500/50 rounded-xl h-12 px-4 shadow-inner font-medium"
+                  className="bg-zinc-900 border-zinc-800 text-white focus-visible:ring-2 focus-visible:ring-yellow-500/20 focus-visible:border-yellow-500/50 rounded-xl h-12 px-4 shadow-inner font-medium w-full"
                 />
                 <Textarea 
                   placeholder="What did you like or dislike? What should other students know before downloading?"
                   value={userReviewText ?? ""}
                   onChange={e => setUserReviewText(e.target.value.substring(0, 1000))}
-                  className="bg-zinc-900 border-zinc-800 text-white min-h-[140px] resize-none focus-visible:ring-2 focus-visible:ring-yellow-500/20 focus-visible:border-yellow-500/50 rounded-xl p-4 shadow-inner font-medium"
+                  className="bg-zinc-900 border-zinc-800 text-white min-h-[140px] resize-none focus-visible:ring-2 focus-visible:ring-yellow-500/20 focus-visible:border-yellow-500/50 rounded-xl p-4 shadow-inner font-medium w-full"
                 />
               </div>
               
-              <div className="flex justify-end gap-3 mt-2 ml-2">
-                <Button variant="ghost" onClick={() => setShowReviewForm(false)} className="text-zinc-400 hover:text-white font-bold h-10 px-6 rounded-xl hover:bg-zinc-900">
+              <div className="flex flex-col sm:flex-row justify-end gap-3 mt-2 ml-0 sm:ml-2">
+                <Button variant="ghost" onClick={() => setShowReviewForm(false)} className="w-full sm:w-auto text-zinc-400 hover:text-white font-bold h-12 sm:h-10 px-6 rounded-xl hover:bg-zinc-900">
                   Cancel
                 </Button>
                 <Button 
                   onClick={handleReviewSubmit}
                   disabled={isSubmitting || userRating === 0}
-                  className="glow-border bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-yellow-950 font-black h-10 px-8 rounded-xl shadow-xl shadow-yellow-500/20 transition-all"
+                  className="w-full sm:w-auto glow-border bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-yellow-950 font-black h-12 sm:h-10 px-8 rounded-xl shadow-xl shadow-yellow-500/20 transition-all"
                 >
                   {initialUserReviewText ? "Update Review" : "Submit Review"}
                 </Button>
