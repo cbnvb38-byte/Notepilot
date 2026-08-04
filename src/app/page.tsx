@@ -43,8 +43,10 @@ export default function Home() {
 
       <Header />
 
-      {/* ═══════════════════ HERO ═══════════════════ */}
-      <section className="relative z-10 pt-24 sm:pt-32 pb-24 px-6 max-w-7xl mx-auto w-full">
+      {/* ═══════════════════ DESKTOP LANDING (UNCHANGED) ═══════════════════ */}
+      <div className="hidden lg:block w-full">
+        {/* ═══════════════════ HERO ═══════════════════ */}
+        <section className="relative z-10 pt-24 sm:pt-32 pb-24 px-6 max-w-7xl mx-auto w-full">
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
           {/* Left — Copy */}
           <div className="flex flex-col gap-8 w-full lg:w-[50%] text-center lg:text-left animate-fade-in-up">
@@ -454,6 +456,91 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </div>
+
+      {/* ═══════════════════ MOBILE LANDING (MYSTERY / EXPLORATION) ═══════════════════ */}
+      <div className="flex lg:hidden flex-col items-center min-h-[100dvh] pt-4 pb-24 px-6 relative z-10 w-full overflow-hidden">
+        
+        {/* Soft floating glow for mystery */}
+        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-gradient-to-b from-indigo-500/10 to-violet-500/10 rounded-full blur-[80px] pointer-events-none" />
+
+        {/* Hero image compact */}
+        <div className="relative z-10 w-full max-w-[280px] mx-auto mt-4 mb-10 animate-fade-in-up">
+           <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden border border-white/[0.03] shadow-2xl bg-zinc-950/80 backdrop-blur-xl">
+              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-0 p-6 text-center opacity-30">
+                  <Sparkles className="h-5 w-5 text-indigo-400" />
+              </div>
+              <Image 
+                src="/assets/notepilot-hero.png" 
+                alt="NotePilot Vault" 
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover z-10 opacity-70 mix-blend-screen"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent z-10 pointer-events-none" />
+           </div>
+           {/* Signature */}
+           <div className="absolute -bottom-6 right-2 w-20 z-20 opacity-40 pointer-events-none">
+             <Image src="/assets/signature.png" alt="Signature" width={80} height={40} className="w-full h-auto invert" />
+           </div>
+        </div>
+
+        {/* Typography */}
+        <div className="relative z-10 flex flex-col items-center gap-5 w-full text-center animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.05] text-zinc-100">
+            Your notes are hiding <br/>
+            <span className="bg-gradient-to-br from-indigo-300 via-zinc-200 to-zinc-500 bg-clip-text text-transparent">more than you think.</span>
+          </h1>
+          <p className="text-[14px] text-zinc-400 max-w-[260px] leading-relaxed font-medium">
+            Explore a study space where every note can reveal something new.
+          </p>
+        </div>
+
+        {/* Minimal Actions */}
+        <div className="relative z-10 flex flex-col gap-3 w-full mt-10 max-w-[280px] animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+           <Show when="signed-in">
+             <Link href="/dashboard">
+               <Button className="w-full h-14 bg-white hover:bg-zinc-200 text-zinc-950 font-black tracking-wide rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all">
+                 Enter NotePilot
+               </Button>
+             </Link>
+             <Link href="/dashboard/browse">
+               <Button variant="ghost" className="w-full h-14 text-zinc-400 hover:text-zinc-100 font-bold uppercase tracking-widest text-[11px] rounded-2xl border border-white/5 bg-zinc-900/30 backdrop-blur-sm transition-all">
+                 Explore Notes
+               </Button>
+             </Link>
+           </Show>
+           <Show when="signed-out">
+             <SignInButton mode="modal">
+               <Button className="w-full h-14 bg-white hover:bg-zinc-200 text-zinc-950 font-black tracking-wide rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all">
+                 Enter NotePilot
+               </Button>
+             </SignInButton>
+             <Link href="/dashboard/browse">
+               <Button variant="ghost" className="w-full h-14 text-zinc-400 hover:text-zinc-100 font-bold uppercase tracking-widest text-[11px] rounded-2xl border border-white/5 bg-zinc-900/30 backdrop-blur-sm transition-all">
+                 Explore Notes
+               </Button>
+             </Link>
+           </Show>
+        </div>
+
+        {/* Discovery Grid */}
+        <div className="relative z-10 grid grid-cols-2 gap-3 w-full max-w-[320px] mt-16 text-left animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+           {[
+             { title: "Decode", desc: "Reveal what your notes are really saying." },
+             { title: "Discover", desc: "Every subject has another layer." },
+             { title: "Connect", desc: "Ideas become linked naturally." },
+             { title: "Master", desc: "Study without losing momentum." },
+           ].map(item => (
+             <div key={item.title} className="flex flex-col gap-2 p-5 rounded-3xl bg-zinc-900/20 border border-white/[0.03] backdrop-blur-md">
+                <span className="text-[13px] font-black text-zinc-100 tracking-wide">{item.title}</span>
+                <span className="text-[11px] text-zinc-500 font-medium leading-relaxed">{item.desc}</span>
+             </div>
+           ))}
+        </div>
+      </div>
 
       <Footer />
     </div>
