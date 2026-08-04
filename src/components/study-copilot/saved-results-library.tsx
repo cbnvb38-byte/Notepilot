@@ -165,136 +165,212 @@ export function SavedResultsLibrary({ savedData }: SavedResultsLibraryProps) {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full">
-      
-      {/* Stats Row */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1.5 rounded-xl">
-          <span className="text-base sm:text-lg font-black text-indigo-400 leading-none">{counts.all}</span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-indigo-300 uppercase tracking-wider">Saved</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
-          <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.summary}</span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Summaries</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
-          <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.mcq}</span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Quizzes</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
-          <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.flashcards}</span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Flashcards</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
-          <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.important_questions}</span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Important Q's</span>
-        </div>
-        <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
-          <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.doubt_answer}</span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Doubts</span>
-        </div>
-      </div>
-
-      {/* Filters and Search Bar */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-zinc-900/30 p-2.5 rounded-2xl border border-zinc-800/60 backdrop-blur-md relative z-20">
-        
-        {/* Tabs */}
-        <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-          {tabs.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleTabChange(tab.id as TabType)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all border ${
-                  isActive
-                    ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]"
-                    : "bg-zinc-900/50 text-zinc-400 border-zinc-800/60 hover:bg-zinc-800 hover:text-zinc-200 hover:border-zinc-700"
-                }`}
-              >
-                {tab.label}
-                <span className={`text-[9px] px-1.5 py-0.5 rounded-md ${isActive ? 'bg-indigo-500/20 text-indigo-300' : 'bg-zinc-800 text-zinc-500'}`}>
-                  {tab.count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Search & Sort */}
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
-            <Input
-              value={searchQuery}
-              onChange={handleSearchChange}
-              placeholder="Search saved results..."
-              className="pl-9 bg-zinc-950 border-zinc-800/60 text-sm h-10 rounded-xl focus-visible:ring-indigo-500/50 w-full text-zinc-200"
-            />
+    <>
+      {/* ── Desktop Layout ── */}
+      <div className="hidden lg:flex flex-col gap-6 w-full">
+        {/* Stats Row */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1.5 rounded-xl">
+            <span className="text-base sm:text-lg font-black text-indigo-400 leading-none">{counts.all}</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-indigo-300 uppercase tracking-wider">Saved</span>
           </div>
+          <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
+            <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.summary}</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Summaries</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
+            <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.mcq}</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Quizzes</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
+            <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.flashcards}</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Flashcards</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
+            <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.important_questions}</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Important Q's</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-zinc-900/50 border border-zinc-800/80 px-3 py-1.5 rounded-xl">
+            <span className="text-xs sm:text-sm font-bold text-zinc-300 leading-none">{counts.doubt_answer}</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Doubts</span>
+          </div>
+        </div>
+
+        {/* Filters and Search Bar */}
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-zinc-900/30 p-2.5 rounded-2xl border border-zinc-800/60 backdrop-blur-md relative z-20">
           
-          <div className="relative" ref={sortRef}>
+          {/* Tabs */}
+          <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id as TabType)}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all border ${
+                    isActive
+                      ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]"
+                      : "bg-zinc-900/50 text-zinc-400 border-zinc-800/60 hover:bg-zinc-800 hover:text-zinc-200 hover:border-zinc-700"
+                  }`}
+                >
+                  {tab.label}
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-md ${isActive ? 'bg-indigo-500/20 text-indigo-300' : 'bg-zinc-800 text-zinc-500'}`}>
+                    {tab.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Search & Sort */}
+          <div className="flex items-center gap-2 w-full md:w-auto">
+            <div className="relative flex-1 md:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+              <Input
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder="Search saved results..."
+                className="pl-9 bg-zinc-950 border-zinc-800/60 text-sm h-10 rounded-xl focus-visible:ring-indigo-500/50 w-full text-zinc-200"
+              />
+            </div>
+            
+            <div className="relative" ref={sortRef}>
+              <Button
+                variant="outline"
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                className="h-10 px-3 bg-zinc-950 border-zinc-800/60 text-zinc-300 hover:bg-zinc-900 rounded-xl gap-2 text-xs font-bold shrink-0"
+              >
+                <SlidersHorizontal className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">
+                  {sortBy === "newest" ? "Newest" : sortBy === "oldest" ? "Oldest" : "Type"}
+                </span>
+              </Button>
+
+              {isSortOpen && (
+                <div className="absolute right-0 top-full mt-2 w-36 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden z-50 py-1">
+                  <button
+                    onClick={() => handleSortChange("newest")}
+                    className={`w-full text-left px-4 py-2 text-xs font-bold hover:bg-zinc-800 transition-colors ${sortBy === "newest" ? "text-indigo-400" : "text-zinc-300"}`}
+                  >
+                    Newest first
+                  </button>
+                  <button
+                    onClick={() => handleSortChange("oldest")}
+                    className={`w-full text-left px-4 py-2 text-xs font-bold hover:bg-zinc-800 transition-colors ${sortBy === "oldest" ? "text-indigo-400" : "text-zinc-300"}`}
+                  >
+                    Oldest first
+                  </button>
+                  <button
+                    onClick={() => handleSortChange("type")}
+                    className={`w-full text-left px-4 py-2 text-xs font-bold hover:bg-zinc-800 transition-colors ${sortBy === "type" ? "text-indigo-400" : "text-zinc-300"}`}
+                  >
+                    Type
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Grid of Results */}
+        {filteredAndSortedData.length === 0 ? (
+          renderEmptyState()
+        ) : (
+          <div className="flex flex-col gap-4">
+            {visibleData.map((gen) => (
+              <SavedSummaryCard key={gen.id} generation={gen} />
+            ))}
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {hasMore && (
+          <div className="flex justify-center mt-6 mb-2">
             <Button
               variant="outline"
-              onClick={() => setIsSortOpen(!isSortOpen)}
-              className="h-10 px-3 bg-zinc-950 border-zinc-800/60 text-zinc-300 hover:bg-zinc-900 rounded-xl gap-2 text-xs font-bold shrink-0"
+              onClick={() => setVisibleCount((prev) => prev + 6)}
+              className="bg-zinc-900/50 border border-zinc-700/60 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100 hover:border-zinc-600 rounded-xl px-8 h-10 text-xs font-bold transition-all shadow-lg"
             >
-              <SlidersHorizontal className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">
-                {sortBy === "newest" ? "Newest" : sortBy === "oldest" ? "Oldest" : "Type"}
-              </span>
+              Load More Results
             </Button>
-
-            {isSortOpen && (
-              <div className="absolute right-0 top-full mt-2 w-36 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden z-50 py-1">
-                <button
-                  onClick={() => handleSortChange("newest")}
-                  className={`w-full text-left px-4 py-2 text-xs font-bold hover:bg-zinc-800 transition-colors ${sortBy === "newest" ? "text-indigo-400" : "text-zinc-300"}`}
-                >
-                  Newest first
-                </button>
-                <button
-                  onClick={() => handleSortChange("oldest")}
-                  className={`w-full text-left px-4 py-2 text-xs font-bold hover:bg-zinc-800 transition-colors ${sortBy === "oldest" ? "text-indigo-400" : "text-zinc-300"}`}
-                >
-                  Oldest first
-                </button>
-                <button
-                  onClick={() => handleSortChange("type")}
-                  className={`w-full text-left px-4 py-2 text-xs font-bold hover:bg-zinc-800 transition-colors ${sortBy === "type" ? "text-indigo-400" : "text-zinc-300"}`}
-                >
-                  Type
-                </button>
-              </div>
-            )}
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Grid of Results */}
-      {filteredAndSortedData.length === 0 ? (
-        renderEmptyState()
-      ) : (
-        <div className="flex flex-col gap-4">
-          {visibleData.map((gen) => (
-            <SavedSummaryCard key={gen.id} generation={gen} />
-          ))}
+      {/* ── Mobile Layout ── */}
+      <div className="flex lg:hidden flex-col gap-5 w-full">
+        {/* 1. Premium Hero */}
+        <div className="flex flex-col gap-3 mt-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 w-fit shadow-inner">
+            <BookOpen className="h-3.5 w-3.5 text-violet-400" />
+            <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest">AI Study Library</span>
+          </div>
+          <h1 className="text-3xl font-black text-white tracking-tight leading-tight">
+            Saved Results
+          </h1>
+          <p className="text-sm text-zinc-400 leading-relaxed font-medium">
+            Your AI-generated summaries, quizzes, flashcards, doubts, exam sprints, and study packs in one place.
+          </p>
         </div>
-      )}
 
-      {/* Load More Button */}
-      {hasMore && (
-        <div className="flex justify-center mt-6 mb-2">
-          <Button
-            variant="outline"
-            onClick={() => setVisibleCount((prev) => prev + 6)}
-            className="bg-zinc-900/50 border border-zinc-700/60 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100 hover:border-zinc-600 rounded-xl px-8 h-10 text-xs font-bold transition-all shadow-lg"
-          >
-            Load More Results
-          </Button>
+        {/* 2. Context Panel */}
+        <div className="bg-zinc-950/40 border border-zinc-800/50 p-3 rounded-xl flex items-center gap-2 shadow-sm">
+          <div className="p-1.5 rounded-lg bg-zinc-900/80 border border-zinc-800/80 shrink-0">
+            <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
+          </div>
+          <p className="text-[11px] text-zinc-400 font-medium leading-tight">Open, revise, copy, or delete your generated study material anytime.</p>
         </div>
-      )}
-    </div>
+
+        {/* 3. Type chips / Filters */}
+        <div className="w-full overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
+          <div className="flex items-center gap-2 w-max">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id as TabType)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold whitespace-nowrap transition-all border ${
+                    isActive
+                      ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30"
+                      : "bg-zinc-950/40 text-zinc-400 border-zinc-800/50 hover:bg-zinc-900 hover:text-zinc-300"
+                  }`}
+                >
+                  {tab.label}
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-md ${isActive ? 'bg-indigo-500/20 text-indigo-300' : 'bg-zinc-900 border border-zinc-800/50 text-zinc-500'}`}>
+                    {tab.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 4. Results */}
+        {filteredAndSortedData.length === 0 ? (
+          renderEmptyState()
+        ) : (
+          <div className="flex flex-col gap-3">
+            {visibleData.map((gen) => (
+              <SavedSummaryCard key={gen.id} generation={gen} />
+            ))}
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {hasMore && (
+          <div className="flex justify-center mt-2 mb-4">
+            <Button
+              variant="outline"
+              onClick={() => setVisibleCount((prev) => prev + 6)}
+              className="w-full bg-zinc-950/80 border border-zinc-800/80 text-zinc-300 hover:bg-zinc-900 hover:text-white rounded-2xl h-12 text-xs font-black uppercase tracking-widest transition-all shadow-md"
+            >
+              Load More Results
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

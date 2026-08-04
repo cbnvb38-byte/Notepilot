@@ -35,6 +35,7 @@ interface AccessibleNote {
 interface MultiPdfClientProps {
   isPremiumActive: boolean;
   accessibleNotes: AccessibleNote[];
+  isMobile?: boolean;
 }
 
 // ─── Status Badge ─────────────────────────────────────────────────────────────
@@ -100,6 +101,7 @@ function NoteStatusBadge({
 export function MultiPdfStudyPackClient({
   isPremiumActive,
   accessibleNotes,
+  isMobile = false,
 }: MultiPdfClientProps) {
   const router = useRouter();
 
@@ -345,7 +347,397 @@ export function MultiPdfStudyPackClient({
   };
 
   // ─────────────────────────────────────────────────────────────────────────
-  // LOCKED STATE (non-premium)
+  // MOBILE UI RENDER (Simple full-width card to open modal or go to pricing)
+  // ─────────────────────────────────────────────────────────────────────────
+  if (isMobile) {
+    if (!isPremiumActive) {
+      return (
+        <Link href="/pricing" className="block w-full">
+          <div className="border p-5 rounded-3xl flex flex-col gap-3 shadow-sm relative overflow-hidden group bg-zinc-950/80 border-zinc-800/60 grayscale opacity-80">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-[40px]" />
+            <div className="flex flex-col gap-3 relative z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20">
+                    <Layers className="h-5 w-5 text-amber-500" />
+                  </div>
+                  <h3 className="text-sm font-black text-zinc-100">Multi-PDF Study Pack</h3>
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-widest bg-zinc-900 border border-zinc-800 px-2 py-1 rounded-md text-zinc-500 flex items-center gap-1">
+                  <Lock className="h-3 w-3" /> Locked
+                </span>
+              </div>
+              <p className="text-[11px] text-zinc-400 font-medium">Combine multiple notes into one focused study pack.</p>
+            </div>
+          </div>
+        </Link>
+      );
+    }
+
+    return (
+      <>
+        <button onClick={() => setIsOpen(true)} className="block w-full text-left appearance-none">
+          <div className="border p-5 rounded-3xl flex flex-col gap-3 shadow-sm relative overflow-hidden group bg-gradient-to-r from-zinc-900 to-zinc-950 border-amber-500/30">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-[40px]" />
+            <div className="flex flex-col gap-3 relative z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20">
+                    <Layers className="h-5 w-5 text-amber-500" />
+                  </div>
+                  <h3 className="text-sm font-black text-zinc-100">Multi-PDF Study Pack</h3>
+                </div>
+              </div>
+              <p className="text-[11px] text-zinc-400 font-medium">Combine multiple notes into one focused study pack.</p>
+            </div>
+          </div>
+        </button>
+        {/* We still need the modal, which will render below if isOpen is true */}
+
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-zinc-950 border border-zinc-800 w-full max-w-2xl rounded-3xl flex flex-col max-h-[90vh] overflow-hidden shadow-2xl relative">
+            {/* Header */}
+            <div className="p-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/30 shrink-0">
+              <div>
+                <h2 className="text-xl font-black text-white">
+                  Create Study Pack
+                </h2>
+                <p className="text-sm text-zinc-400">
+                  Select 2 to 5 notes to combine.
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                onClick={closeModal}
+                className="text-zinc-400 hover:text-white rounded-full"
+              >
+                ✕
+              </Button>
+            </div>
+
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+              {error && (
+                <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-red-400">{error}</p>
+                </div>
+              )}
+
+              {/* ── 1. Pack Type ── */}
+              <div>
+                <h3 className="text-sm font-bold text-zinc-300 mb-3 uppercase tracking-wider">
+                  1. Select Pack Type
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {[
+                    { id: "multi_pdf_summary", label: "Combined Summary" },
+                    {
+                      id: "multi_pdf_important_questions",
+                      label: "Important Questions",
+                    },
+                    {
+                      id: "multi_pdf_revision_sheet",
+                      label: "Final Revision Sheet",
+                    },
+                  ].map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => {
+                        setPackType(t.id as MultiPdfPackType);
+                        setError(null);
+                      }}
+                      className={`p-3 rounded-xl border text-sm font-bold transition-all flex flex-col items-center justify-center text-center gap-1
+                        ${
+                          packType === t.id
+                            ? "bg-indigo-500/20 border-indigo-500 text-indigo-300"
+                            : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                        }`}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* ── 2. Note Selection ── */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-bold text-zinc-300 uppercase tracking-wider">
+                    2. Select Notes
+                  </h3>
+                  <span
+                    className={`text-xs font-bold px-2 py-1 rounded-md ${
+                      selectedNoteIds.length >= 2 &&
+                      selectedNoteIds.length <= 5
+                        ? "bg-emerald-500/20 text-emerald-400"
+                        : "bg-zinc-800 text-zinc-400"
+                    }`}
+                  >
+                    {selectedNoteIds.length} / 5 selected
+                  </span>
+                </div>
+
+                {accessibleNotes.length === 0 ? (
+                  <div className="p-6 rounded-xl border border-dashed border-zinc-800 text-center flex flex-col items-center gap-3">
+                    <p className="text-zinc-500 text-sm">
+                      No study notes available yet.
+                    </p>
+                    <div className="flex gap-2">
+                      <Link href="/dashboard/browse">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs text-indigo-400 hover:text-indigo-300 border border-indigo-500/20 hover:border-indigo-500/40 bg-indigo-500/5"
+                        >
+                          Browse Notes
+                        </Button>
+                      </Link>
+                      <Link href="/dashboard/upload">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs text-zinc-400 hover:text-zinc-300 border border-zinc-700 hover:border-zinc-600"
+                        >
+                          Upload Note
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                    {accessibleNotes.map((note) => {
+                      const isSelected = selectedNoteIds.includes(note.id);
+                      const noteStatus = noteStatuses[note.id];
+                      const isResolving = resolvingNotes.has(note.id);
+                      const needsReading =
+                        isSelected &&
+                        noteStatus?.status === "needs_document_reading";
+                      const docReading = docReadingStates[note.id];
+
+                      return (
+                        <div key={note.id} className="flex flex-col gap-1.5">
+                          {/* Note card (clickable for selection) */}
+                          <button
+                            onClick={() => toggleNoteSelection(note.id)}
+                            className={`p-4 rounded-xl border text-left flex flex-col gap-1.5 transition-all w-full
+                              ${
+                                isSelected
+                                  ? needsReading
+                                    ? "bg-amber-500/5 border-amber-500/30"
+                                    : "bg-indigo-500/10 border-indigo-500/50"
+                                  : "bg-zinc-900 border-zinc-800 hover:border-zinc-700"
+                              }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <span
+                                className={`text-sm font-bold line-clamp-2 ${
+                                  isSelected
+                                    ? needsReading
+                                      ? "text-amber-300"
+                                      : "text-indigo-300"
+                                    : "text-zinc-200"
+                                }`}
+                              >
+                                {note.title || "Untitled Note"}
+                              </span>
+                              {isSelected && !needsReading && (
+                                <Check className="h-4 w-4 text-indigo-400 shrink-0 mt-0.5" />
+                              )}
+                            </div>
+
+                            <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
+                              {note.subject
+                                ? `${note.subject} • `
+                                : ""}
+                              Sem {note.semester}
+                            </span>
+
+                            {/* Status badge (shown only when selected) */}
+                            {isSelected && (
+                              <div className="mt-0.5">
+                                <NoteStatusBadge
+                                  noteId={note.id}
+                                  noteStatuses={noteStatuses}
+                                  resolvingNotes={resolvingNotes}
+                                />
+                              </div>
+                            )}
+                          </button>
+
+                          {/* Use Document Reading button (below card, only when needed) */}
+                          {needsReading && (
+                            <div
+                              className="px-1"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {docReading === "loading" ? (
+                                <div className="flex items-center gap-2 text-[11px] text-amber-400 font-semibold px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                                  <Loader2 className="h-3 w-3 animate-spin shrink-0" />
+                                  Reading document…
+                                </div>
+                              ) : (
+                                <div className="flex flex-col gap-1.5">
+                                  <p className="text-[10px] text-amber-400/80 px-1">
+                                    This PDF is scanned. No saved result found.
+                                  </p>
+                                  <div className="flex gap-1.5">
+                                    <Button
+                                      size="sm"
+                                      onClick={() =>
+                                        handleDocumentReading(
+                                          note.id,
+                                          note.title
+                                        )
+                                      }
+                                      className="h-7 text-[10px] font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 hover:border-amber-500/50 flex-1"
+                                    >
+                                      <FileSearch className="h-3 w-3 mr-1" />
+                                      Use Document Reading
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() =>
+                                        toggleNoteSelection(note.id)
+                                      }
+                                      className="h-7 text-[10px] text-zinc-500 hover:text-red-400 border border-zinc-800 hover:border-red-500/30"
+                                    >
+                                      Remove
+                                    </Button>
+                                  </div>
+                                  {docReading === "error" && (
+                                    <p className="text-[10px] text-red-400 px-1">
+                                      Document reading failed. Please try again.
+                                    </p>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Readiness message */}
+                {hasNotReady && (
+                  <div className="mt-3 flex items-start gap-2 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 text-amber-400 text-xs font-semibold">
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    This scanned note needs document reading or saved Study Copilot content first.
+                  </div>
+                )}
+
+                {isResolving && selectedNoteIds.length > 0 && (
+                  <div className="mt-3 flex items-center gap-2 text-zinc-500 text-xs">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Checking note content…
+                  </div>
+                )}
+              </div>
+
+              {/* ── Success State ── */}
+              {successGenerationId && (
+                <div className="p-6 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col items-center justify-center text-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-1">
+                    <Check className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-emerald-400 font-bold">
+                    Study Pack Ready!
+                  </h3>
+                  <p className="text-emerald-500/80 text-sm">
+                    Study Pack generated and saved.
+                  </p>
+                  
+                  <div className="flex flex-col gap-2 w-full mt-2">
+                    <Link
+                      href={`/dashboard/study-copilot/${successGenerationId}`}
+                      className="w-full"
+                    >
+                      <Button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-11">
+                        Open Study Pack
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 h-11 font-bold"
+                      onClick={() => {
+                        closeModal();
+                        setTimeout(() => {
+                          window.scrollTo({
+                            top: document.body.scrollHeight,
+                            behavior: 'smooth'
+                          });
+                        }, 100);
+                      }}
+                    >
+                      View Saved Results
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full text-emerald-500/80 hover:text-emerald-400 hover:bg-emerald-500/10 h-11 font-bold mt-1"
+                      onClick={() => {
+                        setSuccessGenerationId(null);
+                        setSelectedNoteIds([]);
+                        setNoteStatuses({});
+                        setResolvingNotes(new Set());
+                        resolvedRef.current = new Set();
+                        setError(null);
+                      }}
+                    >
+                      Create Another Pack
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-zinc-800 bg-zinc-900/30 flex flex-col gap-2 shrink-0">
+              {/* Validation hint */}
+              {selectedNoteIds.length > 0 && selectedNoteIds.length < 2 && (
+                <p className="text-[11px] text-zinc-500 text-center">
+                  Select at least 2 notes to generate a study pack.
+                </p>
+              )}
+
+              <div className="flex justify-end gap-3">
+                <Button
+                  variant="ghost"
+                  onClick={closeModal}
+                  className="text-zinc-400 hover:text-white"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleGenerate}
+                  disabled={isGenerating || isResolving}
+                  className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 min-w-[120px] disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  {isGenerating ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : isResolving ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Checking…
+                    </>
+                  ) : (
+                    "Generate"
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      </>
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // LOCKED STATE (non-premium) - DESKTOP
   // ─────────────────────────────────────────────────────────────────────────
   if (!isPremiumActive) {
     return (
@@ -387,7 +779,7 @@ export function MultiPdfStudyPackClient({
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // PREMIUM STATE
+  // PREMIUM STATE - DESKTOP
   // ─────────────────────────────────────────────────────────────────────────
   return (
     <>
@@ -766,6 +1158,8 @@ export function MultiPdfStudyPackClient({
           </div>
         </div>
       )}
+
+
     </>
   );
 }

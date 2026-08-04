@@ -14,7 +14,10 @@ import {
   Eye,
   FileWarning,
   Rocket,
-  Lock
+  Lock,
+  User,
+  GraduationCap,
+  HelpCircle
 } from "lucide-react";
 import { STUDY_TOOLS, StudyToolGroup } from "@/lib/ai/study-tools";
 import { getMyAIGenerations } from "@/app/actions/copilot-history";
@@ -79,8 +82,9 @@ export default async function StudyCopilotPage() {
         <div className="absolute top-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-violet-600 blur-[140px] animate-pulse duration-[10000ms]" />
       </div>
 
-      <main className="flex-grow z-10 pt-6 pb-16 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
-
+      <main className="flex-grow z-10 pt-6 pb-16 px-4 sm:px-6 max-w-7xl mx-auto w-full flex flex-col">
+        {/* ── Desktop Layout ── */}
+        <div className="hidden lg:flex flex-col gap-12 w-full">
         {/* ── A. Hero Section ── */}
         <div className="flex flex-col lg:flex-row gap-12 items-center justify-between relative mb-8">
           <div className="flex flex-col gap-6 w-full lg:w-[55%] relative z-10">
@@ -590,6 +594,240 @@ export default async function StudyCopilotPage() {
               </div>
             </div>
           </div>
+        </div>
+        </div>
+
+        {/* ── Mobile Layout ── */}
+        <div className="flex lg:hidden flex-col gap-6 w-full pt-4">
+          
+          {/* 1. Premium compact hero */}
+          <div className="flex flex-col gap-3 relative z-10">
+            {usageState?.plan === "premium" && (
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 w-fit shadow-inner">
+                <Crown className="h-3.5 w-3.5 text-amber-400" />
+                <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">AI Study Workspace</span>
+              </div>
+            )}
+            <h1 className="text-3xl font-black text-white tracking-tight leading-tight">
+              Study Copilot
+            </h1>
+            <p className="text-sm text-zinc-400 leading-relaxed font-medium">
+              Turn notes into summaries, quizzes, flashcards, and exam prep.
+            </p>
+          </div>
+
+          {/* 2. Usage/status card */}
+          {usageState && (
+            <div className={`p-5 rounded-3xl flex flex-col gap-3 shadow-2xl border ${usageState.plan === "premium" ? (usageState.isPremiumEndingSoon ? "bg-amber-950/30 border-amber-500/30" : "bg-zinc-950/80 border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.05)]") : "bg-zinc-950/60 border-zinc-800/80"}`}>
+              <div className="flex items-center justify-between">
+                <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border shadow-inner ${usageState.plan === "premium" ? (usageState.isPremiumEndingSoon ? "bg-amber-500/10 text-amber-400 border-amber-500/20" : "bg-amber-500/10 text-amber-400 border-amber-500/20") : "bg-zinc-900 text-zinc-400 border-zinc-700/80"}`}>
+                  {usageState.plan === "premium" ? (usageState.isPremiumEndingSoon ? "Premium Ending Soon" : "Premium Member") : "Free Plan"}
+                </span>
+                <span className={`text-xs font-black tracking-widest uppercase ${usageState.usedThisMonth >= usageState.monthlyLimit ? "text-red-400" : (usageState.plan === "premium" ? "text-amber-300" : "text-zinc-300")}`}>
+                  {usageState.usedThisMonth} <span className={usageState.plan === "premium" ? "text-amber-500/50" : "text-zinc-600"}>/ {usageState.monthlyLimit}</span>
+                </span>
+              </div>
+              <div className="h-2 w-full bg-zinc-900 rounded-full overflow-hidden shadow-inner border border-zinc-800/80">
+                <div 
+                  className={`h-full transition-all duration-700 ${usageState.usedThisMonth >= usageState.monthlyLimit ? "bg-red-500" : (usageState.plan === "premium" ? "bg-gradient-to-r from-amber-600 via-amber-400 to-amber-200" : "bg-indigo-500")}`}
+                  style={{ width: `${Math.min(100, (usageState.usedThisMonth / usageState.monthlyLimit) * 100)}%` }}
+                />
+              </div>
+              {usageState.plan === "free" && (
+                <Link href="/pricing" className="mt-2">
+                  <Button className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold h-10 rounded-xl shadow-lg border border-indigo-500/20">
+                    Upgrade to Premium
+                  </Button>
+                </Link>
+              )}
+            </div>
+          )}
+
+          {/* 3. Current note/source card (Empty State) */}
+          <div className="bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 p-6 rounded-3xl flex flex-col items-center justify-center text-center gap-4 shadow-inner">
+            <div className="p-4 bg-zinc-900 rounded-2xl border border-zinc-800/50 shadow-inner group-hover:scale-110 transition-transform">
+              <FileText className="h-6 w-6 text-zinc-500" />
+            </div>
+            <div>
+              <h3 className="text-base font-black text-zinc-200 tracking-tight">Choose a note to unlock AI tools</h3>
+            </div>
+            <div className="flex flex-col gap-2 w-full mt-2">
+              <Link href="/dashboard/browse" className="w-full">
+                <Button className="w-full bg-zinc-800/80 hover:bg-zinc-700 text-white font-black text-xs uppercase tracking-widest h-12 rounded-2xl transition-all shadow-md border border-zinc-700/80">
+                  Browse Notes
+                </Button>
+              </Link>
+              <Link href="/dashboard/upload" className="w-full">
+                <Button variant="outline" className="w-full border-zinc-800 hover:bg-zinc-900 text-zinc-400 hover:text-zinc-300 font-black text-xs uppercase tracking-widest h-12 rounded-2xl transition-all">
+                  Upload Note
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* 4. AI tool launcher */}
+          <div className="flex flex-col gap-6 mt-6">
+            <div className="flex items-center gap-2 pl-1 mb-1">
+              <div className="p-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
+                <Zap className="h-4 w-4 text-indigo-400" />
+              </div>
+              <h2 className="text-xl font-black text-zinc-100 tracking-tight">AI Tools</h2>
+            </div>
+            
+            {/* Core Study Section */}
+            <div className="flex flex-col gap-3">
+              <h3 className="text-xs font-black text-zinc-500 uppercase tracking-widest pl-2 mb-1">Core Study</h3>
+              
+              {/* Smart Summary */}
+              <Link href="/dashboard/browse" className="block w-full">
+                <div className="bg-zinc-950/40 border border-zinc-800/50 p-4 rounded-3xl flex flex-col gap-2 shadow-sm relative overflow-hidden group hover:bg-zinc-900/60 transition-colors opacity-70">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-zinc-900/80 rounded-xl border border-zinc-800/80">
+                      <FileText className="h-5 w-5 text-indigo-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-zinc-300">Smart Summary</h3>
+                      <p className="text-[11px] text-zinc-500 font-medium line-clamp-1">Key points and exam-ready explanation</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Grid Compact - Practice Quiz & Flashcards */}
+              <div className="grid grid-cols-2 gap-3">
+                <Link href="/dashboard/browse" className="block w-full">
+                  <div className="bg-zinc-950/40 border border-zinc-800/50 p-4 rounded-3xl flex flex-col shadow-sm gap-2 opacity-70 hover:bg-zinc-900/60 transition-colors h-full">
+                    <div className="p-2 bg-zinc-900/80 rounded-xl border border-zinc-800/80 w-fit">
+                      <BookOpen className="h-4 w-4 text-indigo-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-zinc-300 mt-1">Practice Quiz</h3>
+                      <p className="text-[10px] text-zinc-500 leading-tight font-medium mt-0.5">Test yourself</p>
+                    </div>
+                  </div>
+                </Link>
+                <Link href="/dashboard/browse" className="block w-full">
+                  <div className="bg-zinc-950/40 border border-zinc-800/50 p-4 rounded-3xl flex flex-col shadow-sm gap-2 opacity-70 hover:bg-zinc-900/60 transition-colors h-full">
+                    <div className="p-2 bg-zinc-900/80 rounded-xl border border-zinc-800/80 w-fit">
+                      <GraduationCap className="h-4 w-4 text-indigo-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-zinc-300 mt-1">Flashcards</h3>
+                      <p className="text-[10px] text-zinc-500 leading-tight font-medium mt-0.5">Revise faster</p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Exam Prep Section */}
+            <div className="flex flex-col gap-3 mt-2">
+              <h3 className="text-xs font-black text-zinc-500 uppercase tracking-widest pl-2 mb-1">Exam Prep</h3>
+              
+              {/* Important Questions */}
+              <Link href="/dashboard/browse" className="block w-full">
+                <div className="bg-zinc-950/40 border border-zinc-800/50 p-4 rounded-3xl flex flex-col gap-2 shadow-sm relative overflow-hidden group hover:bg-zinc-900/60 transition-colors opacity-70">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-zinc-900/80 rounded-xl border border-zinc-800/80">
+                      <HelpCircle className="h-5 w-5 text-indigo-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-zinc-300">Important Questions</h3>
+                      <p className="text-[11px] text-zinc-500 font-medium line-clamp-1">Prepare likely exam questions from this note.</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Exam Sprint */}
+              <Link href={usageState?.isPremiumActive ? "/dashboard/study-copilot/sprint" : "/pricing"} className="block w-full">
+                <div className={`border p-4 rounded-3xl flex flex-col gap-2 shadow-sm relative overflow-hidden group ${usageState?.isPremiumActive ? "bg-zinc-950/60 border-amber-500/20 opacity-90" : "bg-zinc-950/40 border-zinc-800/50 grayscale opacity-70"}`}>
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-[40px]" />
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-zinc-900/80 rounded-xl border border-zinc-800/80">
+                        <Rocket className={`h-5 w-5 ${usageState?.isPremiumActive ? "text-amber-500" : "text-indigo-400"}`} />
+                      </div>
+                      <div>
+                        <h3 className={`text-sm font-black ${usageState?.isPremiumActive ? "text-amber-100" : "text-zinc-300"}`}>Exam Sprint</h3>
+                        <p className="text-[11px] text-zinc-500 font-medium line-clamp-1">Create a quick exam-prep plan.</p>
+                      </div>
+                    </div>
+                    {!usageState?.isPremiumActive && (
+                      <span className="text-[9px] font-black uppercase tracking-widest bg-zinc-900 border border-zinc-800 px-2 py-1 rounded-md text-zinc-500 flex items-center gap-1 shrink-0"><Lock className="h-3 w-3"/> Locked</span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Advanced Section */}
+            <div className="flex flex-col gap-3 mt-2">
+              <h3 className="text-xs font-black text-zinc-500 uppercase tracking-widest pl-2 mb-1">Advanced</h3>
+              
+              {/* Ask Doubt */}
+              <Link href="/dashboard/browse" className="block w-full">
+                <div className="bg-zinc-950/40 border border-zinc-800/50 p-4 rounded-3xl flex flex-col gap-2 shadow-sm relative overflow-hidden group hover:bg-zinc-900/60 transition-colors opacity-70">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-zinc-900/80 rounded-xl border border-zinc-800/80">
+                      <User className="h-5 w-5 text-indigo-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-zinc-300">Ask Doubt</h3>
+                      <p className="text-[11px] text-zinc-500 font-medium line-clamp-1">Ask anything from this material</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+              
+              {/* Multi-PDF Study Pack */}
+              <div>
+                <MultiPdfStudyPackClient 
+                  isPremiumActive={usageState?.isPremiumActive || false} 
+                  accessibleNotes={accessibleNotes}
+                  isMobile={true} 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 6. Saved results preview/link */}
+          <div className="flex flex-col gap-4 mt-8 bg-zinc-900/30 p-5 rounded-3xl border border-zinc-800/60 relative overflow-hidden shadow-inner">
+            <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-violet-500/10 rounded-full blur-[40px]" />
+            <div className="relative z-10 flex flex-col gap-2">
+              <div className="flex items-center gap-3 mb-1">
+                <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/20 shadow-inner">
+                  <BookOpen className="h-5 w-5 text-violet-400" />
+                </div>
+                <div>
+                  <h2 className="text-base font-black text-zinc-100 tracking-tight">Your AI Study Library</h2>
+                  <p className="text-[11px] text-zinc-400 font-medium mt-0.5 max-w-[200px]">Open saved summaries, quizzes, flashcards, doubts, exam sprints, and study packs.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative z-10 mt-2">
+              {!userId ? (
+                <div className="text-center py-6 text-zinc-500 text-xs font-bold bg-zinc-950/50 rounded-2xl border border-zinc-800/50">
+                  Sign in to view saved results.
+                </div>
+              ) : !hasSaved ? (
+                <div className="text-center py-6 text-zinc-500 bg-zinc-950/50 rounded-2xl border border-zinc-800/50 flex flex-col items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-zinc-600 mb-0.5" />
+                  <span className="text-xs font-bold text-zinc-400">No results yet</span>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-zinc-400 bg-zinc-950/50 p-3 rounded-xl border border-zinc-800/50">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    {savedData.length} items saved
+                  </div>
+                  <SavedResultsLibrary savedData={savedData} />
+                </div>
+              )}
+            </div>
+          </div>
+
         </div>
 
       </main>

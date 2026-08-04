@@ -191,45 +191,45 @@ function ImportantQuestionCard({ question, index }: { question: any, index: numb
   if (question.difficulty === "hard") difficultyColor = "bg-red-500/10 text-red-400 border-red-500/20";
 
   return (
-    <div className="flex flex-col gap-3 p-6 relative group">
+    <div className="flex flex-col gap-4 p-5 sm:p-6 relative group overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-      <div className="flex items-start justify-between gap-4 relative z-10">
-        <h3 className="text-sm font-black text-white flex items-start gap-2 tracking-tight">
-          <span className="text-indigo-400 mt-0.5">Q{index + 1}.</span>
-          <div className="flex-1 -mt-1"><StudyMarkdownRenderer content={question.question} /></div>
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 lg:gap-4 relative z-10 w-full min-w-0">
+        <h3 className="text-sm font-black text-white flex items-start gap-2 tracking-tight w-full lg:w-auto flex-1 min-w-0">
+          <span className="text-indigo-400 mt-0.5 shrink-0">Q{index + 1}.</span>
+          <div className="flex-1 -mt-1 min-w-0 break-words whitespace-normal"><StudyMarkdownRenderer content={question.question} /></div>
         </h3>
-        <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+        <div className="flex flex-wrap items-center gap-1.5 shrink-0 justify-start lg:justify-end w-full lg:w-auto">
           {question.marks && (
-            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-inner">
+            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-inner shrink-0">
               {question.marks} Marks
             </span>
           )}
-          <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border shadow-inner ${difficultyColor}`}>
+          <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border shadow-inner shrink-0 ${difficultyColor}`}>
             {question.difficulty || "medium"}
           </span>
           {question.topic && (
-            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border bg-zinc-900 text-zinc-400 border-zinc-800 shadow-inner">
+            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border bg-zinc-900 text-zinc-400 border-zinc-800 shadow-inner shrink-0 max-w-full truncate">
               {question.topic}
             </span>
           )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 pl-8 relative z-10">
+      <div className="flex flex-col gap-3 pl-0 sm:pl-8 relative z-10 w-full min-w-0">
         {question.why_important && (
-          <div className="flex items-start gap-2 pt-2">
-            <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest shrink-0 mt-0.5 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded shadow-inner">Why it matters:</span>
-            <div className="text-xs text-zinc-300 font-medium leading-relaxed -mt-0.5"><StudyMarkdownRenderer content={question.why_important} /></div>
+          <div className="flex flex-col lg:flex-row lg:items-start gap-2 pt-2 w-full">
+            <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest shrink-0 mt-0.5 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded shadow-inner w-fit">Why it matters:</span>
+            <div className="text-xs text-zinc-300 font-medium leading-relaxed mt-0.5 lg:-mt-0.5 min-w-0 break-words whitespace-normal w-full"><StudyMarkdownRenderer content={question.why_important} /></div>
           </div>
         )}
         
         {question.answer_hint && (
-          <div className="mt-2 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 shadow-inner">
-            <div className="flex items-start gap-2">
-              <Lightbulb className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
-              <div className="flex-1">
+          <div className="mt-2 p-3 sm:p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 shadow-inner w-full min-w-0">
+            <div className="flex flex-col lg:flex-row lg:items-start gap-2 w-full">
+              <Lightbulb className="hidden lg:block h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="flex-1 w-full min-w-0">
                 <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest block mb-1">Answer Hint</span>
-                <div className="text-sm text-emerald-100/80 font-medium"><StudyMarkdownRenderer content={question.answer_hint} /></div>
+                <div className="text-sm text-emerald-100/80 font-medium min-w-0 break-words whitespace-normal w-full"><StudyMarkdownRenderer content={question.answer_hint} /></div>
               </div>
             </div>
           </div>

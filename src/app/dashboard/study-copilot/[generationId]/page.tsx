@@ -81,7 +81,7 @@ export default async function GenerationReaderPage({ params }: PageProps) {
         <div className="absolute top-16 right-1/4 w-80 h-80 rounded-full bg-violet-600 blur-[130px]" />
       </div>
 
-      <main className="flex-grow z-10 pt-24 pb-16 px-6 max-w-4xl mx-auto w-full flex flex-col gap-6">
+      <main className="flex-grow z-10 pt-20 sm:pt-24 pb-16 px-4 sm:px-6 max-w-4xl mx-auto w-full flex flex-col gap-4 sm:gap-6">
 
         {/* ── Navigation bar ── */}
         <div className="flex items-center justify-between flex-wrap gap-3">
