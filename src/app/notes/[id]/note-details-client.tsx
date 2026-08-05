@@ -522,28 +522,36 @@ export default function NoteDetailsClient({
               <FileText className="h-4 w-4 text-indigo-400" />
               Document Preview
             </h2>
-            <div className="bg-zinc-950/60 border border-zinc-800/80 rounded-2xl overflow-hidden h-[450px] sm:h-[550px] shadow-inner relative flex flex-col w-full">
-              <div className="absolute inset-0 z-0 bg-zinc-950">
-                {!previewError ? (
-                  <iframe
-                    src={`${note.file_url}#toolbar=0`}
-                    onError={() => setPreviewError(true)}
-                    className="w-full h-full border-none opacity-90"
-                    title={note.title}
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-3">
-                    <FileText className="h-6 w-6 text-zinc-500" />
-                    <h3 className="font-black text-sm text-zinc-300">Preview not available</h3>
+            <div className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-950/60 shadow-inner relative flex flex-col h-[420px] sm:h-[520px]">
+              <div className="bg-zinc-900/80 p-2 border-b border-zinc-800/80 flex items-center justify-between shrink-0">
+                <span className="text-[10px] text-zinc-400 font-medium truncate max-w-[70%]">{note.title}.pdf</span>
+                <span className="text-[10px] text-zinc-500 font-medium">{formatFileSize(note.file_size)}</span>
+              </div>
+              <div className="flex-1 w-full relative bg-zinc-950">
+                <object
+                  data={`${note.file_url}#toolbar=0`}
+                  type="application/pdf"
+                  className="absolute inset-0 w-full h-full border-none opacity-90"
+                >
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-3 bg-zinc-950">
+                    <FileText className="h-8 w-8 text-zinc-600" />
+                    <h3 className="font-black text-sm text-zinc-300">Preview unavailable on this device.</h3>
+                    <p className="text-[11px] text-zinc-500 max-w-[200px] leading-relaxed">Use the buttons below to open or download the PDF.</p>
                   </div>
-                )}
+                </object>
               </div>
             </div>
-            <a href={note.file_url} target="_blank" rel="noreferrer" className="w-full">
-              <Button variant="outline" className="w-full border-zinc-800 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-900 h-10 rounded-xl text-[11px] font-bold uppercase tracking-widest gap-2">
-                Open in full tab <ExternalLink className="h-3.5 w-3.5" />
+            
+            <div className="grid grid-cols-2 gap-2 mt-1">
+              <a href={note.file_url} target="_blank" rel="noreferrer" className="w-full">
+                <Button variant="outline" className="w-full border-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900 h-11 rounded-xl text-xs font-bold gap-2 shadow-sm">
+                  <ExternalLink className="h-4 w-4" /> Open PDF
+                </Button>
+              </a>
+              <Button onClick={handleDownload} disabled={isDownloading} variant="outline" className="w-full border-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900 h-11 rounded-xl text-xs font-bold gap-2 shadow-sm">
+                {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download
               </Button>
-            </a>
+            </div>
           </div>
         )}
 
