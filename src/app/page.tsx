@@ -43,9 +43,7 @@ export default function Home() {
 
       <Header />
 
-      {/* ═══════════════════ DESKTOP LANDING (UNCHANGED) ═══════════════════ */}
-      <div className="hidden lg:block w-full">
-        {/* ═══════════════════ HERO ═══════════════════ */}
+      {/* ═══════════════════ HERO ═══════════════════ */}
         <section className="relative z-10 pt-24 sm:pt-32 pb-24 px-6 max-w-7xl mx-auto w-full">
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
           {/* Left — Copy */}
@@ -299,33 +297,61 @@ export default function Home() {
 
       {/* ═══════════════════ HOW IT WORKS ═══════════════════ */}
       <section className="relative z-10 max-w-7xl mx-auto px-6 w-full mb-32">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-50 mb-4 select-none">
-            How it works
-          </h2>
-          <p className="text-lg text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            From PDF to exam-ready in four simple steps.
-          </p>
+        {/* DESKTOP VIEW */}
+        <div className="hidden lg:block">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-zinc-50 mb-4 select-none">
+              How it works
+            </h2>
+            <p className="text-lg text-zinc-400 max-w-xl mx-auto leading-relaxed">
+              From PDF to exam-ready in four simple steps.
+            </p>
+          </div>
+
+          <div className="relative max-w-5xl mx-auto grid md:grid-cols-4 gap-8 text-center">
+            {/* Connector line (desktop) */}
+            <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-1 bg-zinc-900 rounded-full" />
+            <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-1 bg-gradient-to-r from-indigo-500/50 via-violet-500/50 to-pink-500/50 rounded-full" />
+
+            {[
+              { step: 1, title: "Browse or Upload", color: "indigo" },
+              { step: 2, title: "Open a PDF Note", color: "violet" },
+              { step: 3, title: "Generate Study Material", color: "pink" },
+              { step: 4, title: "Save, Revise, Build Packs", color: "emerald" },
+            ].map(({ step, title, color }) => (
+              <div key={step} className="flex flex-col items-center gap-5 relative group">
+                <div className={`h-20 w-20 rounded-2xl bg-zinc-950 border-2 border-zinc-800 flex items-center justify-center font-black text-2xl z-10 text-zinc-600 transition-all duration-300 group-hover:border-${color}-500/50 group-hover:text-${color}-400 group-hover:shadow-[0_0_30px_rgba(var(--${color}-500),0.2)]`}>
+                  {step}
+                </div>
+                <h4 className="text-base font-bold text-zinc-300 group-hover:text-zinc-100 transition-colors">{title}</h4>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="relative max-w-5xl mx-auto grid md:grid-cols-4 gap-8 text-center">
-          {/* Connector line (desktop) */}
-          <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-1 bg-zinc-900 rounded-full" />
-          <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-1 bg-gradient-to-r from-indigo-500/50 via-violet-500/50 to-pink-500/50 rounded-full" />
-
-          {[
-            { step: 1, title: "Browse or Upload", color: "indigo" },
-            { step: 2, title: "Open a PDF Note", color: "violet" },
-            { step: 3, title: "Generate Study Material", color: "pink" },
-            { step: 4, title: "Save, Revise, Build Packs", color: "emerald" },
-          ].map(({ step, title, color }) => (
-            <div key={step} className="flex flex-col items-center gap-5 relative group">
-              <div className={`h-20 w-20 rounded-2xl bg-zinc-950 border-2 border-zinc-800 flex items-center justify-center font-black text-2xl z-10 text-zinc-600 transition-all duration-300 group-hover:border-${color}-500/50 group-hover:text-${color}-400 group-hover:shadow-[0_0_30px_rgba(var(--${color}-500),0.2)]`}>
-                {step}
+        {/* MOBILE VIEW (COMPACT) */}
+        <div className="block lg:hidden">
+          <div className="text-center mb-8">
+            <h2 className="text-[22px] font-black tracking-tight text-zinc-50 mb-2 select-none">
+              How it works
+            </h2>
+            <div className="w-12 h-0.5 bg-gradient-to-r from-indigo-500 to-cyan-500 mx-auto rounded-full opacity-60 mb-8" />
+          </div>
+          
+          <div className="flex flex-col gap-4 w-full max-w-[300px] mx-auto text-left pl-2">
+            {[
+              { step: "1", title: "Open notes" },
+              { step: "2", title: "Unlock study layers" },
+              { step: "3", title: "Revise from dashboard" },
+            ].map((item) => (
+              <div key={item.step} className="flex items-center gap-4 py-1">
+                 <div className="flex-shrink-0 w-8 h-8 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 font-bold text-xs flex items-center justify-center shadow-[0_0_10px_rgba(99,102,241,0.1)]">
+                    {item.step}
+                 </div>
+                 <span className="text-[14px] font-bold text-zinc-100">{item.title}</span>
               </div>
-              <h4 className="text-base font-bold text-zinc-300 group-hover:text-zinc-100 transition-colors">{title}</h4>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -417,7 +443,8 @@ export default function Home() {
 
       {/* ═══════════════════ BOTTOM CTA ═══════════════════ */}
       <section className="relative z-10 max-w-5xl mx-auto px-6 w-full mb-32">
-        <div className="relative overflow-hidden godmode-card border-indigo-500/30 rounded-3xl p-12 md:p-20 text-center flex flex-col items-center gap-8 shadow-[0_0_80px_rgba(99,102,241,0.15)] group">
+        {/* DESKTOP VIEW */}
+        <div className="hidden lg:flex relative overflow-hidden godmode-card border-indigo-500/30 rounded-3xl p-12 md:p-20 text-center flex-col items-center gap-8 shadow-[0_0_80px_rgba(99,102,241,0.15)] group">
           <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/40 via-transparent to-violet-900/20 pointer-events-none group-hover:opacity-70 transition-opacity duration-500" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-indigo-500/20 blur-[100px] pointer-events-none" />
           
@@ -455,92 +482,33 @@ export default function Home() {
             </Show>
           </div>
         </div>
+
+        {/* MOBILE VIEW (COMPACT) */}
+        <div className="flex lg:hidden relative overflow-hidden bg-zinc-900/40 border border-indigo-500/20 rounded-2xl p-6 text-center flex-col items-center gap-3 shadow-[0_0_20px_rgba(99,102,241,0.08)] max-w-[280px] mx-auto w-full mb-10">
+           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-indigo-500/10 blur-2xl pointer-events-none" />
+           <h2 className="text-[18px] font-black text-zinc-100 relative z-10 leading-tight">Ready to study smarter?</h2>
+           <p className="text-[11.5px] text-zinc-400 relative z-10 leading-relaxed max-w-[200px] mx-auto">
+              Open your dashboard and continue your study flow.
+           </p>
+           <div className="flex flex-col gap-2 relative z-10 w-full mt-2">
+              <Show when="signed-in">
+                <Link href="/dashboard" className="w-full">
+                  <Button className="w-full h-11 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-black tracking-wide rounded-xl shadow-[0_0_10px_rgba(99,102,241,0.15)] transition-all text-[13px]">
+                    Go to Dashboard
+                  </Button>
+                </Link>
+              </Show>
+              <Show when="signed-out">
+                <SignInButton mode="modal">
+                  <Button className="w-full h-11 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-black tracking-wide rounded-xl shadow-[0_0_10px_rgba(99,102,241,0.15)] transition-all text-[13px]">
+                    Go to Dashboard
+                  </Button>
+                </SignInButton>
+              </Show>
+           </div>
+        </div>
       </section>
-      </div>
 
-      {/* ═══════════════════ MOBILE LANDING (MYSTERY / EXPLORATION) ═══════════════════ */}
-      <div className="flex lg:hidden flex-col items-center min-h-[100dvh] pt-4 pb-24 px-6 relative z-10 w-full overflow-hidden">
-        
-        {/* Soft floating glow for mystery */}
-        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-gradient-to-b from-indigo-500/10 to-violet-500/10 rounded-full blur-[80px] pointer-events-none" />
-
-        {/* Hero image compact */}
-        <div className="relative z-10 w-full max-w-[280px] mx-auto mt-4 mb-10 animate-fade-in-up">
-           <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden border border-white/[0.03] shadow-2xl bg-zinc-950/80 backdrop-blur-xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-transparent pointer-events-none" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-0 p-6 text-center opacity-30">
-                  <Sparkles className="h-5 w-5 text-indigo-400" />
-              </div>
-              <Image 
-                src="/assets/notepilot-hero.png" 
-                alt="NotePilot Vault" 
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover z-10 opacity-70 mix-blend-screen"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent z-10 pointer-events-none" />
-           </div>
-           {/* Signature */}
-           <div className="absolute -bottom-6 right-2 w-20 z-20 opacity-40 pointer-events-none">
-             <Image src="/assets/signature.png" alt="Signature" width={80} height={40} className="w-full h-auto invert" />
-           </div>
-        </div>
-
-        {/* Typography */}
-        <div className="relative z-10 flex flex-col items-center gap-5 w-full text-center animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.05] text-zinc-100">
-            Your notes are hiding <br/>
-            <span className="bg-gradient-to-br from-indigo-300 via-zinc-200 to-zinc-500 bg-clip-text text-transparent">more than you think.</span>
-          </h1>
-          <p className="text-[14px] text-zinc-400 max-w-[260px] leading-relaxed font-medium">
-            Explore a study space where every note can reveal something new.
-          </p>
-        </div>
-
-        {/* Minimal Actions */}
-        <div className="relative z-10 flex flex-col gap-3 w-full mt-10 max-w-[280px] animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-           <Show when="signed-in">
-             <Link href="/dashboard">
-               <Button className="w-full h-14 bg-white hover:bg-zinc-200 text-zinc-950 font-black tracking-wide rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all">
-                 Enter NotePilot
-               </Button>
-             </Link>
-             <Link href="/dashboard/browse">
-               <Button variant="ghost" className="w-full h-14 text-zinc-400 hover:text-zinc-100 font-bold uppercase tracking-widest text-[11px] rounded-2xl border border-white/5 bg-zinc-900/30 backdrop-blur-sm transition-all">
-                 Explore Notes
-               </Button>
-             </Link>
-           </Show>
-           <Show when="signed-out">
-             <SignInButton mode="modal">
-               <Button className="w-full h-14 bg-white hover:bg-zinc-200 text-zinc-950 font-black tracking-wide rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all">
-                 Enter NotePilot
-               </Button>
-             </SignInButton>
-             <Link href="/dashboard/browse">
-               <Button variant="ghost" className="w-full h-14 text-zinc-400 hover:text-zinc-100 font-bold uppercase tracking-widest text-[11px] rounded-2xl border border-white/5 bg-zinc-900/30 backdrop-blur-sm transition-all">
-                 Explore Notes
-               </Button>
-             </Link>
-           </Show>
-        </div>
-
-        {/* Discovery Grid */}
-        <div className="relative z-10 grid grid-cols-2 gap-3 w-full max-w-[320px] mt-16 text-left animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-           {[
-             { title: "Decode", desc: "Reveal what your notes are really saying." },
-             { title: "Discover", desc: "Every subject has another layer." },
-             { title: "Connect", desc: "Ideas become linked naturally." },
-             { title: "Master", desc: "Study without losing momentum." },
-           ].map(item => (
-             <div key={item.title} className="flex flex-col gap-2 p-5 rounded-3xl bg-zinc-900/20 border border-white/[0.03] backdrop-blur-md">
-                <span className="text-[13px] font-black text-zinc-100 tracking-wide">{item.title}</span>
-                <span className="text-[11px] text-zinc-500 font-medium leading-relaxed">{item.desc}</span>
-             </div>
-           ))}
-        </div>
-      </div>
 
       <Footer />
     </div>
