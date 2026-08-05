@@ -515,42 +515,50 @@ export default function NoteDetailsClient({
           </div>
         </div>
 
-        {/* 3. Mobile PDF Preview */}
+        {/* 3. Mobile PDF Preview (Premium Card for reliability) */}
         {note.file_url && (
           <div className="flex flex-col gap-3">
             <h2 className="text-sm font-black text-zinc-100 flex items-center gap-2 px-1">
               <FileText className="h-4 w-4 text-indigo-400" />
-              Document Preview
+              Document
             </h2>
-            <div className="w-full max-w-full min-w-0 overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-950/60 shadow-inner relative flex flex-col h-[420px] sm:h-[520px]">
-              <div className="bg-zinc-900/80 p-2 border-b border-zinc-800/80 flex items-center justify-between shrink-0">
-                <span className="text-[10px] text-zinc-400 font-medium truncate max-w-[70%]">{note.title}.pdf</span>
-                <span className="text-[10px] text-zinc-500 font-medium">{formatFileSize(note.file_size)}</span>
-              </div>
-              <div className="flex-1 w-full relative bg-zinc-950">
-                <object
-                  data={`${note.file_url}#toolbar=0`}
-                  type="application/pdf"
-                  className="absolute inset-0 w-full h-full border-none opacity-90"
-                >
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-3 bg-zinc-950">
-                    <FileText className="h-8 w-8 text-zinc-600" />
-                    <h3 className="font-black text-sm text-zinc-300">Preview unavailable on this device.</h3>
-                    <p className="text-[11px] text-zinc-500 max-w-[200px] leading-relaxed">Use the buttons below to open or download the PDF.</p>
-                  </div>
-                </object>
-              </div>
-            </div>
             
-            <div className="grid grid-cols-2 gap-2 mt-1">
-              <a href={note.file_url} target="_blank" rel="noreferrer" className="w-full">
-                <Button variant="outline" className="w-full border-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900 h-11 rounded-xl text-xs font-bold gap-2 shadow-sm">
-                  <ExternalLink className="h-4 w-4" /> Open PDF
-                </Button>
-              </a>
-              <Button onClick={handleDownload} disabled={isDownloading} variant="outline" className="w-full border-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900 h-11 rounded-xl text-xs font-bold gap-2 shadow-sm">
-                {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download
-              </Button>
+            <div className="relative overflow-hidden bg-zinc-900/60 border border-indigo-500/20 rounded-3xl p-6 shadow-[0_0_30px_rgba(99,102,241,0.05)] w-full">
+              {/* Subtle background glows */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="flex flex-col items-center text-center gap-4 relative z-10">
+                {/* PDF Icon Visual */}
+                <div className="bg-gradient-to-br from-indigo-500/20 to-violet-500/20 p-4 rounded-2xl border border-indigo-500/30 shadow-inner">
+                  <FileText className="h-10 w-10 text-indigo-400" />
+                </div>
+                
+                {/* Title & Text */}
+                <div className="flex flex-col gap-1 w-full">
+                  <h3 className="font-black text-[15px] text-zinc-100 leading-tight">{note.title}</h3>
+                  <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">
+                    <span className="truncate max-w-[120px]">{note.title}.pdf</span>
+                    <span>&bull;</span>
+                    <span>{formatFileSize(note.file_size)}</span>
+                  </div>
+                  <p className="text-xs text-zinc-400 leading-relaxed mt-2 max-w-[240px] mx-auto">
+                    Mobile browsers may open PDFs best in a separate viewer.
+                  </p>
+                </div>
+                
+                {/* Actions */}
+                <div className="flex flex-col gap-2 w-full mt-3">
+                  <a href={note.file_url} target="_blank" rel="noopener noreferrer" className="w-full">
+                    <Button className="w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-black tracking-wide rounded-xl shadow-[0_0_15px_rgba(99,102,241,0.2)] transition-all h-11 text-[13px] gap-2">
+                      Open PDF <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  </a>
+                  <Button onClick={handleDownload} disabled={isDownloading} variant="outline" className="w-full bg-zinc-950/50 border-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900 h-11 rounded-xl text-[13px] font-bold gap-2">
+                    {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         )}
