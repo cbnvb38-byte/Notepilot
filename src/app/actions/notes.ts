@@ -91,6 +91,19 @@ export async function uploadNoteAction(formData: FormData) {
     const input = validated.data;
     const file = input.file as File;
 
+    if (!file || !file.size || !file.type) {
+      throw new AppError("Invalid file object received.", 400, "VALIDATION_FAILED");
+    }
+
+    if (file.type !== "application/pdf") {
+      throw new AppError("Only PDF files are allowed.", 400, "VALIDATION_FAILED");
+    }
+
+    const MAX_FILE_SIZE = 20 * 1024 * 1024;
+    if (file.size <= 0 || file.size > MAX_FILE_SIZE) {
+      throw new AppError("PDF file size must be under 20 MB.", 400, "VALIDATION_FAILED");
+    }
+
     // 4. Initialize Supabase service-role client (bypasses RLS).
     // This is safe because Clerk auth() has already verified the user above.
     const supabase = createServiceRoleSupabaseClient();
@@ -104,15 +117,10 @@ export async function uploadNoteAction(formData: FormData) {
       .eq("file_size", file.size)
       .limit(1);
 
-    //if (checkError) {
-     // console.error("[Duplicate Check Error]:", checkError);
-     // throw new AppError("Failed to check for duplicate notes.", 500, "DATABASE_ERROR");
-    //}
     if (checkError) {
-  console.log("========== DUPLICATE ERROR ==========");
-  console.log(JSON.stringify(checkError, null, 2));
-  throw checkError;
-}
+      console.error("[Duplicate Check Error]:", checkError);
+      throw new AppError("Failed to check for duplicate notes. Please try again.", 500, "DATABASE_ERROR");
+    }
 
     if (existingNotes && existingNotes.length > 0) {
       throw new AppError("A note with the same title and file size already exists. Duplicate uploads are not allowed.", 409, "DUPLICATE_UPLOAD");
@@ -483,14 +491,12 @@ export async function fetchNoteDetailsAction(noteId: string) {
  */
 export async function incrementViewCountAction(noteId: string) {
   try {
-    console.log(`[DEBUG incrementViewCountAction] Entered for noteId: ${noteId}`);
     if (!noteId) {
       throw new AppError("Note ID is required", 400, "INVALID_INPUT");
     }
 
     const { userId } = await auth();
     const supabase = createServiceRoleSupabaseClient();
-    console.log("[DEBUG incrementViewCountAction] Supabase service-role client created");
 
     // 1. Fetch current view count
     const { data: note, error: fetchError } = await supabase
@@ -498,11 +504,6 @@ export async function incrementViewCountAction(noteId: string) {
       .select("view_count, status")
       .eq("id", noteId)
       .single();
-
-    console.log("[DEBUG incrementViewCountAction] Fetch note result:", {
-      note,
-      error: fetchError ? { code: fetchError.code, message: fetchError.message } : null
-    });
 
     if (fetchError || !note) {
       console.error("[Database Operations Failure - incrementViewCountAction - fetch]:", fetchError);
@@ -519,11 +520,6 @@ export async function incrementViewCountAction(noteId: string) {
       .update({ view_count: note.view_count + 1 })
       .eq("id", noteId)
       .select();
-
-    console.log("[DEBUG incrementViewCountAction] Update note result:", {
-      updateData,
-      error: updateError ? { code: updateError.code, message: updateError.message } : null
-    });
 
     if (updateError) {
       console.error("[Database Operations Failure - incrementViewCountAction - update]:", updateError);
@@ -621,7 +617,6 @@ export async function clearRecentlyViewedNotesAction() {
  */
 export async function logDownloadAction(noteId: string) {
   try {
-    console.log(`[DEBUG logDownloadAction] Entered for noteId: ${noteId}`);
     if (!noteId) {
       throw new AppError("Note ID is required", 400, "INVALID_INPUT");
     }
@@ -630,10 +625,7 @@ export async function logDownloadAction(noteId: string) {
     const requestHeaders = await headers();
     const ipAddress = requestHeaders.get("x-forwarded-for")?.split(",")[0].trim() || requestHeaders.get("x-real-ip") || null;
 
-    console.log("[DEBUG logDownloadAction] Context:", { userId, ipAddress });
-
     const supabase = createServiceRoleSupabaseClient();
-    console.log("[DEBUG logDownloadAction] Supabase service-role client created");
 
     // 1. Fetch note to verify it exists and get current downloads_count
     const { data: note, error: fetchError } = await supabase
@@ -641,11 +633,6 @@ export async function logDownloadAction(noteId: string) {
       .select("downloads_count, file_url, status")
       .eq("id", noteId)
       .single();
-
-    console.log("[DEBUG logDownloadAction] Fetch note result:", {
-      note,
-      error: fetchError ? { code: fetchError.code, message: fetchError.message } : null
-    });
 
     if (fetchError || !note) {
       console.error("[Database Operations Failure - logDownloadAction - fetch note]:", fetchError);
@@ -682,11 +669,6 @@ export async function logDownloadAction(noteId: string) {
       })
       .select();
 
-    console.log("[DEBUG logDownloadAction] Insert download result:", {
-      insertData,
-      error: insertError ? { code: insertError.code, message: insertError.message } : null
-    });
-
     if (insertError) {
       console.error("[Database Operations Failure - logDownloadAction - insert download]:", insertError);
     }
@@ -697,11 +679,6 @@ export async function logDownloadAction(noteId: string) {
       .update({ downloads_count: note.downloads_count + 1 })
       .eq("id", noteId)
       .select();
-
-    console.log("[DEBUG logDownloadAction] Update note result:", {
-      updateData,
-      error: updateError ? { code: updateError.code, message: updateError.message } : null
-    });
 
     if (updateError) {
       console.error("[Database Operations Failure - logDownloadAction - increment count]:", updateError);
